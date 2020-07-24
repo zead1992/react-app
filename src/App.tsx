@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/reducers";
 import {login} from "./store/actions/authActions";
-import {increment} from "./store/actions/counterActions";
+import {decrement, increment} from "./store/actions/counterActions";
 
 function App() {
 
@@ -14,6 +14,9 @@ function App() {
             <h1>Counter: {counter}</h1>
             <button onClick={()=> dispatch(increment())} className="btn btn-primary">
                 increase counter
+            </button>
+            <button onClick={()=> dispatch(decrement())} className="btn btn-primary">
+                decrement counter
             </button>
             {isLogged && <p>logged user</p>}
             <button
