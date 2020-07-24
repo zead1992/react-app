@@ -9,41 +9,13 @@ import 'font-awesome/scss/font-awesome.scss'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {createStore} from "redux";
+import allReducers from "./store/reducers";
 
 
-//actions
-const increment = () => {
-    return {
-        type: "INCREMENT",
-    }
-}
+const store = createStore(allReducers,
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-const decrement = () => {
-    return {
-        type: "DECREMENT",
-    }
-}
-
-//reducers
-const counter = (state = 0 ,action)=>{
-    switch (action.type) {
-        case "INCREMENT":
-            return state +1
-        case "DECREMENT":
-            return state - 1
-    }
-}
-
-//store
-let store = createStore(counter);
-
-store.subscribe(()=>{ console.log(store.getState())})
-
-//dispatch
-store.dispatch(increment());
-store.dispatch(increment());
-store.dispatch(increment());
-store.dispatch(decrement());
 
 ReactDOM.render(
     <React.StrictMode>
