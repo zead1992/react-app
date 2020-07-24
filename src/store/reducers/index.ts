@@ -2,9 +2,11 @@ import {combineReducers} from "redux";
 import counterReducer from "./counter";
 import isLoggedReducer from "./isLogged";
 
-const allReducers = combineReducers({
+
+
+export const rootReducer = combineReducers({
     counter: counterReducer,
     isLogged: isLoggedReducer
 });
 
-export default allReducers;
+export type RootState = ReturnType<typeof rootReducer>;
