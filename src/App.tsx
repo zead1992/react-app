@@ -1,14 +1,26 @@
 import React from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/reducers";
+import {login} from "./store/actions/authActions";
+import {increment} from "./store/actions/counterActions";
 
 function App() {
 
-    const counter = useSelector((state: RootState) => state.counter);
+    const {counter, isLogged} = useSelector((state: RootState) => state);
+    const dispatch = useDispatch();
 
     return (
         <main className="container py-3">
             <h1>Counter: {counter}</h1>
+            <button onClick={()=> dispatch(increment())} className="btn btn-primary">
+                increase counter
+            </button>
+            {isLogged && <p>logged user</p>}
+            <button
+                onClick={() => dispatch(login())}
+                className="btn btn-primary my-3">
+                login
+            </button>
         </main>
     );
 }
