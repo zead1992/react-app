@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "./store/actions/authActions";
 import {decrement, increment} from "./store/actions/counterActions";
@@ -9,13 +9,24 @@ function App() {
     const {counter, isLogged} = useSelector((state: RootState) => state);
     const dispatch = useDispatch();
 
+    //state
+    const [inc,setInc] = useState<number>(0);
+    const [dec,setDec] = useState<number>(0);
+
+
     return (
         <main className="container py-3">
             <h1>Counter: {counter}</h1>
-            <button onClick={()=> dispatch(increment())} className="btn btn-primary">
+            <input type="number"
+                   placeholder="increase by"
+                   onChange={(ev)=> setInc(Number(ev.currentTarget.value))}/>
+            <button onClick={()=> dispatch(increment(inc))} className="btn btn-primary">
                 increase counter
             </button>
-            <button onClick={()=> dispatch(decrement())} className="btn btn-primary">
+            <input type="number"
+                   placeholder="decrease by"
+                   onChange={(ev)=> setDec(Number(ev.currentTarget.value))}/>
+            <button onClick={()=> dispatch(decrement(dec))} className="btn btn-primary">
                 decrement counter
             </button>
             {isLogged && <p>logged user</p>}
