@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "./store/reducers";
 import {login} from "./store/actions/authActions";
 import {decrement, increment} from "./store/actions/counterActions";
+import {RootState} from "./store/reducers/rootReducer";
 
 function App() {
 

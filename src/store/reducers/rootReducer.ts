@@ -1,12 +1,12 @@
 import {combineReducers} from "redux";
-import counterReducer from "./counter";
-import isLoggedReducer from "./isLogged";
+import counterReducer from "./counterReducer";
+import authReducer from "./authReducer";
 
 
 
 export const rootReducer = combineReducers({
     counter: counterReducer,
-    isLogged: isLoggedReducer
+    isLogged: authReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
