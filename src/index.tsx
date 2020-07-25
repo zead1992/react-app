@@ -8,13 +8,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'font-awesome/scss/font-awesome.scss'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore} from "redux";
+import {applyMiddleware, compose, createStore} from "redux";
 import {Provider} from "react-redux";
 import {rootReducer} from "./store/reducers/rootReducer";
 
 
-const store = createStore(rootReducer,
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+const store = createStore(
+    rootReducer,
+    compose(
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+    )
 );
 
 
