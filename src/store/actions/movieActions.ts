@@ -1,21 +1,27 @@
-import {IMovie} from "../../types/movie-types";
+import {
+    FETCH_MOVIES,
+    FETCH_MOVIES_SUCCESS,
+    FetchMoviesAction,
+    FetchMoviesFailure,
+    FetchMoviesSuccess, IMovie
+} from "../types/movieTypes";
 
-export const fetchMovies = () => {
+export function fetchMovies(): FetchMoviesAction {
     return {
-        type: "FETCH_MOVIES"
+        type: FETCH_MOVIES
     }
 }
 
-export const fetchMoviesSuccess = (movies: IMovie[]) => {
+export function fetchMoviesSuccess(movies: IMovie[]): FetchMoviesSuccess {
     return {
-        type: "FETCH_MOVIES_SUCCESS",
+        type: FETCH_MOVIES_SUCCESS,
         payload: movies
     }
 }
 
-export const fetchMoviesFailure = (error: string) => {
+export function fetchMoviesFailure(error: string): FetchMoviesFailure {
     return {
         type: "FETCH_MOVIES_FAILURE",
-        payload: error
+        error
     }
 }
