@@ -1,7 +1,7 @@
 import http from './http-service';
 import {AxiosError} from "axios";
 import {toast} from "react-toastify";
-import {CreateMovie, IMovie} from "../types/movie-types";
+import {CreateMovie, IMovie} from "../store/types/movieTypes";
 
 export async function getMovies() {
     return await http.get<IMovie[]>(`/movies`);
