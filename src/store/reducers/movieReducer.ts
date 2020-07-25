@@ -9,6 +9,7 @@ import {
     MovieActionTypes,
     MovieState
 } from "../types/movieTypes";
+import {updateLoading} from "../actions/loadingActions";
 
 const initState: MovieState = {
     list: {
@@ -90,10 +91,12 @@ export function fetchMoviesAsync() {
 export function fetchMovieDetailAsync(id: string) {
     return async (dispatch) => {
         try {
+            dispatch(updateLoading({key:'movieDetail',val:true}))
             const result = await getMovie(id);
             dispatch(fetchMovieDetail(result.data));
-
+            dispatch(updateLoading({key:'movieDetail',val:false}));
         } catch (e) {
+            dispatch(updateLoading({key:'movieDetail',val:false}));
             const error = e as AxiosError;
         }
     }

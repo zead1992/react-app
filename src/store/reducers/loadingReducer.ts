@@ -2,7 +2,8 @@ import {LoadingActionTypes, LoadingState, UPDATE_LOADING} from "../types/loading
 
 const initState: LoadingState = {
     movieList: false,
-    movieDetail: false
+    movieDetail: false,
+    genreList:false
 }
 
 export function loadingReducer(state = initState, action: LoadingActionTypes): LoadingState {
@@ -12,5 +13,7 @@ export function loadingReducer(state = initState, action: LoadingActionTypes): L
                 ...state,
                 [action.payload.key]: action.payload.val
             }
+        default:
+            return state;
     }
 }

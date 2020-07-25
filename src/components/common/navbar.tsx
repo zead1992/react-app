@@ -13,6 +13,7 @@ function Navbar(props) {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav mr-auto">
                     <NavLink to="/movies" className="nav-item nav-link">Movies</NavLink>
+                    <NavLink to="/movies/new" className="nav-item nav-link">New Movie</NavLink>
                 </div>
             </div>
         </nav>

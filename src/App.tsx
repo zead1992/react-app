@@ -8,6 +8,7 @@ import {Route, Switch} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
+import MovieForm from "./components/MovieForm";
 
 function App() {
 
@@ -42,6 +43,11 @@ function App() {
                 login
             </button>
             <Switch>
+                <Route
+                    path="/movies/new"
+                    exact
+                    component={MovieForm}
+                />
                 <Route
                     path="/movies/:id"
                     exact

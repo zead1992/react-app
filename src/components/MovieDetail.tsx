@@ -9,7 +9,10 @@ type IProps = RouteComponentProps<{ id: string }>;
 function MovieDetail(props: IProps) {
 
     const dispatch = useDispatch();
-    const {data:movie} = useSelector((state : RootState) => state.movies.detail)
+    const {data:movie} = useSelector((state : RootState) => state.movies.detail);
+    const {movieDetail:loading} = useSelector((state : RootState)=> state.loading);
+
+    console.log(movie);
 
     useEffect(() => {
         dispatch(fetchMovieDetailAsync(props.match.params.id));
@@ -18,10 +21,13 @@ function MovieDetail(props: IProps) {
     return (
         <div>
             Movie Detail : {props.match.params.id}
-            <ul className="list-group">
+            {
+                loading && <p>loading</p>
+            }
+            {!loading && <ul className="list-group">
                 <li className="list-group-item">title: {movie?.title}</li>
                 <li className="list-group-item">genre: {movie?.genre.name}</li>
-            </ul>
+            </ul>}
         </div>
     );
 }
