@@ -15,16 +15,26 @@ export type CreateMovie = {
     genreId: string;
 }
 
+//state
 export interface MovieState {
-    movies:IMovie[];
-    loading:boolean;
-    error:string;
+    list: {
+        data: IMovie[];
+        loading: boolean;
+        error: string;
+    },
+    detail: {
+        data: IMovie;
+        loading: boolean;
+        error: string;
+    }
+
 }
 
 //actions
 export const FETCH_MOVIES = "FETCH_MOVIES";
 export const FETCH_MOVIES_SUCCESS = "FETCH_MOVIES_SUCCESS";
 export const FETCH_MOVIES_FAILURE = "FETCH_MOVIES_FAILURE";
+export const FETCH_MOVIE_DETAIL = "FETCH_MOVIE_DETAIL";
 
 export interface FetchMoviesAction {
     type: typeof FETCH_MOVIES;
@@ -40,4 +50,9 @@ export interface FetchMoviesFailure {
     error: string;
 }
 
-export type MovieActionTypes = FetchMoviesAction | FetchMoviesSuccess | FetchMoviesFailure;
+export interface FetchMovieDetail {
+    type: typeof FETCH_MOVIE_DETAIL;
+    payload: IMovie;
+}
+
+export type MovieActionTypes = FetchMoviesAction | FetchMoviesSuccess | FetchMoviesFailure | FetchMovieDetail;

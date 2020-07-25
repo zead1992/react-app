@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function Movies(props) {
 
     const dispatch = useDispatch();
-    const {movies} = useSelector((state : RootState) => state);
+    const {list:movies} = useSelector((state : RootState) => state.movies);
     const [refreshMovie,setRefreshMovie] = useState(false);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ function Movies(props) {
                 <ul className="list-group">
                     {movies.loading &&
                     <p>loading movie</p>}
-                    {!movies.loading && movies.movies.map((m,index) =>
+                    {!movies.loading && movies.data.map((m,index) =>
                         <Link to={`movies/${m._id}`} key={index} className="list-group-item">
                             {m.title}
                         </Link>

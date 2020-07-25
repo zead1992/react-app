@@ -1,9 +1,12 @@
 import {
+    FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_SUCCESS,
+    FetchMovieDetail,
     FetchMoviesAction,
     FetchMoviesFailure,
-    FetchMoviesSuccess, IMovie
+    FetchMoviesSuccess,
+    IMovie
 } from "../types/movieTypes";
 
 export function fetchMovies(): FetchMoviesAction {
@@ -23,5 +26,12 @@ export function fetchMoviesFailure(error: string): FetchMoviesFailure {
     return {
         type: "FETCH_MOVIES_FAILURE",
         error
+    }
+}
+
+export function fetchMovieDetail(movie: IMovie): FetchMovieDetail {
+    return {
+        type: FETCH_MOVIE_DETAIL,
+        payload: movie
     }
 }
