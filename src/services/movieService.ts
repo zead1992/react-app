@@ -4,22 +4,11 @@ import {toast} from "react-toastify";
 import {CreateMovie, IMovie} from "../types/movie-types";
 
 export async function getMovies() {
-    const result = await http.get<IMovie[]>(`/movies`);
-    return result.data;
+    return await http.get<IMovie[]>(`/movies`);
 }
 
 export async function getMovie(id: string) {
-    try {
-        const result = await http.get<IMovie>(`/movies/${id}`);
-        return result.data;
-    } catch (e) {
-        const error = e as AxiosError;
-        if (error.response && error.response.status === 404) {
-            toast.error("movie not found");
-        }
-        return Promise.reject(error);
-    }
-
+    return await http.get<IMovie>(`/movies/${id}`);
 }
 
 export async function addMovie(movieModel: CreateMovie) {

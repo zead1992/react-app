@@ -1,4 +1,7 @@
 import {IMovie} from "../../types/movie-types";
+import {getMovies} from "../../services/movieService";
+import {fetchMovies, fetchMoviesFailure, fetchMoviesSuccess} from "../actions/movieActions";
+import {AxiosError} from "axios";
 
 const initState: { movies: IMovie[], loading: boolean, error: string } = {
     movies: [],
@@ -29,5 +32,23 @@ export const movieReducer = (state = initState, action) => {
             };
         default :
             return state
+    }
+}
+
+export const fetchMoviesAsync = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(fetchMovies());
+            let result;
+            await setTimeout(async () => {
+                 result = await getMovies();
+                dispatch(fetchMoviesSuccess(result.data));
+            },4000);
+
+        } catch (e) {
+            const error = e as AxiosError;
+            dispatch(fetchMoviesFailure(error.message));
+        }
+
     }
 }

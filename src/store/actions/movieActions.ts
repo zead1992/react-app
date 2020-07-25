@@ -6,16 +6,16 @@ export const fetchMovies = () => {
     }
 }
 
-export const fetchMoviesSuccess = (movies:IMovie[]) => {
+export const fetchMoviesSuccess = (movies: IMovie[]) => {
     return {
         type: "FETCH_MOVIES_SUCCESS",
-        payload:movies
+        payload: movies
     }
 }
 
-export const fetchMoviesFailure = (error:string) => {
+export const fetchMoviesFailure = (error: string) => {
     return {
         type: "FETCH_MOVIES_FAILURE",
-        payload:error
+        payload: error
     }
 }
