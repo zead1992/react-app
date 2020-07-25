@@ -4,24 +4,24 @@ import {login} from "./store/actions/authActions";
 import {decrement, increment} from "./store/actions/counterActions";
 import {RootState} from "./store/reducers/rootReducer";
 import {fetchMoviesAsync} from "./store/reducers/movieReducer";
+import {Route, Switch} from 'react-router-dom';
+import Movies from "./components/Movies";
+import Navbar from "./components/common/navbar";
+import MovieDetail from "./components/MovieDetail";
 
 function App() {
 
-    const {counter, isLogged, movies} = useSelector((state: RootState) => state);
+    const {counter, isLogged} = useSelector((state: RootState) => state);
     const dispatch = useDispatch();
 
     //state
     const [inc, setInc] = useState<number>(0);
     const [dec, setDec] = useState<number>(0);
-    const [refreshMovie,setRefreshMovie] = useState(false);
-
-    useEffect(() => {
-        dispatch(fetchMoviesAsync());
-    }, [refreshMovie]);
 
 
     return (
         <main className="container py-3">
+            <Navbar/>
             <h1>Counter: {counter}</h1>
             <input type="number"
                    placeholder="increase by"
@@ -41,24 +41,18 @@ function App() {
                 className="btn btn-primary my-3">
                 login
             </button>
-            <div className="row">
-                <div className="col-12">
-                    <button
-                        disabled={movies.loading}
-                        className="btn btn-primary"
-                        onClick={()=> setRefreshMovie(!refreshMovie)}
-                    >refresh movie</button>
-                    <ul className="list-group">
-                        {movies.loading &&
-                        <p>loading movie</p>}
-                        {!movies.loading && movies.movies.map((m,index) =>
-                            <li key={index} className="list-group-item">
-                                {m.title}
-                            </li>
-                        )}
-                    </ul>
-                </div>
-            </div>
+            <Switch>
+                <Route
+                    path="/movies/:id"
+                    exact
+                    component={MovieDetail}
+                />
+                <Route
+                    path="/movies"
+                    exact
+                    component={Movies}
+                />
+            </Switch>
         </main>
     );
 }

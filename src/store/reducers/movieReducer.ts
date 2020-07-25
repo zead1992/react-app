@@ -49,7 +49,7 @@ export function fetchMoviesAsync() {
             await setTimeout(async () => {
                 result = await getMovies();
                 dispatch(fetchMoviesSuccess(result.data));
-            }, 4000);
+            }, 1000);
 
         } catch (e) {
             const error = e as AxiosError;
