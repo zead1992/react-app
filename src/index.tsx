@@ -26,7 +26,7 @@ ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <App/>
+                <App startCounterFrom={4}/>
             </Provider>
         </BrowserRouter>
     </React.StrictMode>,

@@ -12,13 +12,17 @@ import * as authService from './services/authService';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const mapState = (state: RootState) => {
+type IProps = {
+    startCounterFrom:number;
+}
+
+const mapState = (state: RootState,props :IProps) => {
     return {
         counter: state.counter
     }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch,props :IProps) => {
     return {
         increment:(val)=> dispatch(increment(val))
     }
@@ -26,7 +30,7 @@ const mapDispatch = (dispatch) => {
 
 const connector = connect(mapState, mapDispatch);
 
-function App(props: ConnectedProps<typeof connector> & {id:string}) {
+function App(props: ConnectedProps<typeof connector> & IProps) {
 
 
     const dispatch = useDispatch();
