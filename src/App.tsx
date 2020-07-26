@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {connect, ConnectedProps, useDispatch, useSelector} from "react-redux";
 import {login} from "./store/actions/authActions";
 import {decrement, increment} from "./store/actions/counterActions";
 import {RootState} from "./store/reducers/rootReducer";
@@ -12,11 +12,25 @@ import * as authService from './services/authService';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+const mapState = (state: RootState) => {
+    return {
+        counter: state.counter
+    }
+}
 
-    useEffect(()=>{
+const mapDispatch = (dispatch) => {
+    return {
+        increment:(val)=> dispatch(increment(val))
+    }
+}
+
+const connector = connect(mapState, mapDispatch);
+
+function App(props: ConnectedProps<typeof connector>) {
+
+    useEffect(() => {
         authService.getCurrentUser();
-    },[]);
+    }, []);
 
     const {counter, isLogged} = useSelector((state: RootState) => state);
     const dispatch = useDispatch();
@@ -30,11 +44,11 @@ function App() {
         <main className="container py-3">
             <ToastContainer/>
             <Navbar/>
-            <h1>Counter: {counter}</h1>
+            <h1>Counter: {props.counter}</h1>
             <input type="number"
                    placeholder="increase by"
                    onChange={(ev) => setInc(Number(ev.currentTarget.value))}/>
-            <button onClick={() => dispatch(increment(inc))} className="btn btn-primary">
+            <button onClick={() => props.increment(inc)} className="btn btn-primary">
                 increase counter
             </button>
             <input type="number"
@@ -70,4 +84,4 @@ function App() {
     );
 }
 
-export default App;
+export default connector(App);
