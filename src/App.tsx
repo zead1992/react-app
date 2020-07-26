@@ -28,12 +28,13 @@ const connector = connect(mapState, mapDispatch);
 
 function App(props: ConnectedProps<typeof connector>) {
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         authService.getCurrentUser();
     }, []);
 
     const {counter, isLogged} = useSelector((state: RootState) => state);
-    const dispatch = useDispatch();
 
     //state
     const [inc, setInc] = useState<number>(0);
