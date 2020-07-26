@@ -26,7 +26,8 @@ const mapDispatch = (dispatch) => {
 
 const connector = connect(mapState, mapDispatch);
 
-function App(props: ConnectedProps<typeof connector>) {
+function App(props: ConnectedProps<typeof connector> & {id:string}) {
+
 
     const dispatch = useDispatch();
 
