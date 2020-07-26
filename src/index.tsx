@@ -13,15 +13,13 @@ import {Provider} from "react-redux";
 import {rootReducer} from "./store/reducers/rootReducer";
 import thunk from 'redux-thunk';
 import {BrowserRouter} from "react-router-dom";
+import {composeWithDevTools} from "redux-devtools-extension";
+import {store} from "./store/store";
 
 
-const store = createStore(
-    rootReducer,
-    compose(
-        applyMiddleware(thunk),
-        (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
-    )
-);
+
+
+
 
 
 ReactDOM.render(

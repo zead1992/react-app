@@ -7,7 +7,6 @@ import {
     fetchMoviesSuccess
 } from "../actions/movieActions";
 import {AxiosError} from "axios";
-import { push } from 'react-router-redux';
 import {
     ADD_MOVIE, CreateMovie,
     FETCH_MOVIE_DETAIL,
