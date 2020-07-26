@@ -3,6 +3,7 @@ import {LoadingActionTypes, LoadingState, UPDATE_LOADING} from "../types/loading
 const initState: LoadingState = {
     movieList: false,
     movieDetail: false,
+    newMovie:false,
     genreList:false
 }
 

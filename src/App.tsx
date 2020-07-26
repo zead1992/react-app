@@ -3,14 +3,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {login} from "./store/actions/authActions";
 import {decrement, increment} from "./store/actions/counterActions";
 import {RootState} from "./store/reducers/rootReducer";
-import {fetchMoviesAsync} from "./store/reducers/movieReducer";
 import {Route, Switch} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
 import MovieForm from "./components/MovieForm";
+import * as authService from './services/authService';
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+
+    useEffect(()=>{
+        authService.getCurrentUser();
+    },[]);
 
     const {counter, isLogged} = useSelector((state: RootState) => state);
     const dispatch = useDispatch();
@@ -22,6 +28,7 @@ function App() {
 
     return (
         <main className="container py-3">
+            <ToastContainer/>
             <Navbar/>
             <h1>Counter: {counter}</h1>
             <input type="number"

@@ -1,7 +1,15 @@
-import {getMovie, getMovies} from "../../services/movieService";
-import {fetchMovieDetail, fetchMovies, fetchMoviesFailure, fetchMoviesSuccess} from "../actions/movieActions";
-import {AxiosError} from "axios";
+import {addMovie, getMovie, getMovies} from "../../services/movieService";
 import {
+    addMovieAction,
+    fetchMovieDetail,
+    fetchMovies,
+    fetchMoviesFailure,
+    fetchMoviesSuccess
+} from "../actions/movieActions";
+import {AxiosError} from "axios";
+import { push } from 'react-router-redux';
+import {
+    ADD_MOVIE, CreateMovie,
     FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_FAILURE,
@@ -10,6 +18,7 @@ import {
     MovieState
 } from "../types/movieTypes";
 import {updateLoading} from "../actions/loadingActions";
+import {toast} from "react-toastify";
 
 const initState: MovieState = {
     list: {
@@ -65,6 +74,10 @@ export function movieReducer(state = initState, action: MovieActionTypes): Movie
                     data: action.payload
                 }
             }
+        case ADD_MOVIE:
+            return {
+                ...state,
+            }
         default :
             return state
     }
@@ -91,13 +104,27 @@ export function fetchMoviesAsync() {
 export function fetchMovieDetailAsync(id: string) {
     return async (dispatch) => {
         try {
-            dispatch(updateLoading({key:'movieDetail',val:true}))
+            dispatch(updateLoading({key: 'movieDetail', val: true}))
             const result = await getMovie(id);
             dispatch(fetchMovieDetail(result.data));
-            dispatch(updateLoading({key:'movieDetail',val:false}));
+            dispatch(updateLoading({key: 'movieDetail', val: false}));
         } catch (e) {
-            dispatch(updateLoading({key:'movieDetail',val:false}));
+            dispatch(updateLoading({key: 'movieDetail', val: false}));
             const error = e as AxiosError;
+        }
+    }
+}
+
+export function addMovieAsync(newMovie: CreateMovie) {
+    return async (dispatch) => {
+        try {
+            dispatch(updateLoading({key: 'newMovie', val: true}));
+            const result = await addMovie(newMovie);
+            dispatch(addMovieAction())
+            dispatch(updateLoading({key: 'newMovie', val: false}));
+        } catch (e) {
+            dispatch(updateLoading({key: 'newMovie', val: false}));
+            toast.error("error adding new movie");
         }
     }
 }

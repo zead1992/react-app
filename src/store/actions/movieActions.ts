@@ -1,4 +1,7 @@
 import {
+    ADD_MOVIE,
+    AddMovie,
+    CreateMovie,
     FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_SUCCESS,
@@ -33,5 +36,11 @@ export function fetchMovieDetail(movie: IMovie): FetchMovieDetail {
     return {
         type: FETCH_MOVIE_DETAIL,
         payload: movie
+    }
+}
+
+export function addMovieAction(): AddMovie {
+    return {
+        type: ADD_MOVIE
     }
 }

@@ -35,6 +35,7 @@ export const FETCH_MOVIES = "FETCH_MOVIES";
 export const FETCH_MOVIES_SUCCESS = "FETCH_MOVIES_SUCCESS";
 export const FETCH_MOVIES_FAILURE = "FETCH_MOVIES_FAILURE";
 export const FETCH_MOVIE_DETAIL = "FETCH_MOVIE_DETAIL";
+export const ADD_MOVIE = "ADD_MOVIE";
 
 export interface FetchMoviesAction {
     type: typeof FETCH_MOVIES;
@@ -55,4 +56,8 @@ export interface FetchMovieDetail {
     payload: IMovie;
 }
 
-export type MovieActionTypes = FetchMoviesAction | FetchMoviesSuccess | FetchMoviesFailure | FetchMovieDetail;
+export interface AddMovie {
+    type:typeof ADD_MOVIE;
+}
+
+export type MovieActionTypes = FetchMoviesAction | FetchMoviesSuccess | FetchMoviesFailure | FetchMovieDetail | AddMovie;

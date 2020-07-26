@@ -1,6 +1,7 @@
 export interface LoadingState {
     movieList:boolean;
     movieDetail:boolean;
+    newMovie:boolean;
     genreList:boolean;
 }
 

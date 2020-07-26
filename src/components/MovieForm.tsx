@@ -3,8 +3,12 @@ import {CreateMovie} from "../store/types/movieTypes";
 import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
+import {RouteComponentProps} from 'react-router-dom';
+import {addMovieAsync} from "../store/reducers/movieReducer";
 
-function MovieForm(props) {
+type IProps = RouteComponentProps;
+
+function MovieForm(props: IProps) {
 
     const dispatch = useDispatch();
 
@@ -20,8 +24,10 @@ function MovieForm(props) {
         genreId: ''
     });
 
+    //store
     const {list: genres} = useSelector((state: RootState) => state.genre);
     const {genreList: loadingGenres} = useSelector((state: RootState) => state.loading);
+    const {newMovie: loadingNewMovie} = useSelector((state: RootState) => state.loading);
 
 
     const formKeys = (key: keyof CreateMovie) => {
@@ -40,9 +46,14 @@ function MovieForm(props) {
         setFormValues(values);
     }
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log(formValuesState);
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        try {
+            event.preventDefault();
+            await dispatch(addMovieAsync(formValuesState));
+            props.history.push('/movies');
+        }catch (e) {
+
+        }
     }
 
 
