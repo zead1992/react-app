@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
 import {RouteComponentProps} from 'react-router-dom';
 import {addMovieAsync} from "../store/reducers/movieReducer";
+import {Button} from "@material-ui/core";
 
 type IProps = RouteComponentProps;
 
@@ -104,7 +105,11 @@ function MovieForm(props: IProps) {
                             )}
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary">Add Movie</button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                        className="btn btn-primary">Add Movie</Button>
                 </form>
             </div>
         </div>

@@ -11,6 +11,7 @@ import MovieForm from "./components/MovieForm";
 import * as authService from './services/authService';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {Dispatch} from "redux";
 
 type IProps = {
     startCounterFrom:number;
@@ -22,9 +23,9 @@ const mapState = (state: RootState,props :IProps) => {
     }
 }
 
-const mapDispatch = (dispatch,props :IProps) => {
+const mapDispatch = (dispatch : Dispatch,props :IProps) => {
     return {
-        increment:(val)=> dispatch(increment(val))
+        increment:(val : number)=> dispatch(increment(val))
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, NavLink} from "react-router-dom";
 
-function Navbar(props) {
+function Navbar(props : {}) {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
             <Link to="/" className="navbar-brand">App Redux - TypeScript</Link>

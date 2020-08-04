@@ -15,18 +15,30 @@ import thunk from 'redux-thunk';
 import {BrowserRouter} from "react-router-dom";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {store} from "./store/store";
+import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
 
 
 
 
-
+const theme : Theme = createMuiTheme({
+    palette:{
+        primary:{
+            main:'#c81616'
+        },
+        secondary:{
+            main:'#63bb08'
+        }
+    }
+})
 
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <App startCounterFrom={4}/>
+                <ThemeProvider theme={theme}>
+                    <App startCounterFrom={4}/>
+                </ThemeProvider>
             </Provider>
         </BrowserRouter>
     </React.StrictMode>,

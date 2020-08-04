@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
 import { Link } from 'react-router-dom';
 
-function Movies(props) {
+function Movies(props : any) {
 
     const dispatch = useDispatch();
     const {list:movies} = useSelector((state : RootState) => state.movies);
