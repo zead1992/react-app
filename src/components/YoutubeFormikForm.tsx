@@ -1,5 +1,5 @@
 import React from 'react';
-import {useFormik} from "formik";
+import {FormikErrors, useFormik} from "formik";
 import * as Yup from 'yup';
 
 type IForm = {
@@ -17,6 +17,24 @@ function YoutubeFormikForm(props) {
             email: '',
             channel: ''
         },
+        isInitialValid: false,
+        validate: (values) => {
+            let errors: FormikErrors<IForm> = {};
+
+            if (!values.name) {
+                errors.name = 'field is required'
+            }
+
+            if (!values.email) {
+                errors.email = 'field is required'
+            }
+
+            if (!values.channel) {
+                errors.channel = 'field is required'
+            }
+
+            return errors;
+        },
         onSubmit: (values) => {
             console.log(values);
         },
@@ -26,6 +44,7 @@ function YoutubeFormikForm(props) {
     const formKeys = (key: keyof IForm) => {
         return key;
     }
+
 
 
     return (
@@ -39,8 +58,16 @@ function YoutubeFormikForm(props) {
                                type="text"
                                value={formik.values.name}
                                onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
                                className="form-control"
                                id={formKeys('name')}/>
+                        {
+                            formik.touched.name && formik.errors.name &&
+                            <small className="text-danger">
+                                {formik.errors.name}
+                            </small>
+                        }
+
                     </div>
                     <div className="form-group">
                         <label htmlFor={formKeys('email')}>email</label>
@@ -48,8 +75,15 @@ function YoutubeFormikForm(props) {
                                type="email"
                                value={formik.values.email}
                                onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
                                className="form-control"
                                id={formKeys('email')}/>
+                        {
+                            formik.touched.email && formik.errors.email &&
+                            <small className="text-danger">
+                                {formik.errors.email}
+                            </small>
+                        }
                     </div>
                     <div className="form-group">
                         <label htmlFor={formKeys('channel')}>channel</label>
@@ -57,12 +91,20 @@ function YoutubeFormikForm(props) {
                                type="text"
                                value={formik.values.channel}
                                onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
                                className="form-control"
                                id={formKeys('channel')}/>
+                        {
+                            formik.touched.channel && formik.errors.channel &&
+                            <small className="text-danger">
+                                {formik.errors.channel}
+                            </small>
+                        }
                     </div>
                     <button
-                            type="submit"
-                            className="btn btn-primary">
+                        disabled={!formik.isValid}
+                        type="submit"
+                        className="btn btn-primary">
                         Submit
                     </button>
                 </form>
