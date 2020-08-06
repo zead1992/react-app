@@ -11,6 +11,11 @@ type IForm = {
 function YoutubeFormikForm(props) {
 
     //formik
+    const formSchema = Yup.object<IForm>({
+        name: Yup.string().required('required'),
+        email: Yup.string().email('invalid format').required('required'),
+        channel: Yup.string().required('required')
+    });
     const formik = useFormik<IForm>({
         initialValues: {
             name: '',
@@ -18,23 +23,24 @@ function YoutubeFormikForm(props) {
             channel: ''
         },
         isInitialValid: false,
-        validate: (values) => {
-            let errors: FormikErrors<IForm> = {};
-
-            if (!values.name) {
-                errors.name = 'field is required'
-            }
-
-            if (!values.email) {
-                errors.email = 'field is required'
-            }
-
-            if (!values.channel) {
-                errors.channel = 'field is required'
-            }
-
-            return errors;
-        },
+        validationSchema:formSchema,
+        // validate: (values) => {
+        //     let errors: FormikErrors<IForm> = {};
+        //
+        //     if (!values.name) {
+        //         errors.name = 'field is required'
+        //     }
+        //
+        //     if (!values.email) {
+        //         errors.email = 'field is required'
+        //     }
+        //
+        //     if (!values.channel) {
+        //         errors.channel = 'field is required'
+        //     }
+        //
+        //     return errors;
+        // },
         onSubmit: (values) => {
             console.log(values);
         },
@@ -44,7 +50,6 @@ function YoutubeFormikForm(props) {
     const formKeys = (key: keyof IForm) => {
         return key;
     }
-
 
 
     return (
