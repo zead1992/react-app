@@ -61,9 +61,7 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('name')}>name</label>
                         <input name={formKeys('name')}
                                type="text"
-                               value={formik.values.name}
-                               onChange={formik.handleChange}
-                               onBlur={formik.handleBlur}
+                               {...formik.getFieldProps(formKeys('name'))}
                                className="form-control"
                                id={formKeys('name')}/>
                         {
@@ -78,9 +76,7 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('email')}>email</label>
                         <input name={formKeys('email')}
                                type="email"
-                               value={formik.values.email}
-                               onChange={formik.handleChange}
-                               onBlur={formik.handleBlur}
+                               {...formik.getFieldProps(formKeys('email'))}
                                className="form-control"
                                id={formKeys('email')}/>
                         {
@@ -94,9 +90,7 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('channel')}>channel</label>
                         <input name={formKeys('channel')}
                                type="text"
-                               value={formik.values.channel}
-                               onChange={formik.handleChange}
-                               onBlur={formik.handleBlur}
+                               {...formik.getFieldProps(formKeys('channel'))}
                                className="form-control"
                                id={formKeys('channel')}/>
                         {
