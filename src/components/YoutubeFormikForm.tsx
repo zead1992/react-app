@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button} from "antd";
+import {useFormik} from "formik";
 
 type IForm = {
     name: string;
@@ -9,9 +10,23 @@ type IForm = {
 
 function YoutubeFormikForm(props) {
 
+    //formik
+    const formik = useFormik<IForm>({
+        initialValues: {
+         name:'',
+         email:'',
+         channel:''
+        },
+        onSubmit:(values)=>{
+            console.log(values);
+        }
+    });
+
+
     const formKeys = (key: keyof IForm) => {
         return key;
     }
+
 
     return (
         <div className="row">
@@ -22,7 +37,8 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('name')}>name</label>
                         <input name={formKeys('name')}
                                type="text"
-                               value={""}
+                               value={formik.values.name}
+                               onChange={formik.handleChange}
                                className="form-control"
                                id={formKeys('name')}/>
                     </div>
@@ -30,7 +46,8 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('email')}>email</label>
                         <input name={formKeys('email')}
                                type="email"
-                               value={""}
+                               value={formik.values.email}
+                               onChange={formik.handleChange}
                                className="form-control"
                                id={formKeys('email')}/>
                     </div>
@@ -38,13 +55,14 @@ function YoutubeFormikForm(props) {
                         <label htmlFor={formKeys('channel')}>name</label>
                         <input name={formKeys('channel')}
                                type="text"
-                               value={""}
+                               value={formik.values.channel}
+                               onChange={formik.handleChange}
                                className="form-control"
                                id={formKeys('channel')}/>
                     </div>
-                    <Button type={"primary"} loading={false} draggable={"true"}>
+                    <button className="btn btn-primary" type={"submit"}>
                         Submit
-                    </Button>
+                    </button>
                 </form>
             </div>
         </div>
