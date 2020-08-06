@@ -14,6 +14,7 @@ function Navbar(props : {}) {
                 <div className="navbar-nav mr-auto">
                     <NavLink to="/movies" className="nav-item nav-link">Movies</NavLink>
                     <NavLink to="/movies/new" className="nav-item nav-link">New Movie</NavLink>
+                    <NavLink to="/formik" className="nav-item nav-link">Formik Form</NavLink>
                 </div>
             </div>
         </nav>

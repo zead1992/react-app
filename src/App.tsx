@@ -12,6 +12,7 @@ import * as authService from './services/authService';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {Dispatch} from "redux";
+import YoutubeFormikForm from "./components/YoutubeFormikForm";
 
 type IProps = {
     startCounterFrom:number;
@@ -85,6 +86,11 @@ function App(props: ConnectedProps<typeof connector> & IProps) {
                     path="/movies"
                     exact
                     component={Movies}
+                />
+                <Route
+                    path="/formik"
+                    exact
+                    component={YoutubeFormikForm}
                 />
             </Switch>
         </main>
