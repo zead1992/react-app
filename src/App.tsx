@@ -13,6 +13,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {Dispatch} from "redux";
 import YoutubeFormikForm from "./components/YoutubeFormikForm";
+import './App.css';
 
 type IProps = {
     startCounterFrom:number;
