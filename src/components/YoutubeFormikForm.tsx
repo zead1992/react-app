@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button} from "antd";
 import {useFormik} from "formik";
+import * as Yup from 'yup';
 
 type IForm = {
     name: string;
@@ -13,15 +13,15 @@ function YoutubeFormikForm(props) {
     //formik
     const formik = useFormik<IForm>({
         initialValues: {
-         name:'',
-         email:'',
-         channel:''
+            name: '',
+            email: '',
+            channel: ''
         },
-        onSubmit:(values)=>{
+        onSubmit: (values) => {
             console.log(values);
-        }
-    });
+        },
 
+    });
 
     const formKeys = (key: keyof IForm) => {
         return key;
@@ -31,7 +31,7 @@ function YoutubeFormikForm(props) {
     return (
         <div className="row">
             <div className="col-6">
-                <form>
+                <form onSubmit={formik.handleSubmit}>
                     <h1>Formik Form</h1>
                     <div className="form-group">
                         <label htmlFor={formKeys('name')}>name</label>
@@ -52,7 +52,7 @@ function YoutubeFormikForm(props) {
                                id={formKeys('email')}/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor={formKeys('channel')}>name</label>
+                        <label htmlFor={formKeys('channel')}>channel</label>
                         <input name={formKeys('channel')}
                                type="text"
                                value={formik.values.channel}
@@ -60,7 +60,9 @@ function YoutubeFormikForm(props) {
                                className="form-control"
                                id={formKeys('channel')}/>
                     </div>
-                    <button className="btn btn-primary" type={"submit"}>
+                    <button
+                            type="submit"
+                            className="btn btn-primary">
                         Submit
                     </button>
                 </form>
