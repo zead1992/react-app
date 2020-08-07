@@ -1,5 +1,5 @@
 import React from 'react';
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik, FormikProps} from "formik";
 import * as Yup from 'yup';
 
 type IForm = {
@@ -55,6 +55,7 @@ function YoutubeFormikForm(props) {
     //
     // });
 
+
     const formKeys = (key: keyof IForm) => {
         return key;
     }
@@ -79,9 +80,15 @@ function YoutubeFormikForm(props) {
                             <div className="form-group">
                                 <label htmlFor={formKeys('name')}>name</label>
                                 <Field name={formKeys('name')}
-                                       type="text"
-                                       className="form-control"
-                                       id={formKeys('name')}/>
+                                       render={({field, form}) => (
+                                           <input
+                                               {...field}
+                                               placeholder={'name placeholder'}
+                                               type="text"
+                                               className="form-control"
+                                               id={formKeys('name')}/>
+                                       )}
+                                />
                                 <ErrorMessage name={formKeys('name')}>
                                     {errorMessage => <small className="text-danger">{errorMessage}</small>}
                                 </ErrorMessage>
