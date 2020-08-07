@@ -1,6 +1,7 @@
 import React from 'react';
 import {ErrorMessage, Field, Form, Formik, FormikProps} from "formik";
 import * as Yup from 'yup';
+import TextError from "./common/TextError";
 
 type IForm = {
     name: string;
@@ -90,9 +91,8 @@ function YoutubeFormikForm(props) {
                                         />
                                     }}
                                 </Field>
-                                <ErrorMessage name={formKeys('name')}>
-                                    {errorMessage => <small className="text-danger">{errorMessage}</small>}
-                                </ErrorMessage>
+                                <ErrorMessage name={formKeys('name')}
+                                              component={TextError}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor={formKeys('email')}>email</label>
