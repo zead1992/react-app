@@ -8,23 +8,37 @@ type IForm = {
     email: string;
     channel: string;
     comment: string;
+    social: {
+        facebook: string;
+        twitter: string;
+    }
 }
 
 function YoutubeFormikForm(props) {
 
-    //formik
-    const formSchema = Yup.object<IForm>({
-        name: Yup.string().required('required'),
-        email: Yup.string().email('invalid format').required('required'),
-        channel: Yup.string().required('required'),
-        comment: Yup.string().required('required').max(200, 'allowed string length 200')
-    });
     const initialValues: IForm = {
         name: '',
         email: '',
         channel: '',
-        comment: ''
+        comment: '',
+        social: {
+            facebook: '',
+            twitter: ''
+        }
     }
+
+
+    //formik
+    const formSchema = Yup.object().shape<IForm>({
+        name: Yup.string().required('required'),
+        email: Yup.string().email('invalid format').required('required'),
+        channel: Yup.string().required('required'),
+        comment: Yup.string().required('required').max(200, 'allowed string length 200'),
+        social: Yup.object().shape<typeof initialValues.social>({
+            facebook: Yup.string().required(),
+            twitter: Yup.string().required()
+        }),
+    });
     // const formik = useFormik<IForm>({
     //     initialValues: {
     //         name: '',
@@ -61,6 +75,14 @@ function YoutubeFormikForm(props) {
         return key;
     }
 
+    const socialKeys = (key: keyof typeof initialValues.social) => {
+        return key;
+    }
+
+    const socialNames = (key: keyof typeof initialValues.social) => {
+        return `${formKeys('social')}.${key}`
+    }
+
     const onSubmit = (values: IForm) => {
         console.log(values);
     }
@@ -82,7 +104,7 @@ function YoutubeFormikForm(props) {
                                 <label htmlFor={formKeys('name')}>name</label>
                                 <Field name={formKeys('name')}>
                                     {({field, form}) => {
-                                        const formProps  = form as FormikProps<IForm>;
+                                        const formProps = form as FormikProps<IForm>;
                                         return <input
                                             {...field}
                                             className="form-control"
@@ -130,6 +152,41 @@ function YoutubeFormikForm(props) {
                                 <ErrorMessage name={formKeys('comment')}>
                                     {errorMessage => <small className="text-danger">{errorMessage}</small>}
                                 </ErrorMessage>
+                            </div>
+                            {/*social*/}
+                            <div className="form-group">
+                                <label htmlFor={socialKeys('facebook')}>facebook</label>
+                                <Field
+                                    name={socialNames('facebook')}>
+                                    {({field, form}) => {
+                                        const formProps = form as FormikProps<IForm>;
+                                        return <input
+                                            {...field}
+                                            className="form-control"
+                                            id={socialKeys('facebook')}
+                                            placeholder={'url...'}
+                                        />
+                                    }}
+                                </Field>
+                                <ErrorMessage name={socialNames('facebook')}
+                                              component={TextError}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor={socialKeys('twitter')}>twitter</label>
+                                <Field
+                                    name={socialNames('twitter')}>
+                                    {({field, form}) => {
+                                        const formProps = form as FormikProps<IForm>;
+                                        return <input
+                                            {...field}
+                                            className="form-control"
+                                            id={socialKeys('twitter')}
+                                            placeholder={'url...'}
+                                        />
+                                    }}
+                                </Field>
+                                <ErrorMessage name={socialNames('twitter')}
+                                              component={TextError}/>
                             </div>
                             <button
                                 disabled={!props.isValid}
