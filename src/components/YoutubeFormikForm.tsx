@@ -79,16 +79,17 @@ function YoutubeFormikForm(props) {
                             <h1>Formik Form</h1>
                             <div className="form-group">
                                 <label htmlFor={formKeys('name')}>name</label>
-                                <Field name={formKeys('name')}
-                                       render={({field, form}) => (
-                                           <input
-                                               {...field}
-                                               placeholder={'name placeholder'}
-                                               type="text"
-                                               className="form-control"
-                                               id={formKeys('name')}/>
-                                       )}
-                                />
+                                <Field name={formKeys('name')}>
+                                    {({field, form}) => {
+                                        const formProps  = form as FormikProps<IForm>;
+                                        return <input
+                                            {...field}
+                                            className="form-control"
+                                            id={formKeys('name')}
+                                            placeholder={'name...'}
+                                        />
+                                    }}
+                                </Field>
                                 <ErrorMessage name={formKeys('name')}>
                                     {errorMessage => <small className="text-danger">{errorMessage}</small>}
                                 </ErrorMessage>
