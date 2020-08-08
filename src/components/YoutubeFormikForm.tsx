@@ -106,6 +106,10 @@ function YoutubeFormikForm(props) {
                     {(props) => {
                         return <Form>
                             <h1>Formik Form</h1>
+                            <button onClick={props.validateForm}
+                                    className="btn btn-primary m-3">
+                                validate form
+                            </button>
                             <div className="form-group">
                                 <label htmlFor={formKeys('name')}>name</label>
                                 <Field name={formKeys('name')}>
