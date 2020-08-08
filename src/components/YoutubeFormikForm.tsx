@@ -19,7 +19,7 @@ type IForm = {
 function YoutubeFormikForm(props) {
 
     const initialValues: IForm = {
-        name: '',
+        name: 'asd',
         email: 'asd@t.com',
         channel: 'asd',
         comment: 'asd',
@@ -98,7 +98,7 @@ function YoutubeFormikForm(props) {
 
 
 
-    return (
+    return  (
         <div className="row">
             <div className="col-6">
                 <Formik<IForm>
@@ -285,7 +285,9 @@ function YoutubeFormikForm(props) {
                                                 Add Category
                                             </button>
                                             {props.values.categories.length > 0 ?
-                                                <button onClick={() => categoriesProps.pop()}
+                                                <button onClick={() => {
+                                                    categoriesProps.remove(props.values.categories.length - 1);
+                                                }}
                                                         className="btn btn-primary m-2"
                                                         type="button">
                                                     Remove Category
