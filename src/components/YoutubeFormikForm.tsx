@@ -1,5 +1,5 @@
 import React from 'react';
-import {ErrorMessage, Field, Form, Formik, FormikProps} from "formik";
+import {ErrorMessage, Field, FieldArray, Form, Formik, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
 
@@ -13,6 +13,7 @@ type IForm = {
         twitter: string;
     };
     phoneNumbers: string[];
+    categories: string[];
 }
 
 function YoutubeFormikForm(props) {
@@ -26,7 +27,8 @@ function YoutubeFormikForm(props) {
             facebook: '',
             twitter: ''
         },
-        phoneNumbers: ['', '']
+        phoneNumbers: ['', ''],
+        categories: ['val 1', 'val 2']
     }
 
 
@@ -41,6 +43,7 @@ function YoutubeFormikForm(props) {
             twitter: Yup.string().required()
         }),
         phoneNumbers: Yup.array().of<string>(Yup.string().required()),
+        categories: Yup.array().of<string>(Yup.string().required())
     });
     // const formik = useFormik<IForm>({
     //     initialValues: {
@@ -225,6 +228,64 @@ function YoutubeFormikForm(props) {
                                 </Field>
                                 <ErrorMessage name={`${formKeys('phoneNumbers')}[1]`}
                                               component={TextError}/>
+                            </div>
+                            {/*categories*/}
+                            <h2>Categories Fields</h2>
+                            <div className="form-group">
+                                <FieldArray name={formKeys('categories')}>
+                                    {(categoriesProps) =>
+                                        <div>
+                                            {
+                                                props.values.categories
+                                                    .map((cat, index) =>
+                                                        <div className="row align-items-center justify-content-start"
+                                                             key={index}>
+                                                            <div className="col-12 m-0">
+                                                                <label
+                                                                    htmlFor={`${formKeys('categories')}[${index}]`}>category {index + 1}
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-10">
+                                                                <Field
+                                                                    name={`${formKeys('categories')}[${index}]`}>
+                                                                    {({field}) => {
+                                                                        return <input
+                                                                            {...field}
+                                                                            className="form-control"
+                                                                            id={`${formKeys('categories')}[${index}]`}
+                                                                        />
+                                                                    }}
+                                                                </Field>
+                                                                <ErrorMessage
+                                                                    name={`${formKeys('categories')}[${index}]`}
+                                                                    component={TextError}/>
+                                                            </div>
+                                                            <div className="col-2">
+                                                                <button onClick={() => categoriesProps.remove(index)}
+                                                                        className="btn btn-primary m-2"
+                                                                        type="button">
+                                                                    -
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                            }
+                                            <button onClick={() => categoriesProps.push("")}
+                                                    className="btn btn-primary m-2"
+                                                    type="button">
+                                                Add Category
+                                            </button>
+                                            {props.values.categories.length > 0 ?
+                                                <button onClick={() => categoriesProps.pop()}
+                                                        className="btn btn-primary m-2"
+                                                        type="button">
+                                                    Remove Category
+                                                </button>
+                                                : null
+                                            }
+                                        </div>
+                                    }
+                                </FieldArray>
                             </div>
                             <button
                                 disabled={!props.isValid}
