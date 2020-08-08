@@ -156,11 +156,12 @@ function YoutubeFormikForm(props) {
                                     {errorMessage => <small className="text-danger">{errorMessage}</small>}
                                 </ErrorMessage>
                             </div>
-                            {/*social*/}
+                            {/*social nested*/}
                             <div className="form-group">
                                 <label htmlFor={socialKeys('facebook')}>facebook</label>
                                 <Field
                                     name={socialNames('facebook')}>
+                                    {/*social.name*/}
                                     {({field, form}) => {
                                         const formProps = form as FormikProps<IForm>;
                                         return <input
@@ -196,6 +197,7 @@ function YoutubeFormikForm(props) {
                                 <label htmlFor="primaryPh">primary phone</label>
                                 <Field
                                     name={`${formKeys('phoneNumbers')}[0]`}>
+                                    {/*phoneNumbers[index]*/}
                                     {({field, form}) => {
                                         const formProps = form as FormikProps<IForm>;
                                         return <input
