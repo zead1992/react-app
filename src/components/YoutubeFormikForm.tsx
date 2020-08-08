@@ -1,5 +1,5 @@
-import React from 'react';
-import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps, FormikSharedConfig} from "formik";
+import React, {useEffect, useState} from 'react';
+import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
 
@@ -18,18 +18,31 @@ type IForm = {
 
 function YoutubeFormikForm(props) {
 
-    const initialValues: IForm = {
-        name: 'asd',
-        email: 'asd@t.com',
-        channel: 'asd',
-        comment: 'asd',
-        social: {
-            facebook: 'asd',
-            twitter: 'asd'
-        },
-        phoneNumbers: ['asd', 'asd'],
-        categories: ['val 1', 'val 2']
-    }
+    const [formValues,setFormValues] = useState<IForm>({
+        categories: [],
+        channel: "",
+        comment: "",
+        email: "",
+        name: "",
+        phoneNumbers: ['',''],
+        social: {facebook: "", twitter: ""}
+    });
+
+
+    useEffect(() => {
+        setFormValues({
+            name: 'asd',
+            email: 'asd@t.com',
+            channel: 'asd',
+            comment: 'asd',
+            social: {
+                facebook: 'asd',
+                twitter: 'asd'
+            },
+            phoneNumbers: ['asd', 'asd'],
+            categories: ['val 1', 'val 2']
+        });
+    },[]);
 
 
     //formik
@@ -38,7 +51,7 @@ function YoutubeFormikForm(props) {
         email: Yup.string().email('invalid format').required('required'),
         channel: Yup.string().required('required'),
         comment: Yup.string().required('required').max(200, 'allowed string length 200'),
-        social: Yup.object().shape<typeof initialValues.social>({
+        social: Yup.object().shape<typeof formValues.social>({
             facebook: Yup.string().required(),
             twitter: Yup.string().required()
         }),
@@ -81,11 +94,11 @@ function YoutubeFormikForm(props) {
         return key;
     }
 
-    const socialKeys = (key: keyof typeof initialValues.social) => {
+    const socialKeys = (key: keyof typeof formValues.social) => {
         return key;
     }
 
-    const socialNames = (key: keyof typeof initialValues.social) => {
+    const socialNames = (key: keyof typeof formValues.social) => {
         return `${formKeys('social')}.${key}`
     }
 
@@ -97,13 +110,13 @@ function YoutubeFormikForm(props) {
     }
 
 
-
-    return  (
+    return (
         <div className="row">
             <div className="col-6">
                 <Formik<IForm>
-                    initialValues={initialValues}
-                    isInitialValid={()=> formSchema.isValidSync(initialValues)}
+                    initialValues={formValues}
+                    enableReinitialize={true}
+                    isInitialValid={() => formSchema.isValidSync(formValues)}
                     onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
                     validationSchema={formSchema}
                 >
