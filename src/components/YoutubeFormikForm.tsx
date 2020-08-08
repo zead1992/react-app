@@ -2,6 +2,7 @@ import React from 'react';
 import {ErrorMessage, Field, Form, Formik, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
+import {string} from "yup";
 
 type IForm = {
     name: string;
@@ -11,7 +12,8 @@ type IForm = {
     social: {
         facebook: string;
         twitter: string;
-    }
+    };
+    phoneNumbers: string[];
 }
 
 function YoutubeFormikForm(props) {
@@ -24,7 +26,8 @@ function YoutubeFormikForm(props) {
         social: {
             facebook: '',
             twitter: ''
-        }
+        },
+        phoneNumbers: ['', '']
     }
 
 
@@ -38,6 +41,7 @@ function YoutubeFormikForm(props) {
             facebook: Yup.string().required(),
             twitter: Yup.string().required()
         }),
+        phoneNumbers: Yup.array().of<string>(string().required()),
     });
     // const formik = useFormik<IForm>({
     //     initialValues: {
@@ -186,6 +190,39 @@ function YoutubeFormikForm(props) {
                                     }}
                                 </Field>
                                 <ErrorMessage name={socialNames('twitter')}
+                                              component={TextError}/>
+                            </div>
+                            {/*phone numbers*/}
+                            <div className="form-group">
+                                <label htmlFor="primaryPh">primary phone</label>
+                                <Field
+                                    name={`${formKeys('phoneNumbers')}[0]`}>
+                                    {({field, form}) => {
+                                        const formProps = form as FormikProps<IForm>;
+                                        return <input
+                                            {...field}
+                                            className="form-control"
+                                            id="primaryPh"
+                                        />
+                                    }}
+                                </Field>
+                                <ErrorMessage name={`${formKeys('phoneNumbers')}[0]`}
+                                              component={TextError}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="secondaryPh">secondary phone</label>
+                                <Field
+                                    name={`${formKeys('phoneNumbers')}[1]`}>
+                                    {({field, form}) => {
+                                        const formProps = form as FormikProps<IForm>;
+                                        return <input
+                                            {...field}
+                                            className="form-control"
+                                            id="secondaryPh"
+                                        />
+                                    }}
+                                </Field>
+                                <ErrorMessage name={`${formKeys('phoneNumbers')}[1]`}
                                               component={TextError}/>
                             </div>
                             <button
