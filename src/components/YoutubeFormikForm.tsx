@@ -2,7 +2,6 @@ import React from 'react';
 import {ErrorMessage, Field, Form, Formik, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
-import {string} from "yup";
 
 type IForm = {
     name: string;
@@ -41,7 +40,7 @@ function YoutubeFormikForm(props) {
             facebook: Yup.string().required(),
             twitter: Yup.string().required()
         }),
-        phoneNumbers: Yup.array().of<string>(string().required()),
+        phoneNumbers: Yup.array().of<string>(Yup.string().required()),
     });
     // const formik = useFormik<IForm>({
     //     initialValues: {
