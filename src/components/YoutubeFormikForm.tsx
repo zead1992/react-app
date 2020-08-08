@@ -1,5 +1,5 @@
 import React from 'react';
-import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps} from "formik";
+import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps, FormikSharedConfig} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
 
@@ -20,14 +20,14 @@ function YoutubeFormikForm(props) {
 
     const initialValues: IForm = {
         name: '',
-        email: '',
-        channel: '',
-        comment: '',
+        email: 'asd@t.com',
+        channel: 'asd',
+        comment: 'asd',
         social: {
-            facebook: '',
-            twitter: ''
+            facebook: 'asd',
+            twitter: 'asd'
         },
-        phoneNumbers: ['', ''],
+        phoneNumbers: ['asd', 'asd'],
         categories: ['val 1', 'val 2']
     }
 
@@ -89,12 +89,13 @@ function YoutubeFormikForm(props) {
         return `${formKeys('social')}.${key}`
     }
 
-    const onSubmit = (values: IForm,formikHelpers : FormikHelpers<IForm>) => {
-        setTimeout(()=>{
+    const onSubmit = (values: IForm, formikHelpers: FormikHelpers<IForm>) => {
+        setTimeout(() => {
             console.log(values);
             formikHelpers.setSubmitting(false);
-        },3000)
+        }, 3000)
     }
+
 
 
     return (
@@ -102,11 +103,12 @@ function YoutubeFormikForm(props) {
             <div className="col-6">
                 <Formik<IForm>
                     initialValues={initialValues}
-                    isInitialValid={false}
-                    onSubmit={(values, formikHelpers)=> onSubmit(values,formikHelpers)}
+                    isInitialValid={()=> formSchema.isValidSync(initialValues)}
+                    onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
                     validationSchema={formSchema}
                 >
                     {(props) => {
+                        // props.validateForm(props.values);
                         return <Form>
                             <h1>Formik Form</h1>
                             <button onClick={props.validateForm}
