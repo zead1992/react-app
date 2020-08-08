@@ -1,5 +1,5 @@
 import React from 'react';
-import {ErrorMessage, Field, FieldArray, Form, Formik, FormikProps} from "formik";
+import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
 
@@ -89,8 +89,11 @@ function YoutubeFormikForm(props) {
         return `${formKeys('social')}.${key}`
     }
 
-    const onSubmit = (values: IForm) => {
-        console.log(values);
+    const onSubmit = (values: IForm,formikHelpers : FormikHelpers<IForm>) => {
+        setTimeout(()=>{
+            console.log(values);
+            formikHelpers.setSubmitting(false);
+        },3000)
     }
 
 
@@ -100,7 +103,7 @@ function YoutubeFormikForm(props) {
                 <Formik<IForm>
                     initialValues={initialValues}
                     isInitialValid={false}
-                    onSubmit={onSubmit}
+                    onSubmit={(values, formikHelpers)=> onSubmit(values,formikHelpers)}
                     validationSchema={formSchema}
                 >
                     {(props) => {
@@ -292,7 +295,7 @@ function YoutubeFormikForm(props) {
                                 </FieldArray>
                             </div>
                             <button
-                                disabled={!props.isValid}
+                                disabled={!props.isValid || props.isSubmitting}
                                 type="submit"
                                 className="btn btn-primary">
                                 Submit
