@@ -42,8 +42,8 @@ function YoutubeFormikForm(props) {
             facebook: Yup.string().required(),
             twitter: Yup.string().required()
         }),
-        phoneNumbers: Yup.array().of<string>(Yup.string().required()),
-        categories: Yup.array().of<string>(Yup.string().required())
+        phoneNumbers: Yup.array().of<string>(Yup.string().required('required')),
+        categories: Yup.array().of<string>(Yup.string().required('required'))
     });
     // const formik = useFormik<IForm>({
     //     initialValues: {
