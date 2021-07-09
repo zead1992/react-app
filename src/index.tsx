@@ -16,6 +16,7 @@ import {BrowserRouter} from "react-router-dom";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
+import "antd/dist/antd.css";
 
 
 
