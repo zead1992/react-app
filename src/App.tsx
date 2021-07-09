@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps, useDispatch, useSelector} from "react-redux";
-import {login} from "./store/actions/authActions";
-import {decrement, increment} from "./store/actions/counterActions";
-import {RootState} from "./store/reducers/rootReducer";
+import React, {useEffect} from 'react';
+import {useDispatch} from "react-redux";
 import {Route, Switch} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
@@ -11,7 +8,6 @@ import MovieForm from "./components/MovieForm";
 import * as authService from './services/authService';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {Dispatch} from "redux";
 import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
 
@@ -19,21 +15,9 @@ type IProps = {
     startCounterFrom:number;
 }
 
-const mapState = (state: RootState,props :IProps) => {
-    return {
-        counter: state.counter
-    }
-}
 
-const mapDispatch = (dispatch : Dispatch,props :IProps) => {
-    return {
-        increment:(val : number)=> dispatch(increment(val))
-    }
-}
 
-const connector = connect(mapState, mapDispatch);
-
-function App(props: ConnectedProps<typeof connector> & IProps) {
+function App(props:  IProps) {
 
 
     const dispatch = useDispatch();
@@ -42,36 +26,12 @@ function App(props: ConnectedProps<typeof connector> & IProps) {
         authService.getCurrentUser();
     }, []);
 
-    const {counter, isLogged} = useSelector((state: RootState) => state);
-
-    //state
-    const [inc, setInc] = useState<number>(0);
-    const [dec, setDec] = useState<number>(0);
-
 
     return (
         <main className="container py-3">
             <ToastContainer/>
             <Navbar/>
-            <h1>Counter: {props.counter}</h1>
-            <input type="number"
-                   placeholder="increase by"
-                   onChange={(ev) => setInc(Number(ev.currentTarget.value))}/>
-            <button onClick={() => props.increment(inc)} className="btn btn-primary">
-                increase counter
-            </button>
-            <input type="number"
-                   placeholder="decrease by"
-                   onChange={(ev) => setDec(Number(ev.currentTarget.value))}/>
-            <button onClick={() => dispatch(decrement(dec))} className="btn btn-primary">
-                decrement counter
-            </button>
-            {isLogged && <p>logged user</p>}
-            <button
-                onClick={() => dispatch(login())}
-                className="btn btn-primary my-3">
-                login
-            </button>
+
             <Switch>
                 <Route
                     path="/movies/new"
@@ -98,4 +58,4 @@ function App(props: ConnectedProps<typeof connector> & IProps) {
     );
 }
 
-export default connector(App);
+export default App;
