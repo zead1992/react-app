@@ -20,6 +20,7 @@ import {
 import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
 import {getGenres} from "../../services/genreService";
+import {RootState} from "./rootReducer";
 
 export const moviesInitState: MovieState = {
     list: {
@@ -77,7 +78,7 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
             }
         case ADD_MOVIE:
             const newMovie = action.payload;
-            const genres = getGenres();
+            const genres = action.genres;
             const newItem = {
                 _id:Math.random().toString(),
                 genre:{
@@ -100,10 +101,9 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
 }
 
 export function fetchMoviesAsync() {
-    return async (dispatch) => {
+    return async (dispatch,getState) => {
         try {
             dispatch(fetchMovies());
-
             await new Promise(resolve => setTimeout(resolve,1000));
             const  result = await getMovies();
             dispatch(fetchMoviesSuccess(result));
@@ -132,10 +132,11 @@ export function fetchMovieDetailAsync(id: string) {
 
 export function addMovieAsync(newMovie: CreateMovie) {
     return async (dispatch,getState) => {
-        console.log(getState);
+        const state : RootState = getState();
+        const genres = [...state.genre.list];
         try {
             dispatch(updateLoading({key: 'newMovie', val: true}));
-            dispatch(addMovieAction(newMovie))
+            dispatch(addMovieAction(newMovie,genres))
             dispatch(updateLoading({key: 'newMovie', val: false}));
         } catch (e) {
             dispatch(updateLoading({key: 'newMovie', val: false}));

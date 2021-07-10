@@ -11,6 +11,7 @@ import {
     FetchMoviesSuccess,
     IMovie
 } from "../types/movieTypes";
+import {IGenre} from "../types/genreTypes";
 
 export function fetchMovies(): FetchMoviesAction {
     return {
@@ -39,9 +40,10 @@ export function fetchMovieDetail(movie: IMovie): FetchMovieDetail {
     }
 }
 
-export function addMovieAction(payload : CreateMovie): AddMovie {
+export function addMovieAction(payload : CreateMovie,genres : IGenre[]): AddMovie {
     return {
         type: ADD_MOVIE,
-        payload
+        payload,
+        genres
     }
 }
