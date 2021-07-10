@@ -39,8 +39,9 @@ export function fetchMovieDetail(movie: IMovie): FetchMovieDetail {
     }
 }
 
-export function addMovieAction(): AddMovie {
+export function addMovieAction(payload : CreateMovie): AddMovie {
     return {
-        type: ADD_MOVIE
+        type: ADD_MOVIE,
+        payload
     }
 }

@@ -30,7 +30,7 @@ ReactDOM.render(
         <BrowserRouter>
             <Provider store={store}>
                 <ThemeProvider theme={theme}>
-                    <App startCounterFrom={4}/>
+                    <App/>
                 </ThemeProvider>
             </Provider>
         </BrowserRouter>

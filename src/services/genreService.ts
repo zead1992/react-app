@@ -1,9 +1,9 @@
-import http from './http-service';
 import {IGenre} from "../store/types/genreTypes";
+import {loadStorageState} from "./mockStorage";
 
-
-export async function getGenres() {
-    const result = await http.get<IGenre[]>(`/genres`);
-    return result.data;
+export  function getGenres(): IGenre[] {
+    const state = loadStorageState();
+    const genres = [...state.genre.list];
+    return genres;
 }
 

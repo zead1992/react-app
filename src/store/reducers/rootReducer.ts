@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-import authReducer from "./authReducer";
 import {movieReducer} from "./movieReducer";
 import {loadingReducer} from "./loadingReducer";
 import {genreReducer} from "./genreReducers";
@@ -8,7 +7,6 @@ import {genreReducer} from "./genreReducers";
 
 export const rootReducer = combineReducers({
     loading:loadingReducer,
-    isLogged: authReducer,
     movies:movieReducer,
     genre:genreReducer
 });

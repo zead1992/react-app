@@ -3,7 +3,11 @@ import {updateLoading} from "../actions/loadingActions";
 import {getGenres} from "../../services/genreService";
 import {fetchGenres} from "../actions/genreActions";
 
-export function genreReducer(state: GenreState = {list: []}, action: GenreActionTypes): GenreState {
+export const genresInitState : GenreState = {
+    list:[]
+} ;
+
+export function genreReducer(state: GenreState = genresInitState, action: GenreActionTypes): GenreState {
     switch (action.type) {
         case FETCH_GENRES:
             return {

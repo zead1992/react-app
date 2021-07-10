@@ -58,6 +58,7 @@ export interface FetchMovieDetail {
 
 export interface AddMovie {
     type:typeof ADD_MOVIE;
+    payload:CreateMovie
 }
 
 export type MovieActionTypes = FetchMoviesAction | FetchMoviesSuccess | FetchMoviesFailure | FetchMovieDetail | AddMovie;

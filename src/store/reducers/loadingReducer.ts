@@ -1,13 +1,13 @@
 import {LoadingActionTypes, LoadingState, UPDATE_LOADING} from "../types/loadingTypes";
 
-const initState: LoadingState = {
+export const loadingInitState: LoadingState = {
     movieList: false,
     movieDetail: false,
     newMovie:false,
     genreList:false
 }
 
-export function loadingReducer(state = initState, action: LoadingActionTypes): LoadingState {
+export function loadingReducer(state = loadingInitState, action: LoadingActionTypes): LoadingState {
     switch (action.type) {
         case UPDATE_LOADING:
             return {

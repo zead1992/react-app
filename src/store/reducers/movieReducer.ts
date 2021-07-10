@@ -1,4 +1,4 @@
-import {addMovie, getMovie, getMovies} from "../../services/movieService";
+import {getMovie, getMovies} from "../../services/movieService";
 import {
     addMovieAction,
     fetchMovieDetail,
@@ -8,7 +8,8 @@ import {
 } from "../actions/movieActions";
 import {AxiosError} from "axios";
 import {
-    ADD_MOVIE, CreateMovie,
+    ADD_MOVIE,
+    CreateMovie,
     FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_FAILURE,
@@ -18,8 +19,9 @@ import {
 } from "../types/movieTypes";
 import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
+import {getGenres} from "../../services/genreService";
 
-const initState: MovieState = {
+export const moviesInitState: MovieState = {
     list: {
         data: [],
         loading: false,
@@ -32,7 +34,7 @@ const initState: MovieState = {
     }
 }
 
-export function movieReducer(state = initState, action: MovieActionTypes): MovieState {
+export function movieReducer(state = moviesInitState, action: MovieActionTypes): MovieState {
     switch (action.type) {
         case FETCH_MOVIES:
             return {
@@ -74,8 +76,23 @@ export function movieReducer(state = initState, action: MovieActionTypes): Movie
                 }
             }
         case ADD_MOVIE:
+            const newMovie = action.payload;
+            const genres = getGenres();
+            const newItem = {
+                _id:Math.random().toString(),
+                genre:{
+                    _id:newMovie.genreId,
+                    name:genres.find(g=>g._id == newMovie.genreId).name
+                },
+                numberInStock:newMovie.numberInStock,
+                dailyRentalRate:newMovie.dailyRentalRate,
+                publishDate:new Date().toString(),
+                isFavorite:false,
+                title:newMovie.title
+            };
             return {
                 ...state,
+                list:{...state.list,data:[...state.list.data,newItem]}
             }
         default :
             return state
@@ -86,11 +103,10 @@ export function fetchMoviesAsync() {
     return async (dispatch) => {
         try {
             dispatch(fetchMovies());
-            let result;
-            await setTimeout(async () => {
-                result = await getMovies();
-                dispatch(fetchMoviesSuccess(result.data));
-            }, 1000);
+
+            await new Promise(resolve => setTimeout(resolve,1000));
+            const  result = await getMovies();
+            dispatch(fetchMoviesSuccess(result));
 
         } catch (e) {
             const error = e as AxiosError;
@@ -105,7 +121,7 @@ export function fetchMovieDetailAsync(id: string) {
         try {
             dispatch(updateLoading({key: 'movieDetail', val: true}))
             const result = await getMovie(id);
-            dispatch(fetchMovieDetail(result.data));
+            dispatch(fetchMovieDetail(result));
             dispatch(updateLoading({key: 'movieDetail', val: false}));
         } catch (e) {
             dispatch(updateLoading({key: 'movieDetail', val: false}));
@@ -115,11 +131,11 @@ export function fetchMovieDetailAsync(id: string) {
 }
 
 export function addMovieAsync(newMovie: CreateMovie) {
-    return async (dispatch) => {
+    return async (dispatch,getState) => {
+        console.log(getState);
         try {
             dispatch(updateLoading({key: 'newMovie', val: true}));
-            const result = await addMovie(newMovie);
-            dispatch(addMovieAction())
+            dispatch(addMovieAction(newMovie))
             dispatch(updateLoading({key: 'newMovie', val: false}));
         } catch (e) {
             dispatch(updateLoading({key: 'newMovie', val: false}));
