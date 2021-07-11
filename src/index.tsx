@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import 'bootstrap/scss/bootstrap.scss';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import 'font-awesome/scss/font-awesome.scss'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
 import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
-import "antd/dist/antd.css";
+import './index.css';
 
 
 const theme : Theme = createMuiTheme({

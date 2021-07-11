@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Route, Switch,Redirect} from 'react-router-dom';
+import React, {FC, useEffect} from 'react';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
@@ -10,8 +10,7 @@ import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
 
 
-function App() {
-
+const App: FC = () => {
 
 
     useEffect(() => {
@@ -24,7 +23,9 @@ function App() {
             <Navbar/>
 
             <Switch>
-                <Redirect exact from="/" to="/movies" />
+                <Redirect exact
+                          from="/"
+                          to="/movies"/>
                 <Route
                     path="/movies/new"
                     exact
