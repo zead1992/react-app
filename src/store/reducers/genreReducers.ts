@@ -1,10 +1,19 @@
-import {FETCH_GENRES, GenreActionTypes, GenreState} from "../types/genreTypes";
+import {FETCH_GENRES, GenreActionTypes, GenreState, IGenre} from "../types/genreTypes";
 import {updateLoading} from "../actions/loadingActions";
 import {getGenres} from "../../services/genreService";
 import {fetchGenres} from "../actions/genreActions";
+import { v4 as uuidv4 } from 'uuid';
+
+const mockGenre : IGenre[] = [];
+for (let i = 1; i < 5; i++) {
+    mockGenre.push({
+        _id:uuidv4(),
+        name:`genre ${i}`
+    })
+}
 
 export const genresInitState : GenreState = {
-    list:[]
+    list:mockGenre
 } ;
 
 export function genreReducer(state: GenreState = genresInitState, action: GenreActionTypes): GenreState {

@@ -21,6 +21,7 @@ import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
 import {getGenres} from "../../services/genreService";
 import {RootState} from "./rootReducer";
+import { v4 as uuidv4 } from 'uuid';
 
 export const moviesInitState: MovieState = {
     list: {
@@ -80,7 +81,7 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
             const newMovie = action.payload;
             const genres = action.genres;
             const newItem = {
-                _id:Math.random().toString(),
+                _id:uuidv4(),
                 genre:{
                     _id:newMovie.genreId,
                     name:genres.find(g=>g._id == newMovie.genreId).name
