@@ -1,18 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
 import {fetchMovieDetailAsync} from "../store/reducers/movieReducer";
+import MovieCard from "./common/MovieCard";
+import {Spin} from "antd";
 
 type IProps = RouteComponentProps<{ id: string }>;
 
-function MovieDetail(props: IProps) {
+export const MovieDetail: FC<IProps> = (props: IProps) => {
 
     const dispatch = useDispatch();
-    const {data:movie} = useSelector((state : RootState) => state.movies.detail);
-    const {movieDetail:loading} = useSelector((state : RootState)=> state.loading);
+    const {data: movie} = useSelector((state: RootState) => state.movies.detail);
+    const {movieDetail: loading} = useSelector((state: RootState) => state.loading);
 
-    console.log(movie);
 
     useEffect(() => {
         dispatch(fetchMovieDetailAsync(props.match.params.id));
@@ -20,14 +21,16 @@ function MovieDetail(props: IProps) {
 
     return (
         <div>
-            Movie Detail : {props.match.params.id}
             {
-                loading && <p>loading</p>
+                loading && <div><Spin/></div>
             }
-            {!loading && <ul className="list-group">
-                <li className="list-group-item">title: {movie?.title}</li>
-                <li className="list-group-item">genre: {movie?.genre.name}</li>
-            </ul>}
+            {
+                movie && <div className="row align-items-start justify-content-start my-3">
+                    <div className="col-4">
+                        <MovieCard movie={movie} hideDetailButton={true}/>
+                    </div>
+                </div>
+            }
         </div>
     );
 }

@@ -15,13 +15,15 @@ import {
     FETCH_MOVIES_FAILURE,
     FETCH_MOVIES_SUCCESS,
     MovieActionTypes,
-    MovieState
+    MovieState,
+    TOGGLE_FAV
 } from "../types/movieTypes";
 import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
-import {getGenres} from "../../services/genreService";
 import {RootState} from "./rootReducer";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {mockGenre} from "./genreReducers";
+import moment from "moment"
 
 export const moviesInitState: MovieState = {
     list: {
@@ -35,6 +37,18 @@ export const moviesInitState: MovieState = {
         error: '',
     }
 }
+
+mockGenre.forEach((g, index) => {
+    moviesInitState.list.data.push({
+        _id: uuidv4(),
+        genre: g,
+        title: `Movie ${index}`,
+        isFavorite: false,
+        publishDate: moment().subtract(index + 1, 'days').format('DD/MM/YYYY'),
+        dailyRentalRate: 10 + 5,
+        numberInStock: index + 2
+    })
+})
 
 export function movieReducer(state = moviesInitState, action: MovieActionTypes): MovieState {
     switch (action.type) {
@@ -81,20 +95,33 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
             const newMovie = action.payload;
             const genres = action.genres;
             const newItem = {
-                _id:uuidv4(),
-                genre:{
-                    _id:newMovie.genreId,
-                    name:genres.find(g=>g._id == newMovie.genreId).name
+                _id: uuidv4(),
+                genre: {
+                    _id: newMovie.genreId,
+                    name: genres.find(g => g._id == newMovie.genreId).name
                 },
-                numberInStock:newMovie.numberInStock,
-                dailyRentalRate:newMovie.dailyRentalRate,
-                publishDate:new Date().toString(),
-                isFavorite:false,
-                title:newMovie.title
+                numberInStock: newMovie.numberInStock,
+                dailyRentalRate: newMovie.dailyRentalRate,
+                publishDate: new Date().toString(),
+                isFavorite: false,
+                title: newMovie.title
             };
             return {
                 ...state,
-                list:{...state.list,data:[...state.list.data,newItem]}
+                list: {...state.list, data: [...state.list.data, newItem]}
+            }
+        case TOGGLE_FAV:
+            const newData = [...state.list.data];
+            const index = newData.findIndex(m => m._id == action.movieId);
+            newData[index].isFavorite = !newData[index].isFavorite;
+            return {
+                ...state,
+                list: {...state.list, data: newData}
+            }
+        case "DELETE_MOVIE":
+            return {
+                ...state,
+                list:{...state.list,data:state.list.data.filter(m=>m._id != action.movieId)}
             }
         default :
             return state
@@ -102,11 +129,11 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
 }
 
 export function fetchMoviesAsync() {
-    return async (dispatch,getState) => {
+    return async (dispatch, getState) => {
         try {
             dispatch(fetchMovies());
-            await new Promise(resolve => setTimeout(resolve,1000));
-            const  result = await getMovies();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            const result = await getMovies();
             dispatch(fetchMoviesSuccess(result));
 
         } catch (e) {
@@ -132,12 +159,12 @@ export function fetchMovieDetailAsync(id: string) {
 }
 
 export function addMovieAsync(newMovie: CreateMovie) {
-    return async (dispatch,getState) => {
-        const state : RootState = getState();
+    return async (dispatch, getState) => {
+        const state: RootState = getState();
         const genres = [...state.genre.list];
         try {
             dispatch(updateLoading({key: 'newMovie', val: true}));
-            dispatch(addMovieAction(newMovie,genres))
+            dispatch(addMovieAction(newMovie, genres))
             dispatch(updateLoading({key: 'newMovie', val: false}));
         } catch (e) {
             dispatch(updateLoading({key: 'newMovie', val: false}));

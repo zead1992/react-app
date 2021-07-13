@@ -4,7 +4,7 @@ import {getGenres} from "../../services/genreService";
 import {fetchGenres} from "../actions/genreActions";
 import { v4 as uuidv4 } from 'uuid';
 
-const mockGenre : IGenre[] = [];
+export const mockGenre : IGenre[] = [];
 for (let i = 1; i < 5; i++) {
     mockGenre.push({
         _id:uuidv4(),

@@ -1,7 +1,7 @@
 import {
     ADD_MOVIE,
     AddMovie,
-    CreateMovie,
+    CreateMovie, DeleteMovie,
     FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_SUCCESS,
@@ -9,7 +9,9 @@ import {
     FetchMoviesAction,
     FetchMoviesFailure,
     FetchMoviesSuccess,
-    IMovie
+    IMovie,
+    TOGGLE_FAV,
+    ToggleFav
 } from "../types/movieTypes";
 import {IGenre} from "../types/genreTypes";
 
@@ -45,5 +47,19 @@ export function addMovieAction(payload : CreateMovie,genres : IGenre[]): AddMovi
         type: ADD_MOVIE,
         payload,
         genres
+    }
+}
+
+export function toggleFav(movieId : string) : ToggleFav{
+    return{
+        type: TOGGLE_FAV,
+        movieId
+    }
+}
+
+export function deleteMovie(movieId:string):DeleteMovie{
+    return {
+        type:"DELETE_MOVIE",
+        movieId
     }
 }
