@@ -13,7 +13,7 @@ import {
     FETCH_MOVIE_DETAIL,
     FETCH_MOVIES,
     FETCH_MOVIES_FAILURE,
-    FETCH_MOVIES_SUCCESS,
+    FETCH_MOVIES_SUCCESS, IMovie,
     MovieActionTypes,
     MovieState,
     TOGGLE_FAV
@@ -31,11 +31,6 @@ export const moviesInitState: MovieState = {
         loading: false,
         error: ''
     },
-    detail: {
-        data: null,
-        loading: false,
-        error: '',
-    }
 }
 
 mockGenre.forEach((g, index) => {
@@ -81,16 +76,6 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
                 }
 
             };
-        case FETCH_MOVIE_DETAIL:
-            return {
-                ...state,
-                detail: {
-                    ...state.detail,
-                    loading: false,
-                    error: '',
-                    data: action.payload
-                }
-            }
         case ADD_MOVIE:
             const newMovie = action.payload;
             const genres = action.genres;
@@ -113,7 +98,9 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
         case TOGGLE_FAV:
             const newData = [...state.list.data];
             const index = newData.findIndex(m => m._id == action.movieId);
-            newData[index].isFavorite = !newData[index].isFavorite;
+            const newTarget : IMovie = {...newData[index]}
+            newTarget.isFavorite = !newTarget.isFavorite;
+            newData.splice(index,1,newTarget);
             return {
                 ...state,
                 list: {...state.list, data: newData}

@@ -11,19 +11,16 @@ type IProps = RouteComponentProps<{ id: string }>;
 export const MovieDetail: FC<IProps> = (props: IProps) => {
 
     const dispatch = useDispatch();
-    const {data: movie} = useSelector((state: RootState) => state.movies.detail);
-    const {movieDetail: loading} = useSelector((state: RootState) => state.loading);
+    const movie = useSelector((state: RootState) =>
+        state.movies.list.data.find(m=>m._id == props.match.params.id));
 
 
     useEffect(() => {
-        dispatch(fetchMovieDetailAsync(props.match.params.id));
     }, []);
+
 
     return (
         <div>
-            {
-                loading && <div><Spin/></div>
-            }
             {
                 movie && <div className="row align-items-start justify-content-start my-3">
                     <div className="col-4">

@@ -24,11 +24,6 @@ export interface MovieState {
         loading: boolean;
         error: string;
     },
-    detail: {
-        data: IMovie;
-        loading: boolean;
-        error: string;
-    }
 
 }
 
