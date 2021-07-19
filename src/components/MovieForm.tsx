@@ -1,15 +1,20 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import {CreateMovie} from "../store/types/movieTypes";
 import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
 import {RouteComponentProps} from 'react-router-dom';
 import {addMovieAsync} from "../store/reducers/movieReducer";
-import {Button} from "@material-ui/core";
+import * as Yup from "yup"
+import {FormikHelpers, Formik, Field, Form} from "formik";
+import {Typography} from "antd";
+
 
 type IProps = RouteComponentProps;
 
-function MovieForm(props: IProps) {
+const MovieForm : FC<IProps> = (props) => {
+
+    const {Title} = Typography;
 
     const dispatch = useDispatch();
 
@@ -17,13 +22,16 @@ function MovieForm(props: IProps) {
         dispatch(fetchGenresAsync());
     }, []);
 
-    //state
-    const [formValuesState, setFormValues] = useState<CreateMovie>({
-        title: '',
-        numberInStock: 0,
-        dailyRentalRate: 0,
-        genreId: ''
+    //form scheme
+    const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
+        title: Yup.string().required().min(3),
+        dailyRentalRate: Yup.number().required().positive().max(50),
+        numberInStock: Yup.number().required().positive().min(1).integer(),
+        genreId: Yup.string().required()
     });
+
+    //state
+    const [formValues, setFormValues] = useState<CreateMovie>();
 
     //store
     const {list: genres} = useSelector((state: RootState) => state.genre);
@@ -35,82 +43,31 @@ function MovieForm(props: IProps) {
         return key;
     }
 
-    const handleInputChange = ({currentTarget: input}: ChangeEvent<HTMLInputElement>) => {
-        const values = {...formValuesState};
-        values[input.name] = input.value;
-        setFormValues(values);
-    }
-
-    const handleSelectChange = ({currentTarget: select}: ChangeEvent<HTMLSelectElement>) => {
-        const values = {...formValuesState};
-        values[select.name] = select.value;
-        setFormValues(values);
-    }
-
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        try {
-            event.preventDefault();
-            await dispatch(addMovieAsync(formValuesState));
-            props.history.push('/movies');
-        }catch (e) {
-
-        }
+    const onSubmit = async (values: CreateMovie, formikHelpers: FormikHelpers<CreateMovie>) => {
+        console.log(values);
+        await dispatch(addMovieAsync(formValues));
+        formikHelpers.setSubmitting(false);
+        props.history.push('/movies');
     }
 
 
     return (
         <div className="row align-items-center justify-content-center">
             <div className="col-12">
-                <h1>movie form</h1>
-            </div>
-            <div className="col-12">
-                <form onSubmit={(event) => handleSubmit(event)}>
-                    <div className="form-group">
-                        <label htmlFor={formKeys('title')}>title</label>
-                        <input name={formKeys('title')}
-                               type="text"
-                               onChange={(event) => handleInputChange(event)}
-                               value={formValuesState.title}
-                               className="form-control"
-                               id={formKeys('title')}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor={formKeys('numberInStock')}>stock</label>
-                        <input name={formKeys('numberInStock')}
-                               type="number"
-                               value={formValuesState.numberInStock}
-                               onChange={(event) => handleInputChange(event)}
-                               className="form-control"
-                               id={formKeys('numberInStock')}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor={formKeys('dailyRentalRate')}>rate</label>
-                        <input name={formKeys('dailyRentalRate')}
-                               type="number"
-                               value={formValuesState.dailyRentalRate}
-                               onChange={(event) => handleInputChange(event)}
-                               className="form-control"
-                               id={formKeys('dailyRentalRate')}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor={formKeys('genreId')}>genre</label>
-                        <select name={formKeys('genreId')}
-                                value={formValuesState.genreId}
-                                onChange={(event) => handleSelectChange(event)}
-                                className="form-control"
-                                id={formKeys('genreId')}>
-                            <option/>
-                            {genres.map((g) =>
-                                <option key={g._id} value={g._id}>{g.name}</option>
-                            )}
-                        </select>
-                    </div>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        className="btn btn-primary">Add Movie</Button>
-                </form>
+                <Formik<CreateMovie>
+                    initialValues={formValues}
+                    enableReinitialize={true}
+                    validateOnMount={true}
+                    onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
+                    validationSchema={formSchema}
+                >
+                    {(props) => {
+                        return <Form>
+                            <Title level={1}>Add Movie</Title>
+
+                        </Form>
+                    }}
+                </Formik>
             </div>
         </div>
     );

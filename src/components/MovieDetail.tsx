@@ -10,6 +10,7 @@ type IProps = RouteComponentProps<{ id: string }>;
 
 export const MovieDetail: FC<IProps> = (props: IProps) => {
 
+
     const dispatch = useDispatch();
     const movie = useSelector((state: RootState) =>
         state.movies.list.data.find(m=>m._id == props.match.params.id));

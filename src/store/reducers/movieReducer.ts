@@ -21,7 +21,7 @@ import {
 import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
 import {RootState} from "./rootReducer";
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4,validate as uuidValidate} from 'uuid';
 import {mockGenre} from "./genreReducers";
 import moment from "moment"
 

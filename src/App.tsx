@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect, RouteChildrenProps} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
@@ -8,6 +8,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
+import {v4 as uuidv4, validate as uuidValidate} from 'uuid';
 
 
 const App: FC = () => {
@@ -34,8 +35,12 @@ const App: FC = () => {
                 <Route
                     path="/movies/:id"
                     exact
-                    component={MovieDetail}
-                />
+                >
+                    {(props: RouteChildrenProps<{ id: string }>) => {
+                        const validId = uuidValidate(props.match.params.id);
+                        return validId ? <MovieDetail {...props}/> : <Redirect to={'/movies'}/>
+                    }}
+                </Route>
                 <Route
                     path="/movies"
                     exact
@@ -46,6 +51,9 @@ const App: FC = () => {
                     exact
                     component={YoutubeFormikForm}
                 />
+                <Route path={"*"}>
+                    <Redirect to={'/movies'}/>
+                </Route>
             </Switch>
         </main>
     );

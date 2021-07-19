@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps} from "formik";
 import * as Yup from 'yup';
 import TextError from "./common/TextError";
+import {SchemaOf,InferType} from "yup";
 
 type IForm = {
     name: string;
@@ -46,17 +47,17 @@ function YoutubeFormikForm(props) {
 
 
     //formik
-    const formSchema = Yup.object().shape<IForm>({
+    const formSchema : SchemaOf<IForm>  = Yup.object().shape({
         name: Yup.string().required('required'),
         email: Yup.string().email('invalid format').required('required'),
         channel: Yup.string().required('required'),
         comment: Yup.string().required('required').max(200, 'allowed string length 200'),
-        social: Yup.object().shape<typeof formValues.social>({
+        social: Yup.object().shape({
             facebook: Yup.string().required(),
             twitter: Yup.string().required()
         }),
-        phoneNumbers: Yup.array().of<string>(Yup.string().required('required')),
-        categories: Yup.array().of<string>(Yup.string().required('required'))
+        phoneNumbers: Yup.array().of(Yup.string().required('required')),
+        categories: Yup.array().of(Yup.string().required('required'))
     });
     // const formik = useFormik<IForm>({
     //     initialValues: {
