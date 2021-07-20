@@ -26,13 +26,11 @@ const MovieForm: FC<IProps> = (props) => {
 
     //form scheme
     const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
-        title: Yup.string().required().min(3),
-        dailyRentalRate: Yup.number().required().positive().max(50),
-        numberInStock: Yup.number().integer().required().positive().min(1).integer(),
-        genreId: Yup.string().required()
+        title: Yup.string().required().min(3).label('username'),
+        dailyRentalRate: Yup.number().required().positive().max(50).label('Rental Rate'),
+        numberInStock: Yup.number().integer().required().positive().min(1).integer().label('stock'),
+        genreId: Yup.string().required().label('genre')
     });
-
-    formSchema.typeError({})
 
     //state
     const [formValues, setFormValues] = useState<CreateMovie>(
