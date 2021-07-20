@@ -5,10 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/reducers/rootReducer";
 import {RouteComponentProps} from 'react-router-dom';
 import {addMovieAsync} from "../store/reducers/movieReducer";
-import * as Yup from "yup"
 import {Typography} from "antd";
 import {Form, SubmitButton, ResetButton, Input, InputNumber,Select} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
+import Yup from '../plugins/yup-plugin';
 
 
 type IProps = RouteComponentProps;
@@ -28,9 +28,11 @@ const MovieForm: FC<IProps> = (props) => {
     const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
         title: Yup.string().required().min(3),
         dailyRentalRate: Yup.number().required().positive().max(50),
-        numberInStock: Yup.number().required().positive().min(1).integer(),
+        numberInStock: Yup.number().integer().required().positive().min(1).integer(),
         genreId: Yup.string().required()
     });
+
+    formSchema.typeError({})
 
     //state
     const [formValues, setFormValues] = useState<CreateMovie>(
@@ -53,11 +55,13 @@ const MovieForm: FC<IProps> = (props) => {
     }
 
     const onSubmit = async (values: CreateMovie, formikHelpers: FormikHelpers<CreateMovie>) => {
-        console.log(values);
-        return;
-        await dispatch(addMovieAsync(formValues));
-        formikHelpers.setSubmitting(false);
-        props.history.push('/movies');
+        try {
+            formikHelpers.setSubmitting(true);
+            await dispatch(addMovieAsync(values));
+            props.history.push('/movies');
+        }catch (e) {
+            formikHelpers.setSubmitting(false);
+        }
     }
 
 
@@ -98,13 +102,13 @@ const MovieForm: FC<IProps> = (props) => {
                                         style={{ width: 120 }}>
                                     {
                                         genres.map((g)=>
-                                            <Option value={g._id}>{g.name}</Option>
+                                            <Option key={g._id} value={g._id}>{g.name}</Option>
                                         )
                                     }
                                 </Select>
                             </div>
                             <div className="col-12 my-3">
-                                <SubmitButton disabled={!props.isValid}>Add Movie</SubmitButton>
+                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>Add Movie</SubmitButton>
                             </div>
                         </Form>
                     }}

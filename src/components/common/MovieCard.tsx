@@ -5,6 +5,7 @@ import InlineItem from "./InlineItem";
 import {Button, Card, Popconfirm} from "antd";
 import {deleteMovie, toggleFav} from "../../store/actions/movieActions";
 import {useDispatch} from "react-redux";
+import moment from "moment";
 
 export const MovieCard: FC<{ movie: IMovie; hideDetailButton?:boolean}> =
     ({movie,hideDetailButton, children}) => {
@@ -21,7 +22,7 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?:boolean}> =
                 <InlineItem label={"Genre"}
                             val={movie.genre.name}/>
                 <InlineItem label={"Publish date"}
-                            val={movie.publishDate}/>
+                            val={moment(movie.publishDate).format('DD/MM/YYYY')}/>
                 <InlineItem label={"Daily rental"}
                             val={movie.dailyRentalRate}/>
                 <InlineItem label={"Stock"}

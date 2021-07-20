@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ErrorMessage, Field, FieldArray, Form, Formik, FormikHelpers, FormikProps} from "formik";
-import * as Yup from 'yup';
 import TextError from "./common/TextError";
 import {SchemaOf,InferType} from "yup";
+import Yup from '../plugins/yup-plugin';
 
 type IForm = {
     name: string;

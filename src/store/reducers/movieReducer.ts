@@ -147,6 +147,7 @@ export function fetchMovieDetailAsync(id: string) {
 
 export function addMovieAsync(newMovie: CreateMovie) {
     return async (dispatch, getState) => {
+        await new Promise(resolve => setTimeout(resolve,2000))
         const state: RootState = getState();
         const genres = [...state.genre.list];
         try {
