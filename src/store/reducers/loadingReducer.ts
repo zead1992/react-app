@@ -1,4 +1,4 @@
-import {LoadingActionTypes, LoadingState, UPDATE_LOADING} from "../types/loadingTypes";
+import {LoadingActionTypes, LoadingState, UPDATE_LOADING,} from "../types/loadingTypes";
 
 export const loadingInitState: LoadingState = {
     movieList: false,

@@ -11,4 +11,3 @@ export const rootReducer = combineReducers({
     genre:genreReducer
 });
 
-export type RootState = ReturnType<typeof rootReducer>;

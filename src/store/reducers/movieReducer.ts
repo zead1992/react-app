@@ -20,15 +20,17 @@ import {
 } from "../types/movieTypes";
 import {updateLoading} from "../actions/loadingActions";
 import {toast} from "react-toastify";
-import {RootState} from "./rootReducer";
 import {v4 as uuidv4,validate as uuidValidate} from 'uuid';
 import {mockGenre} from "./genreReducers";
 import moment from "moment"
+import {RootState} from "../store";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IGenre} from "../types/genreTypes";
 
 export const moviesInitState: MovieState = {
     list: {
         data: [],
-        loading: false,
+        status:'idle',
         error: ''
     },
 }
@@ -52,7 +54,7 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
                 ...state,
                 list: {
                     ...state.list,
-                    loading: true
+                    status:'loading'
                 }
             };
         case FETCH_MOVIES_SUCCESS:
@@ -60,7 +62,7 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
                 ...state,
                 list: {
                     ...state.list,
-                    loading: false,
+                    status:'finished',
                     data: action.payload,
                     error: ''
                 }
@@ -70,7 +72,7 @@ export function movieReducer(state = moviesInitState, action: MovieActionTypes):
                 ...state,
                 list: {
                     ...state.list,
-                    loading: false,
+                    status:'error',
                     data: [],
                     error: action.error
                 }
@@ -160,3 +162,51 @@ export function addMovieAsync(newMovie: CreateMovie) {
         }
     }
 }
+
+const moviesSlice = createSlice({
+    name:'movies',
+    initialState:moviesInitState,
+    reducers:{
+        fetchMoviesList(state,action){
+            state.list.status = 'loading';
+        },
+        fetchMoviesListSuccess(state,action:PayloadAction<{movies:IMovie[]}>){
+          state.list.data = action.payload.movies;
+          state.list.status = 'finished';
+        },
+        fetchMoviesListError(state,action:PayloadAction<{error:string}>){
+            state.list.data = [];
+            state.list.error = action.payload.error;
+        },
+        addMovie:{
+            reducer(state,action:PayloadAction<{movie:CreateMovie,genres:IGenre[]}>){
+                const {movie,genres} = action.payload;
+                const newItem = {
+                    _id: uuidv4(),
+                    genre: {
+                        _id: movie.genreId,
+                        name: genres.find(g => g._id == movie.genreId).name
+                    },
+                    numberInStock: movie.numberInStock,
+                    dailyRentalRate: movie.dailyRentalRate,
+                    publishDate: new Date().toString(),
+                    isFavorite: false,
+                    title: movie.title
+                };
+                state.list.data.push(newItem);
+            },
+            prepare(movie:CreateMovie,genres:IGenre[]){
+                return{
+                    payload:{movie,genres}
+                }
+            }
+        },
+        toggleMovieFav(state,action:PayloadAction<{movieId:string}>){
+            const movie = state.list.data.find(m=>m._id == action.payload.movieId);
+            movie.isFavorite = !movie.isFavorite;
+        }
+    }
+});
+
+export const {addMovie,toggleMovieFav,fetchMoviesList,fetchMoviesListError,fetchMoviesListSuccess} = moviesSlice.actions;
+export default moviesSlice.reducer;

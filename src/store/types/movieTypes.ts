@@ -21,7 +21,7 @@ export type CreateMovie = {
 export interface MovieState {
     list: {
         data: IMovie[];
-        loading: boolean;
+        status:'idle'|'loading'|'finished'|'error';
         error: string;
     },
 

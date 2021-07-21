@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {fetchMoviesAsync} from "../store/reducers/movieReducer";
+import {addMovie, fetchMoviesAsync, fetchMoviesListSuccess} from "../store/reducers/movieReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../store/reducers/rootReducer";
-import {Link} from 'react-router-dom';
-import {Card, Spin, Button, Typography,Popconfirm} from "antd";
-import InlineItem from "./common/InlineItem";
-import {deleteMovie, toggleFav} from "../store/actions/movieActions";
+import {Button, Card, Typography} from "antd";
 import MovieCard from "./common/MovieCard";
+import {RootState} from "../store/store";
 
 const {Title, Text} = Typography;
 
 function Movies(props: any) {
+
 
     const dispatch = useDispatch();
     const {list: movies} = useSelector((state: RootState) => state.movies);
@@ -23,7 +21,7 @@ function Movies(props: any) {
     return (
         <div className="row my-3">
             <div className="col-12 mb-3">
-                <Button disabled={movies.loading}
+                <Button disabled={movies.status === 'loading'}
                         type="primary"
                         onClick={() => setRefreshMovie(!refreshMovie)}
                 >
@@ -33,13 +31,13 @@ function Movies(props: any) {
             <div className="col-12">
                 <div className="row align-items-start justify-content-start">
                     {
-                        movies.loading &&
+                        movies.status==='loading' &&
                         <div className="col-4">
-                            <Card loading={movies.loading}></Card>
+                            <Card loading={movies.status=== 'loading'}></Card>
                         </div>
                     }
                     {
-                        !movies.loading && movies.data && movies.data.map((movie) =>
+                        movies.status !=='loading' && movies.data && movies.data.map((movie) =>
                             <div className="col-4 mb-3" key={movie._id}>
                                 <MovieCard movie={movie}/>
                             </div>

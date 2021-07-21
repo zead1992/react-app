@@ -1,7 +1,7 @@
-import {RootState} from "../store/reducers/rootReducer";
 import {genresInitState} from "../store/reducers/genreReducers";
 import {moviesInitState} from "../store/reducers/movieReducer";
 import {loadingInitState} from "../store/reducers/loadingReducer";
+import {RootState} from "../store/store";
 
 export const loadStorageState = () : RootState | undefined => {
     try {
