@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
-import {RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps, useLocation,useParams} from 'react-router-dom';
 import {Typography} from "antd";
 import {Form, SubmitButton, ResetButton, Input, InputNumber, Select} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
@@ -15,6 +15,10 @@ type IProps = RouteComponentProps<{ id: string }>;
 
 const MovieForm: FC<IProps> = (props) => {
 
+    const location = useLocation();
+    const test = new URLSearchParams(location.search).get('test');
+    console.log(test);
+
     const {Title} = Typography;
     const {Option} = Select;
 
@@ -23,7 +27,6 @@ const MovieForm: FC<IProps> = (props) => {
     const [formTitle, setFormTitle] = useState('Add Movie');
 
     const movieDetail = useSelector((state: RootState) => selectMovieById(state, props.match.params.id));
-    console.log(movieDetail);
 
     useEffect(() => {
         dispatch(fetchGenresAsync());
@@ -32,7 +35,6 @@ const MovieForm: FC<IProps> = (props) => {
         if (movieId) {
             setIsEdit(true);
             setFormTitle('Edit Movie');
-            console.log(movieDetail);
             setFormValues({
                 title:movieDetail.title,
                 genreId:movieDetail.genre._id,
@@ -41,7 +43,7 @@ const MovieForm: FC<IProps> = (props) => {
             })
         }
 
-    }, []);
+    }, [location]);
 
     //form scheme
     const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
