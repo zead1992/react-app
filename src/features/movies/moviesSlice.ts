@@ -1,33 +1,11 @@
 import {getMovies} from "../../services/movieService";
 import {v4 as uuidv4} from 'uuid';
-import moment from "moment"
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction, SliceCaseReducers} from "@reduxjs/toolkit";
 import {IGenre} from "../../store/types/genreTypes";
-import {mockGenre} from "../../store/reducers/genreReducers";
 import {updateLoading} from "../../store/actions/loadingActions";
 import {RootState} from "../../store/store";
 import {CreateMovie, IMovie, MovieState} from "./movieTypes";
 
-export const moviesInitState: MovieState = {
-    list: {
-        data: {},
-        status: 'idle',
-        error: ''
-    },
-}
-
-mockGenre.forEach((g, index) => {
-    const id = uuidv4();
-    moviesInitState.list.data[id] = {
-        _id: id,
-        genre: g,
-        title: `Movie ${index}`,
-        isFavorite: false,
-        publishDate: moment().subtract(index + 1, 'days').format('DD/MM/YYYY'),
-        dailyRentalRate: 10 + 5,
-        numberInStock: index + 2
-    }
-})
 
 //selectors
 export const selectAllMovies = (state : RootState) => state.movies;
@@ -55,9 +33,9 @@ export const addMovieAsync = createAsyncThunk("movies/addMovie",
         }
     });
 
-const moviesSlice = createSlice({
+const moviesSlice = createSlice<MovieState,SliceCaseReducers<MovieState>,'movies'>({
     name: 'movies',
-    initialState: moviesInitState,
+    initialState: null,
     reducers: {
         fetchMoviesList(state, action) {
             state.list.status = 'loading';

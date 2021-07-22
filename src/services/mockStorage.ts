@@ -1,17 +1,11 @@
-import {genresInitState} from "../store/reducers/genreReducers";
-import {loadingInitState} from "../store/reducers/loadingReducer";
 import {RootState} from "../store/store";
-import {moviesInitState} from "../features/movies/moviesSlice";
+import {getMockRootState} from "../mock-data";
 
 export const loadStorageState = () : RootState | undefined => {
     try {
         const serializedState = localStorage.getItem('state');
         if (serializedState === null) {
-            const rootState : RootState = {
-                genre:genresInitState,
-                movies:moviesInitState,
-                loading:loadingInitState
-            };
+            const rootState : RootState = getMockRootState();
             return rootState;
         }
         return JSON.parse(serializedState);

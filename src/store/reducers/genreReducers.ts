@@ -3,20 +3,13 @@ import {updateLoading} from "../actions/loadingActions";
 import {getGenres} from "../../services/genreService";
 import {fetchGenres} from "../actions/genreActions";
 import { v4 as uuidv4 } from 'uuid';
+import {loadStorageState} from "../../services/mockStorage";
 
-export const mockGenre : IGenre[] = [];
-for (let i = 1; i < 5; i++) {
-    mockGenre.push({
-        _id:uuidv4(),
-        name:`genre ${i}`
-    })
-}
 
-export const genresInitState : GenreState = {
-    list:mockGenre
-} ;
 
-export function genreReducer(state: GenreState = genresInitState, action: GenreActionTypes): GenreState {
+
+
+export function genreReducer(state: GenreState = null, action: GenreActionTypes): GenreState {
     switch (action.type) {
         case FETCH_GENRES:
             return {
