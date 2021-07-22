@@ -1,11 +1,11 @@
-import {IMovie} from "../../store/types/movieTypes";
 import React, {FC} from "react";
 import {Link} from "react-router-dom";
 import InlineItem from "./InlineItem";
 import {Button, Card, Popconfirm} from "antd";
 import {useDispatch} from "react-redux";
 import moment from "moment";
-import {deleteMovie, toggleMovieFav} from "../../store/reducers/movieReducer";
+import {deleteMovie, toggleMovieFav} from "../../features/movies/moviesSlice";
+import {IMovie} from "../../features/movies/movieTypes";
 
 export const MovieCard: FC<{ movie: IMovie; hideDetailButton?:boolean}> =
     ({movie,hideDetailButton, children}) => {

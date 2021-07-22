@@ -1,5 +1,5 @@
 import {loadStorageState} from "./mockStorage";
-import {IMovie} from "../store/types/movieTypes";
+import {IMovie} from "../features/movies/movieTypes";
 
 export  function getMovies() : {[key:string]:IMovie} {
      const state = loadStorageState();

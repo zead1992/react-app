@@ -1,14 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
-import {CreateMovie} from "../store/types/movieTypes";
 import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
 import {RouteComponentProps} from 'react-router-dom';
-import {addMovieAsync} from "../store/reducers/movieReducer";
 import {Typography} from "antd";
 import {Form, SubmitButton, ResetButton, Input, InputNumber,Select} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import Yup from '../plugins/yup-plugin';
 import {RootState} from "../store/store";
+import {addMovieAsync} from "../features/movies/moviesSlice";
+import {CreateMovie} from "../features/movies/movieTypes";
 
 
 type IProps = RouteComponentProps;

@@ -3,15 +3,14 @@ import {RouteComponentProps} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import MovieCard from "./common/MovieCard";
 import {RootState} from "../store/store";
+import {selectMovieById} from "../features/movies/moviesSlice";
 
 type IProps = RouteComponentProps<{ id: string }>;
 
 export const MovieDetail: FC<IProps> = (props: IProps) => {
 
 
-    const dispatch = useDispatch();
-    const movie = useSelector((state: RootState) =>
-        state.movies.list.data[props.match.params.id]);
+    const movie = useSelector((state: RootState) => selectMovieById(state,props.match.params.id));
 
 
     useEffect(() => {

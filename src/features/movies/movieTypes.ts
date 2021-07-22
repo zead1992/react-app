@@ -1,5 +1,3 @@
-import {IGenre} from "./genreTypes";
-
 export type IMovie = {
     _id: string,
     title: string,

@@ -1,12 +1,12 @@
 import {getMovies} from "../../services/movieService";
-import {CreateMovie, IMovie, MovieState} from "../types/movieTypes";
 import {v4 as uuidv4} from 'uuid';
-import {mockGenre} from "./genreReducers";
 import moment from "moment"
-import {RootState} from "../store";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IGenre} from "../types/genreTypes";
-import {updateLoading} from "../actions/loadingActions";
+import {IGenre} from "../../store/types/genreTypes";
+import {mockGenre} from "../../store/reducers/genreReducers";
+import {updateLoading} from "../../store/actions/loadingActions";
+import {RootState} from "../../store/store";
+import {CreateMovie, IMovie, MovieState} from "./movieTypes";
 
 export const moviesInitState: MovieState = {
     list: {
@@ -28,6 +28,10 @@ mockGenre.forEach((g, index) => {
         numberInStock: index + 2
     }
 })
+
+//selectors
+export const selectAllMovies = (state : RootState) => state.movies;
+export const selectMovieById = (state:RootState,id:string) => state.movies.list.data[id];
 
 //redux/toolkit
 export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',

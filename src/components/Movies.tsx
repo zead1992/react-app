@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {addMovie, fetchMoviesAsync, fetchMoviesListSuccess} from "../store/reducers/movieReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Card, Typography} from "antd";
 import MovieCard from "./common/MovieCard";
-import {RootState} from "../store/store";
+import {fetchMoviesAsync, selectAllMovies} from "../features/movies/moviesSlice";
 
 const {Title, Text} = Typography;
 
@@ -11,7 +10,7 @@ function Movies(props: any) {
 
 
     const dispatch = useDispatch();
-    const {list: movies} = useSelector((state: RootState) => state.movies);
+    const {list: movies} = useSelector(selectAllMovies);
     const [refreshMovie, setRefreshMovie] = useState(false);
 
     useEffect(() => {

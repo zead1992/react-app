@@ -2,14 +2,14 @@ import {configureStore} from '@reduxjs/toolkit'
 import {saveStorageState} from "../services/mockStorage";
 import {loadingReducer} from "./reducers/loadingReducer";
 import {genreReducer} from "./reducers/genreReducers";
-import movieReducer from "./reducers/movieReducer";
+import moviesReducer from "../features/movies/moviesSlice"
 
 
 
 export const store = configureStore({
     reducer:{
         loading:loadingReducer,
-        movies:movieReducer,
+        movies:moviesReducer,
         genre:genreReducer
     }
 })
