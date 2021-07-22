@@ -58,6 +58,9 @@ const MovieForm: FC<IProps> = (props) => {
         setFormValues(formInitValues);
     }
     const initEdit = () => {
+        if(!movieDetail){
+           return  props.history.push('/movies');
+        }
         setIsEdit(true);
         setUiText({
             formTitle: "edit movie",
