@@ -8,7 +8,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
-import {v4 as uuidv4, validate as uuidValidate} from 'uuid';
+import {isValidUuid} from "./common/common";
 
 
 const App: FC = () => {
@@ -28,6 +28,16 @@ const App: FC = () => {
                           from="/"
                           to="/movies"/>
                 <Route
+                    path="/movies/edit/:id"
+                    exact
+                    component={MovieForm}
+                >
+                    {(props: RouteChildrenProps<{ id: string }>) => {
+                        const validId = isValidUuid(props.match.params.id);
+                        return validId ? <MovieForm {...props}/> : <Redirect to={'/movies'}/>
+                    }}
+                </Route>
+                <Route
                     path="/movies/new"
                     exact
                     component={MovieForm}
@@ -37,7 +47,7 @@ const App: FC = () => {
                     exact
                 >
                     {(props: RouteChildrenProps<{ id: string }>) => {
-                        const validId = uuidValidate(props.match.params.id);
+                        const validId = isValidUuid(props.match.params.id);
                         return validId ? <MovieDetail {...props}/> : <Redirect to={'/movies'}/>
                     }}
                 </Route>

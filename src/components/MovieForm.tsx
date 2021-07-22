@@ -11,7 +11,7 @@ import {addMovieAsync} from "../features/movies/moviesSlice";
 import {CreateMovie} from "../features/movies/movieTypes";
 
 
-type IProps = RouteComponentProps;
+type IProps = RouteComponentProps<{id:string}>;
 
 const MovieForm: FC<IProps> = (props) => {
 
@@ -19,6 +19,8 @@ const MovieForm: FC<IProps> = (props) => {
     const {Option} = Select;
 
     const dispatch = useDispatch();
+
+    console.log(props.match.params.id)
 
     useEffect(() => {
         dispatch(fetchGenresAsync());
