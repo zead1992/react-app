@@ -1,14 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
-import {RouteComponentProps, useLocation,useParams} from 'react-router-dom';
+import {RouteComponentProps, useLocation} from 'react-router-dom';
 import {Typography} from "antd";
-import {Form, SubmitButton, ResetButton, Input, InputNumber, Select} from 'formik-antd'
+import {Form, Input, InputNumber, Select, SubmitButton} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import Yup from '../plugins/yup-plugin';
 import {RootState} from "../store/store";
 import {addMovieAsync, selectMovieById} from "../features/movies/moviesSlice";
-import {CreateMovie, IMovie} from "../features/movies/movieTypes";
+import {CreateMovie} from "../features/movies/movieTypes";
 
 
 type IProps = RouteComponentProps<{ id: string }>;
@@ -17,33 +17,18 @@ const MovieForm: FC<IProps> = (props) => {
 
     const location = useLocation();
     const test = new URLSearchParams(location.search).get('test');
-    console.log(test);
 
     const {Title} = Typography;
     const {Option} = Select;
 
+
     const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
-    const [formTitle, setFormTitle] = useState('Add Movie');
-
+    const [uiText, setUiText] = useState<{ formTitle: string, submit: string }>({
+        formTitle: 'Add Movie',
+        submit: 'Add Movie'
+    });
     const movieDetail = useSelector((state: RootState) => selectMovieById(state, props.match.params.id));
-
-    useEffect(() => {
-        dispatch(fetchGenresAsync());
-
-        const movieId = props.match.params.id;
-        if (movieId) {
-            setIsEdit(true);
-            setFormTitle('Edit Movie');
-            setFormValues({
-                title:movieDetail.title,
-                genreId:movieDetail.genre._id,
-                numberInStock:movieDetail.numberInStock,
-                dailyRentalRate:movieDetail.dailyRentalRate
-            })
-        }
-
-    }, [location]);
 
     //form scheme
     const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
@@ -54,19 +39,52 @@ const MovieForm: FC<IProps> = (props) => {
     });
 
     //state
+    const formInitValues: CreateMovie = {
+        title: null,
+        genreId: null,
+        numberInStock: null,
+        dailyRentalRate: null
+    }
     const [formValues, setFormValues] = useState<CreateMovie>(
-        {
-            title: null,
-            genreId: null,
-            numberInStock: null,
-            dailyRentalRate: null
-        }
+        formInitValues
     );
+
+    const initAdd = () => {
+        setIsEdit(false);
+        setUiText({
+            formTitle: "Add Movie",
+            submit: 'Add Movie'
+        });
+        setFormValues(formInitValues);
+    }
+    const initEdit = () => {
+        setIsEdit(true);
+        setUiText({
+            formTitle: "edit movie",
+            submit: 'save'
+        });
+        setFormValues({
+            title: movieDetail.title,
+            genreId: movieDetail.genre._id,
+            numberInStock: movieDetail.numberInStock,
+            dailyRentalRate: movieDetail.dailyRentalRate
+        })
+    }
 
     //store
     const {list: genres} = useSelector((state: RootState) => state.genre);
-    const {genreList: loadingGenres} = useSelector((state: RootState) => state.loading);
-    const {newMovie: loadingNewMovie} = useSelector((state: RootState) => state.loading);
+
+    useEffect(() => {
+        dispatch(fetchGenresAsync());
+
+        const movieId = props.match.params.id;
+        if (movieId) {
+            initEdit();
+        } else {
+            initAdd();
+        }
+
+    }, [props.match.params.id]);
 
 
     const formKeys = (key: keyof CreateMovie) => {
@@ -88,7 +106,7 @@ const MovieForm: FC<IProps> = (props) => {
     return (
         <div className="row align-items-center justify-content-center">
             <div className="col-12 my-3">
-                <Title level={1}>{formTitle}</Title>
+                <Title level={1}>{uiText.formTitle}</Title>
                 <Formik<CreateMovie>
                     initialValues={formValues}
                     enableReinitialize={true}
@@ -129,7 +147,7 @@ const MovieForm: FC<IProps> = (props) => {
                                 </Select>
                             </div>
                             <div className="col-12 my-3">
-                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>Add Movie</SubmitButton>
+                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>{uiText.submit}</SubmitButton>
                             </div>
                         </Form>
                     }}
@@ -137,6 +155,6 @@ const MovieForm: FC<IProps> = (props) => {
             </div>
         </div>
     );
-}
+};
 
 export default MovieForm;
