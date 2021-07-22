@@ -13,6 +13,7 @@ export type CreateMovie = {
     numberInStock: number;
     dailyRentalRate: number;
     genreId: string;
+    isFavorite:boolean;
 }
 
 export type EditMovie = CreateMovie & {id:string}

@@ -129,6 +129,7 @@ const moviesSlice = createSlice<MovieState, SliceCaseReducers<MovieState>, 'movi
                 movie.dailyRentalRate = values.dailyRentalRate;
                 movie.numberInStock = values.numberInStock;
                 movie.genre = genres.find(g=>g._id == values.genreId);
+                movie.isFavorite = values.isFavorite;
             });
     }
 });

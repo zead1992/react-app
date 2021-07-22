@@ -3,7 +3,7 @@ import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
 import {RouteComponentProps, useLocation} from 'react-router-dom';
 import {Typography} from "antd";
-import {Form, Input, InputNumber, Select, SubmitButton} from 'formik-antd'
+import {Form, Input, InputNumber, Select, SubmitButton,Checkbox} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import Yup from '../plugins/yup-plugin';
 import {RootState} from "../store/store";
@@ -35,7 +35,8 @@ const MovieForm: FC<IProps> = (props) => {
         title: Yup.string().required().min(3).label('username'),
         dailyRentalRate: Yup.number().required().positive().max(50).label('Rental Rate'),
         numberInStock: Yup.number().integer().required().positive().min(1).integer().label('stock'),
-        genreId: Yup.string().required().label('genre')
+        genreId: Yup.string().required().label('genre'),
+        isFavorite:Yup.boolean().label('Favorite')
     });
 
     //state
@@ -43,7 +44,8 @@ const MovieForm: FC<IProps> = (props) => {
         title: null,
         genreId: null,
         numberInStock: null,
-        dailyRentalRate: null
+        dailyRentalRate: null,
+        isFavorite:false
     }
     const [formValues, setFormValues] = useState<CreateMovie>(
         formInitValues
@@ -70,7 +72,8 @@ const MovieForm: FC<IProps> = (props) => {
             title: movieDetail.title,
             genreId: movieDetail.genre._id,
             numberInStock: movieDetail.numberInStock,
-            dailyRentalRate: movieDetail.dailyRentalRate
+            dailyRentalRate: movieDetail.dailyRentalRate,
+            isFavorite:movieDetail.isFavorite
         })
     }
 
@@ -152,6 +155,11 @@ const MovieForm: FC<IProps> = (props) => {
                                         )
                                     }
                                 </Select>
+                            </div>
+                            <div className="col-4 my-3">
+                                <Checkbox name={formKeys('isFavorite')}>
+                                    Favorite
+                                </Checkbox>
                             </div>
                             <div className="col-12 my-3">
                                 <SubmitButton disabled={!props.isValid || props.isSubmitting}>{uiText.submit}</SubmitButton>

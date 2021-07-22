@@ -22,11 +22,13 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
         return (
                 <Wrapper size="small"
                       title={<span>{movie.title}</span>}
-                      extra={!hideDetailButton &&
+                      extra={
                       <div className="extra-wrapper">
+                          {!hideDetailButton &&
                           <Link to={`/movies/${movie._id}`}>
                               Detail
                           </Link>
+                          }
                           <Link to={`/movies/edit/${movie._id}`}>
                               Edit
                           </Link>
