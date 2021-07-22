@@ -84,7 +84,7 @@ const MovieForm: FC<IProps> = (props) => {
             initAdd();
         }
 
-    }, [props.match.params.id]);
+    }, [location]);
 
 
     const formKeys = (key: keyof CreateMovie) => {
