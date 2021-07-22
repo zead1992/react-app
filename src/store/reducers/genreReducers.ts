@@ -1,12 +1,7 @@
-import {FETCH_GENRES, GenreActionTypes, GenreState, IGenre} from "../types/genreTypes";
-import {updateLoading} from "../actions/loadingActions";
+import {FETCH_GENRES, GenreActionTypes, GenreState} from "../types/genreTypes";
 import {getGenres} from "../../services/genreService";
 import {fetchGenres} from "../actions/genreActions";
-import { v4 as uuidv4 } from 'uuid';
-import {loadStorageState} from "../../services/mockStorage";
-
-
-
+import {updateLoadingState} from "../../features/loading/loadingSlice";
 
 
 export function genreReducer(state: GenreState = null, action: GenreActionTypes): GenreState {
@@ -24,12 +19,12 @@ export function genreReducer(state: GenreState = null, action: GenreActionTypes)
 export function fetchGenresAsync() {
     return async (dispatch) => {
         try {
-            dispatch(updateLoading({key: 'genreList', val: true}));
+            dispatch(updateLoadingState({key: 'genreList', val: true}));
             const result = await getGenres();
             dispatch(fetchGenres(result));
-            dispatch(updateLoading({key: 'genreList', val: false}));
+            dispatch(updateLoadingState({key: 'genreList', val: false}));
         } catch (e) {
-            dispatch(updateLoading({key: 'genreList', val: false}));
+            dispatch(updateLoadingState({key: 'genreList', val: false}));
         }
     }
 }

@@ -1,10 +1,10 @@
 import {getMovies} from "../../services/movieService";
 import {v4 as uuidv4} from 'uuid';
-import {createAsyncThunk, createSlice, PayloadAction, SliceCaseReducers} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IGenre} from "../../store/types/genreTypes";
-import {updateLoading} from "../../store/actions/loadingActions";
 import {RootState} from "../../store/store";
 import {CreateMovie, EditMovie, IMovie, MovieState} from "./movieTypes";
+import {updateLoadingState} from "../loading/loadingSlice";
 
 
 //selectors
@@ -23,12 +23,12 @@ export const addMovieAsync = createAsyncThunk("movies/addMovie",
     async (args: { newMovie: CreateMovie }, {getState, dispatch}) => {
         const state = getState() as RootState;
         try {
-            dispatch(updateLoading({key: 'newMovie', val: true}));
+            dispatch(updateLoadingState({key: 'newMovie', val: true}));
             await new Promise(resolve => setTimeout(resolve, 2000))
             const genres = [...state.genre.list];
             return {newMovie: args.newMovie, genres}
         } catch (e) {
-            dispatch(updateLoading({key: 'newMovie', val: false}));
+            dispatch(updateLoadingState({key: 'newMovie', val: false}));
             console.log(e);
         }
     });
@@ -37,19 +37,19 @@ export const editMovieAsync = createAsyncThunk("movies/editMovie",
     async (args: { values: EditMovie },{getState, dispatch}) => {
         const state = getState() as RootState;
         try {
-            dispatch(updateLoading({key: 'newMovie', val: true}));
+            dispatch(updateLoadingState({key: 'newMovie', val: true}));
             await new Promise(resolve => setTimeout(resolve, 2000))
             const genres = [...state.genre.list];
             return {values: args.values, genres}
         } catch (e) {
-            dispatch(updateLoading({key: 'newMovie', val: false}));
+            dispatch(updateLoadingState({key: 'newMovie', val: false}));
             console.log(e);
         }
     });
 
-const moviesSlice = createSlice<MovieState, SliceCaseReducers<MovieState>, 'movies'>({
+const moviesSlice = createSlice({
     name: 'movies',
-    initialState: null,
+    initialState: null as MovieState,
     reducers: {
         fetchMoviesList(state, action) {
             state.list.status = 'loading';
