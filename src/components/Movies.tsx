@@ -37,7 +37,7 @@ function Movies(props: any) {
                         </div>
                     }
                     {
-                        movies.status !=='loading' && movies.data && movies.data.map((movie) =>
+                        movies.status !=='loading' && movies.data && Object.values(movies.data).map((movie) =>
                             <div className="col-4 mb-3" key={movie._id}>
                                 <MovieCard movie={movie}/>
                             </div>

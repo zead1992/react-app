@@ -3,9 +3,9 @@ import React, {FC} from "react";
 import {Link} from "react-router-dom";
 import InlineItem from "./InlineItem";
 import {Button, Card, Popconfirm} from "antd";
-import {deleteMovie, toggleFav} from "../../store/actions/movieActions";
 import {useDispatch} from "react-redux";
 import moment from "moment";
+import {deleteMovie, toggleMovieFav} from "../../store/reducers/movieReducer";
 
 export const MovieCard: FC<{ movie: IMovie; hideDetailButton?:boolean}> =
     ({movie,hideDetailButton, children}) => {
@@ -32,13 +32,13 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?:boolean}> =
                         className="col-auto"
                         style={{marginTop: "10px"}}
                         type="primary"
-                        onClick={() => dispatch(toggleFav(movie._id))}
+                        onClick={() => dispatch(toggleMovieFav({movieId:movie._id}))}
                     >
                         {movie.isFavorite ? "Remove from fav" : 'Add to fav'}
                     </Button>
                     <Popconfirm title={"Delete Movie?"}
                                 placement="bottom"
-                                onConfirm={() => dispatch(deleteMovie(movie._id))}
+                                onConfirm={() => dispatch(deleteMovie({movieId:movie._id}))}
                     >
                         <Button
                             className="col-auto"

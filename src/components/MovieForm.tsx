@@ -55,9 +55,10 @@ const MovieForm: FC<IProps> = (props) => {
     const onSubmit = async (values: CreateMovie, formikHelpers: FormikHelpers<CreateMovie>) => {
         try {
             formikHelpers.setSubmitting(true);
-            await dispatch(addMovieAsync(values));
+            await dispatch(addMovieAsync({newMovie:values}));
             props.history.push('/movies');
         }catch (e) {
+            console.log(e);
             formikHelpers.setSubmitting(false);
         }
     }
