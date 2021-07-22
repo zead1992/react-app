@@ -15,6 +15,8 @@ export type CreateMovie = {
     genreId: string;
 }
 
+export type EditMovie = CreateMovie & {id:string}
+
 //state
 export interface MovieState {
     list: {

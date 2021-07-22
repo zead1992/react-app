@@ -7,7 +7,7 @@ import {Form, Input, InputNumber, Select, SubmitButton} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import Yup from '../plugins/yup-plugin';
 import {RootState} from "../store/store";
-import {addMovieAsync, selectMovieById} from "../features/movies/moviesSlice";
+import {addMovieAsync, editMovieAsync, selectMovieById} from "../features/movies/moviesSlice";
 import {CreateMovie} from "../features/movies/movieTypes";
 
 
@@ -97,7 +97,11 @@ const MovieForm: FC<IProps> = (props) => {
     const onSubmit = async (values: CreateMovie, formikHelpers: FormikHelpers<CreateMovie>) => {
         try {
             formikHelpers.setSubmitting(true);
-            await dispatch(addMovieAsync({newMovie: values}));
+            if(isEdit){
+                await dispatch(editMovieAsync({values:{...values,id:props.match.params.id}}));
+            }else{
+                await dispatch(addMovieAsync({newMovie: values}));
+            }
             props.history.push('/movies');
         } catch (e) {
             console.log(e);
