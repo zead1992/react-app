@@ -6,3 +6,5 @@ export type IGenre = {
 export interface GenreState {
     list: IGenre[];
 }
+
+export type CreateGenre = {name:string}

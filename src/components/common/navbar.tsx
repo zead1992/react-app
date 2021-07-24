@@ -35,6 +35,9 @@ const Navbar: FC = (props) => {
                         Add Movie
                     </NavLink>
                 </Menu.Item>
+                <Menu.Item key="/genres">
+                    <NavLink to={'/genres'}>Genres</NavLink>
+                </Menu.Item>
             </Menu>
         </Header>
     );
