@@ -1,5 +1,4 @@
 import React, {FC, useEffect, useState} from 'react';
-import {fetchGenresAsync} from "../store/reducers/genreReducers";
 import {useDispatch, useSelector} from "react-redux";
 import {RouteComponentProps, useLocation} from 'react-router-dom';
 import {Typography} from "antd";
@@ -9,6 +8,7 @@ import Yup from '../plugins/yup-plugin';
 import {RootState} from "../store/store";
 import {addMovieAsync, editMovieAsync, selectMovieById} from "../features/movies/moviesSlice";
 import {CreateMovie} from "../features/movies/movieTypes";
+import {fetchGenresAsync} from "../features/genres/genresSlice";
 
 
 type IProps = RouteComponentProps<{ id: string }>;

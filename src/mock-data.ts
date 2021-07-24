@@ -1,8 +1,8 @@
 import {v4 as uuidv4} from "uuid";
 import moment from "moment";
-import {IGenre} from "./store/types/genreTypes";
 import {MovieState} from "./features/movies/movieTypes";
 import {RootState} from "./store/store";
+import {IGenre} from "./features/genres/genreTypes";
 
 const mockGenre: IGenre[] = [];
 for (let i = 1; i < 5; i++) {

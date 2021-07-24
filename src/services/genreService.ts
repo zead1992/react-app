@@ -1,5 +1,5 @@
-import {IGenre} from "../store/types/genreTypes";
 import {loadStorageState} from "./mockStorage";
+import {IGenre} from "../features/genres/genreTypes";
 
 export  function getGenres(): IGenre[] {
     const state = loadStorageState();

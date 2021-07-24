@@ -33,7 +33,7 @@ const App: FC = () => {
                     component={MovieForm}
                 >
                     {(props: RouteChildrenProps<{ id: string }>) => {
-                        const validId = isValidUuid(props.match.params.id);
+                        const validId = isValidUuid({id:props.match.params.id});
                         return validId ? <MovieForm {...props}/> : <Redirect to={'/movies'}/>
                     }}
                 </Route>
@@ -47,7 +47,7 @@ const App: FC = () => {
                     exact
                 >
                     {(props: RouteChildrenProps<{ id: string }>) => {
-                        const validId = isValidUuid(props.match.params.id);
+                        const validId = isValidUuid({id:props.match.params.id});
                         return validId ? <MovieDetail {...props}/> : <Redirect to={'/movies'}/>
                     }}
                 </Route>

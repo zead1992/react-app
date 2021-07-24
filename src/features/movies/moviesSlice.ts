@@ -1,10 +1,10 @@
 import {getMovies} from "../../services/movieService";
 import {v4 as uuidv4} from 'uuid';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IGenre} from "../../store/types/genreTypes";
 import {RootState} from "../../store/store";
-import {CreateMovie, EditMovie, IMovie, MovieState} from "./movieTypes";
+import {CreateMovie, EditMovie, MovieState} from "./movieTypes";
 import {updateLoadingState} from "../loading/loadingSlice";
+import {IGenre} from "../genres/genreTypes";
 
 
 //selectors
@@ -51,17 +51,6 @@ const moviesSlice = createSlice({
     name: 'movies',
     initialState: null as MovieState,
     reducers: {
-        fetchMoviesList(state, action) {
-            state.list.status = 'loading';
-        },
-        fetchMoviesListSuccess(state, action: PayloadAction<{ movies: { [key: string]: IMovie } }>) {
-            state.list.data = action.payload.movies;
-            state.list.status = 'finished';
-        },
-        fetchMoviesListError(state, action: PayloadAction<{ error: string }>) {
-            state.list.data = {};
-            state.list.error = action.payload.error;
-        },
         addMovie: {
             reducer(state, action: PayloadAction<{ movie: CreateMovie, genres: IGenre[] }>) {
                 const {movie, genres} = action.payload;
@@ -139,8 +128,5 @@ export const {
     addMovie,
     toggleMovieFav,
     deleteMovie,
-    fetchMoviesList,
-    fetchMoviesListError,
-    fetchMoviesListSuccess,
 } = moviesSlice.actions;
 export default moviesSlice.reducer;

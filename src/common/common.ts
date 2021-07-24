@@ -1,3 +1,3 @@
 import {validate as uuidValidate} from 'uuid';
 
-export const isValidUuid = (id:string)=> uuidValidate(id);
+export const isValidUuid = (args:{id:string})=> uuidValidate(args.id);

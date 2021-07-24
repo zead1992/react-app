@@ -1,12 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit'
 import {loadStorageState, saveStorageState} from "../services/mockStorage";
-import {genreReducer} from "./reducers/genreReducers";
 import moviesReducer from "../features/movies/moviesSlice"
 import loadingReducer from "../features/loading/loadingSlice"
-import {GenreState} from "./types/genreTypes";
+import genresSlice from "../features/genres/genresSlice"
 import {MovieState} from "../features/movies/movieTypes";
 import {LoadingState} from "../features/loading/loadingTypes";
 import {actionListener} from "./store-middlware";
+import {GenreState} from "../features/genres/genreTypes";
 
 //store state
 export type RootState = {
@@ -24,7 +24,7 @@ export const store = configureStore<RootState,any,any>({
     reducer:{
         loading:loadingReducer,
         movies:moviesReducer,
-        genre:genreReducer
+        genre:genresSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(actionListener),
