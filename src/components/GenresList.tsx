@@ -1,15 +1,15 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {RouteChildrenProps} from "react-router-dom";
-import {List, Typography} from "antd";
+import {List, Typography, Spin} from "antd";
 import {CreateGenre, IGenre} from "../features/genres/genreTypes";
 import {useDispatch, useSelector} from "react-redux";
-import {addGenreAsync, selectAllGenres} from "../features/genres/genresSlice";
+import {addGenreAsync, deleteGenreAsync, fetchGenresAsync, selectAllGenres} from "../features/genres/genresSlice";
 import styled from "styled-components";
 import Yup from "../plugins/yup-plugin";
-import {CreateMovie} from "../features/movies/movieTypes";
-import {Checkbox, Form, Input, InputNumber, Select, SubmitButton} from 'formik-antd'
+import {Form, Input, SubmitButton} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
-import {addMovieAsync, editMovieAsync} from "../features/movies/moviesSlice";
+import BasePopup from "./common/BasePopup";
+import {RootState} from "../store/store";
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,6 +22,7 @@ const GenresList: FC<IProp> = (props) => {
 
     const dispatch = useDispatch();
     const genres: IGenre[] = useSelector(selectAllGenres);
+    const {genreList: listLoading} = useSelector((state: RootState) => state.loading);
 
     const formSchema: Yup.SchemaOf<CreateGenre> = Yup.object().shape({
         name: Yup.string().required().min(3).label('genre name'),
@@ -36,7 +37,7 @@ const GenresList: FC<IProp> = (props) => {
     const onSubmit = async (values: CreateGenre, formikHelpers: FormikHelpers<CreateGenre>) => {
         try {
             formikHelpers.setSubmitting(true);
-            await dispatch(addGenreAsync({entityData:values}));
+            await dispatch(addGenreAsync({entityData: values}));
             formikHelpers.resetForm();
         } catch (e) {
             console.log(e);
@@ -44,48 +45,73 @@ const GenresList: FC<IProp> = (props) => {
         }
     }
 
+    const deleteGenre = async (args: { id: string }) => {
+        try {
+            await dispatch(deleteGenreAsync({genreId: args.id}))
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        dispatch(fetchGenresAsync());
+    }, []);
+
     return (
         <Wrapper className="my-3">
-            <div className="p-start">
-                <List
-                    dataSource={genres.map(g => g.name)}
-                    bordered
-                    renderItem={item => (
-                        <List.Item>
-                            <Typography.Text>{item}</Typography.Text>
-                        </List.Item>
-                    )}
-                />
-            </div>
-            <div className="p-end">
-                <Typography.Title level={4}>Add Genre</Typography.Title>
-                <div className="row">
-                    <div className="col-12">
-                        <Formik<CreateGenre>
-                            initialValues={formValues}
-                            enableReinitialize={true}
-                            validateOnMount={true}
-                            onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
-                            validationSchema={formSchema}
-                        >
-                            {(props) => {
-                                return <Form layout={"vertical"}>
-                                    <div className="col-12">
-                                        <Form.Item label={"genre name"}
-                                                   name={"name"}>
-                                            <Input name={"name"}/>
-                                        </Form.Item>
-                                    </div>
-
-                                    <div className="col-12 my-3">
-                                        <SubmitButton disabled={!props.isValid || props.isSubmitting}>Submit</SubmitButton>
-                                    </div>
-                                </Form>
-                            }}
-                        </Formik>
+            {
+                listLoading && <Spin/>
+            }
+            {
+                !listLoading &&
+                <React.Fragment>
+                    <div className="p-start">
+                        <List
+                            dataSource={genres}
+                            bordered
+                            renderItem={item => (
+                                <List.Item actions={[
+                                    <BasePopup title={"Delete"}
+                                               onConfirm={() => deleteGenre({id: item._id})}
+                                               confirmTitle={"Delete Genre?"}/>
+                                ]}>
+                                    <Typography.Text>{item.name}</Typography.Text>
+                                </List.Item>
+                            )}
+                        />
                     </div>
-                </div>
-            </div>
+                    <div className="p-end">
+                        <Typography.Title level={4}>Add Genre</Typography.Title>
+                        <div className="row">
+                            <div className="col-12">
+                                <Formik<CreateGenre>
+                                    initialValues={formValues}
+                                    enableReinitialize={true}
+                                    validateOnMount={true}
+                                    onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
+                                    validationSchema={formSchema}
+                                >
+                                    {(props) => {
+                                        return <Form layout={"vertical"}>
+                                            <div className="col-12">
+                                                <Form.Item label={"genre name"}
+                                                           name={"name"}>
+                                                    <Input name={"name"}/>
+                                                </Form.Item>
+                                            </div>
+
+                                            <div className="col-12 my-3">
+                                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>Submit</SubmitButton>
+                                            </div>
+                                        </Form>
+                                    }}
+                                </Formik>
+                            </div>
+                        </div>
+                    </div>
+                </React.Fragment>
+            }
+
         </Wrapper>
     )
 }

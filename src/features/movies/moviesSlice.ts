@@ -23,7 +23,7 @@ export const addMovieAsync = createAsyncThunk("movies/addMovie",
     async (args: { newMovie: CreateMovie }, {getState, dispatch}) => {
         const state = getState() as RootState;
         try {
-            dispatch(updateLoadingState({key: 'newMovie', val: true}));
+
             await new Promise(resolve => setTimeout(resolve, 2000))
             const genres = [...state.genre.list];
             return {newMovie: args.newMovie, genres}
@@ -34,10 +34,10 @@ export const addMovieAsync = createAsyncThunk("movies/addMovie",
     });
 
 export const editMovieAsync = createAsyncThunk("movies/editMovie",
-    async (args: { values: EditMovie },{getState, dispatch}) => {
+    async (args: { values: EditMovie }, {getState, dispatch}) => {
         const state = getState() as RootState;
         try {
-            dispatch(updateLoadingState({key: 'newMovie', val: true}));
+
             await new Promise(resolve => setTimeout(resolve, 2000))
             const genres = [...state.genre.list];
             return {values: args.values, genres}
@@ -46,6 +46,12 @@ export const editMovieAsync = createAsyncThunk("movies/editMovie",
             console.log(e);
         }
     });
+
+export const deleteGenreMoviesAsync = createAsyncThunk("deleteGenreMovies",
+    async (args: { genreId: string }) => {
+        return args;
+    }
+);
 
 const moviesSlice = createSlice({
     name: 'movies',
@@ -112,13 +118,21 @@ const moviesSlice = createSlice({
                 state.list.data[newItem._id] = newItem;
             })
             .addCase(editMovieAsync.fulfilled, (state, action) => {
-                const {values,genres} = action.payload;
+                const {values, genres} = action.payload;
                 const movie = state.list.data[values.id];
                 movie.title = values.title;
                 movie.dailyRentalRate = values.dailyRentalRate;
                 movie.numberInStock = values.numberInStock;
-                movie.genre = genres.find(g=>g._id == values.genreId);
+                movie.genre = genres.find(g => g._id == values.genreId);
                 movie.isFavorite = values.isFavorite;
+            })
+            .addCase(deleteGenreMoviesAsync.fulfilled, (state, action) => {
+                const {genreId} = action.payload;
+                const listMovies = Object.values(state.list.data);
+                const relatedMovies = listMovies.filter(m => m.genre._id == genreId);
+                relatedMovies.forEach(m=>{
+                   delete state.list.data[m._id]
+                });
             });
     }
 });
