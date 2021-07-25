@@ -1,33 +1,42 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, Button} from 'antd';
 import {NavLink, useLocation} from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 
-const {SubMenu} = Menu;
 const {Header} = Layout;
 const Navbar: FC = (props) => {
 
+    const {t, i18n} = useTranslation(['web']);
     const location = useLocation();
 
     const [state, setState] = useState({
         current: location.pathname,
     });
 
+    const langSwitch = ()=>{
+       return  i18n.language == 'en' ? 'ar' : 'en'
+    }
+
     useEffect(() => {
         setState({current: location.pathname})
     }, [location]);
 
+    const changeLang = async () => {
+        await i18n.changeLanguage(langSwitch());
+    };
 
 
     return (
         <Header>
-            <div className="logo" />
-            <Menu theme="dark" mode="horizontal"
+            <div className="logo"/>
+            <Menu theme="dark"
+                  mode="horizontal"
                   defaultSelectedKeys={[state.current]}
                   selectedKeys={[state.current]}>
                 <Menu.Item key="/movies">
                     <NavLink to={'/movies'}>
-                        Movies
+                        {t('web:movies.title')}
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="/movies/new">
@@ -37,6 +46,10 @@ const Navbar: FC = (props) => {
                 </Menu.Item>
                 <Menu.Item key="/genres">
                     <NavLink to={'/genres'}>Genres</NavLink>
+                </Menu.Item>
+                <Menu.Item>
+                    <Button onClick={() => changeLang()}
+                            type={"primary"}>{langSwitch()}</Button>
                 </Menu.Item>
             </Menu>
         </Header>

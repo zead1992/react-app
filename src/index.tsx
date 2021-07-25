@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -7,7 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
 import './index.css';
-
+import "./plugins/i18next/i18n"
 
 const theme : Theme = createMuiTheme({
     palette:{
@@ -23,13 +23,15 @@ const theme : Theme = createMuiTheme({
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <Provider store={store}>
-                <ThemeProvider theme={theme}>
-                    <App/>
-                </ThemeProvider>
-            </Provider>
-        </BrowserRouter>
+        <Suspense fallback={"... is loading"}>
+            <BrowserRouter>
+                <Provider store={store}>
+                    <ThemeProvider theme={theme}>
+                        <App/>
+                    </ThemeProvider>
+                </Provider>
+            </BrowserRouter>
+        </Suspense>
     </React.StrictMode>,
     document.getElementById('root')
 );

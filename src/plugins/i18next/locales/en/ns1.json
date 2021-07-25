@@ -1,0 +1,10 @@
+{
+  "web": {
+    "movies": {
+      "title": "movies"
+    }
+  },
+  "common": {
+    "save": "save"
+  }
+}
