@@ -1,21 +1,22 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Layout, Menu, Button} from 'antd';
-import {NavLink, useLocation} from 'react-router-dom';
+import {Button, Layout, Menu} from 'antd';
+import {NavLink, useHistory, useLocation} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 
 
 const {Header} = Layout;
 const Navbar: FC = (props) => {
 
-    const {t, i18n} = useTranslation(['web','common']);
+    const {t, i18n} = useTranslation(['web', 'common']);
     const location = useLocation();
+    const history = useHistory();
 
     const [state, setState] = useState({
         current: location.pathname,
     });
 
-    const langSwitch = ()=>{
-       return  i18n.language == 'en' ? 'ar' : 'en'
+    const langSwitch = () => {
+        return i18n.language == 'en' ? 'ar' : 'en'
     }
 
     useEffect(() => {
@@ -24,6 +25,8 @@ const Navbar: FC = (props) => {
 
     const changeLang = async () => {
         await i18n.changeLanguage(langSwitch());
+        const url = location.pathname.replace(`/${langSwitch()}/`, `/${i18n.language}/`);
+        history.push(url);
     };
 
 
@@ -34,18 +37,18 @@ const Navbar: FC = (props) => {
                   mode="horizontal"
                   defaultSelectedKeys={[state.current]}
                   selectedKeys={[state.current]}>
-                <Menu.Item key="/movies">
-                    <NavLink to={'/movies'}>
+                <Menu.Item key={`/${i18n.language}/movies`}>
+                    <NavLink to={`/${i18n.language}/movies`}>
                         {t('web:movies.title')}
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="/movies/new">
-                    <NavLink to={'/movies/new'}>
+                <Menu.Item key={`/${i18n.language}/movies/new`}>
+                    <NavLink to={`/${i18n.language}/movies/new`}>
                         {t('web:movies.add')}
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="/genres">
-                    <NavLink to={'/genres'}>{t('web:genres.title')}</NavLink>
+                <Menu.Item key={`/${i18n.language}/genres`}>
+                    <NavLink to={`/${i18n.language}/genres`}>{t('web:genres.title')}</NavLink>
                 </Menu.Item>
                 <Menu.Item>
                     <Button onClick={() => changeLang()}

@@ -1,21 +1,21 @@
-import React,{Suspense} from 'react';
+import React, {Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, RouteChildrenProps, Switch} from "react-router-dom";
 import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
 import './index.css';
 import "./plugins/i18next/i18n"
 
-const theme : Theme = createMuiTheme({
-    palette:{
-        primary:{
-            main:'#c81616'
+const theme: Theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#c81616'
         },
-        secondary:{
-            main:'#63bb08'
+        secondary: {
+            main: '#63bb08'
         }
     }
 })
@@ -27,7 +27,23 @@ ReactDOM.render(
             <BrowserRouter>
                 <Provider store={store}>
                     <ThemeProvider theme={theme}>
-                        <App/>
+                        <Switch>
+                            <Redirect exact
+                                      from="/"
+                                      to="/en"/>
+                            <Route
+                                path="/:lang"
+                            >
+                                {(props: RouteChildrenProps<{ lang: string }>) => {
+                                    const lang = props.match.params.lang;
+                                    if (lang == 'en' || lang == 'ar') {
+                                        return <App {...props}/>
+                                    } else {
+                                        return <Redirect to={'/en/movies'}/>
+                                    }
+                                }}
+                            </Route>
+                        </Switch>
                     </ThemeProvider>
                 </Provider>
             </BrowserRouter>

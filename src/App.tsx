@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {Route, Switch, Redirect, RouteChildrenProps} from 'react-router-dom';
+import {Route, Switch, Redirect, RouteChildrenProps,useRouteMatch} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
@@ -11,13 +11,12 @@ import './App.css';
 import {isValidUuid} from "./common/common";
 import GenresList from "./components/GenresList";
 
-
-const App: FC = () => {
+type IProp = RouteChildrenProps;
+const App: FC<IProp> = (props) => {
 
 
     useEffect(() => {
     }, []);
-
 
     return (
         <main className="container py-3">
@@ -25,11 +24,9 @@ const App: FC = () => {
             <Navbar/>
 
             <Switch>
-                <Redirect exact
-                          from="/"
-                          to="/movies"/>
+                <Redirect exact from={"/:lang"} to={'/:lang/movies'}/>
                 <Route
-                    path="/movies/edit/:id"
+                    path={`${props.match.url}/movies/edit/:id`}
                     exact
                     component={MovieForm}
                 >
@@ -39,12 +36,12 @@ const App: FC = () => {
                     }}
                 </Route>
                 <Route
-                    path="/movies/new"
+                    path={`${props.match.url}/movies/new`}
                     exact
                     component={MovieForm}
                 />
                 <Route
-                    path="/movies/:id"
+                    path={`${props.match.url}/movies/:id`}
                     exact
                 >
                     {(props: RouteChildrenProps<{ id: string }>) => {
@@ -53,20 +50,20 @@ const App: FC = () => {
                     }}
                 </Route>
                 <Route
-                    path="/movies"
+                    path={`${props.match.url}/movies`}
                     exact
                     component={Movies}
                 />
-                <Route path={"/genres"}
+                <Route path={`${props.match.url}/genres`}
                        exact
                        component={GenresList}/>
                 <Route
-                    path="/formik"
+                    path={`${props.match.url}/formik`}
                     exact
                     component={YoutubeFormikForm}
                 />
                 <Route path={"*"}>
-                    <Redirect to={'/movies'}/>
+                    <Redirect to={'/en/movies'}/>
                 </Route>
             </Switch>
         </main>
