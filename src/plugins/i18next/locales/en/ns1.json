@@ -2,17 +2,19 @@
   "web": {
     "movies": {
       "title": "Movies",
-      "add": "Add {{title}}",
-      "refresh": "Refresh {{title}}"
+      "movie": "movie",
+      "add": "Add $t(movies.movie)"
     },
     "genres": {
       "title": "Genres",
-      "add": "Add {{title}}",
-      "refresh": "Refresh {{title}}"
+      "genre": "genre",
+      "add": "Add $t(genres.genre)"
     }
   },
   "common": {
     "save": "save",
-    "delete": "delete"
+    "delete": "delete",
+    "detail": "detail",
+    "edit": "edit"
   }
 }

@@ -2,17 +2,19 @@
   "web": {
     "movies": {
       "title": "الأفلام",
-      "add": "اضافة فلم",
-      "refresh": "تحديث الأفلام"
+      "movie": "فلم",
+      "add": "اضافة $t(movies.movie)"
     },
     "genres": {
       "title": "الأصناف",
-      "add": "اضافة صنف",
-      "refresh": "تحديث الأصناف"
+      "genre": "صنف",
+      "add": "اضافة $t(genres.genre)"
     }
   },
   "common": {
     "save": "حفظ",
-    "delete": "delete"
+    "delete": "حذف",
+    "detail": "تفاصيل",
+    "edit": "تعديل"
   }
 }

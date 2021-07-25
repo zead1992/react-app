@@ -41,7 +41,7 @@ const Navbar: FC = (props) => {
                 </Menu.Item>
                 <Menu.Item key="/movies/new">
                     <NavLink to={'/movies/new'}>
-                        {t('web:movies.add',{title:'movie'})}
+                        {t('web:movies.add')}
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="/genres">
