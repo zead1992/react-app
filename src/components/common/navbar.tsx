@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 const {Header} = Layout;
 const Navbar: FC = (props) => {
 
-    const {t, i18n} = useTranslation(['web']);
+    const {t, i18n} = useTranslation(['web','common']);
     const location = useLocation();
 
     const [state, setState] = useState({
@@ -41,15 +41,15 @@ const Navbar: FC = (props) => {
                 </Menu.Item>
                 <Menu.Item key="/movies/new">
                     <NavLink to={'/movies/new'}>
-                        Add Movie
+                        {t('web:movies.add',{title:'movie'})}
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="/genres">
-                    <NavLink to={'/genres'}>Genres</NavLink>
+                    <NavLink to={'/genres'}>{t('web:genres.title')}</NavLink>
                 </Menu.Item>
                 <Menu.Item>
                     <Button onClick={() => changeLang()}
-                            type={"primary"}>{langSwitch()}</Button>
+                            type={"primary"}>{langSwitch().toUpperCase()}</Button>
                 </Menu.Item>
             </Menu>
         </Header>

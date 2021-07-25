@@ -1,10 +1,18 @@
 {
   "web": {
     "movies": {
-      "title": "movies"
+      "title": "Movies",
+      "add": "Add {{title}}",
+      "refresh": "Refresh {{title}}"
+    },
+    "genres": {
+      "title": "Genres",
+      "add": "Add {{title}}",
+      "refresh": "Refresh {{title}}"
     }
   },
   "common": {
-    "save": "save"
+    "save": "save",
+    "delete": "delete"
   }
 }

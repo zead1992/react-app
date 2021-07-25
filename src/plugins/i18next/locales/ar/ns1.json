@@ -1,10 +1,18 @@
 {
   "web": {
     "movies": {
-      "title": "الأفلام"
+      "title": "الأفلام",
+      "add": "اضافة فلم",
+      "refresh": "تحديث الأفلام"
+    },
+    "genres": {
+      "title": "الأصناف",
+      "add": "اضافة صنف",
+      "refresh": "تحديث الأصناف"
     }
   },
   "common": {
-    "save": "حفظ"
+    "save": "حفظ",
+    "delete": "delete"
   }
 }
