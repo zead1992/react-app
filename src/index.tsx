@@ -8,6 +8,7 @@ import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
 import './index.css';
 import "./plugins/i18next/i18n"
+import i18n from "i18next";
 
 const theme: Theme = createMuiTheme({
     palette: {
@@ -34,7 +35,7 @@ ReactDOM.render(
                             <Route
                                 path="/:lang"
                             >
-                                {(props: RouteChildrenProps<{ lang: string }>) => {
+                                { (props: RouteChildrenProps<{ lang: string }>) => {
                                     const lang = props.match.params.lang;
                                     if (lang == 'en' || lang == 'ar') {
                                         return <App {...props}/>

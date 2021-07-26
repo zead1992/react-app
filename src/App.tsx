@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {Route, Switch, Redirect, RouteChildrenProps,useRouteMatch} from 'react-router-dom';
+import {Route, Switch, Redirect, RouteChildrenProps, useRouteMatch, useLocation} from 'react-router-dom';
 import Movies from "./components/Movies";
 import Navbar from "./components/common/navbar";
 import MovieDetail from "./components/MovieDetail";
@@ -10,12 +10,16 @@ import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
 import {isValidUuid} from "./common/common";
 import GenresList from "./components/GenresList";
+import {useTranslation} from "react-i18next";
 
 type IProp = RouteChildrenProps;
 const App: FC<IProp> = (props) => {
 
+    const {i18n} = useTranslation();
+    const match = useRouteMatch<{lang:string}>();
 
     useEffect(() => {
+        i18n.changeLanguage(match.params.lang);
     }, []);
 
     return (
