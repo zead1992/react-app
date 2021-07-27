@@ -6,7 +6,7 @@ import {Provider} from "react-redux";
 import {BrowserRouter, Redirect, Route, RouteChildrenProps, Switch} from "react-router-dom";
 import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
-import './index.css';
+import './index.scss';
 import "./plugins/i18next/i18n"
 
 const theme: Theme = createMuiTheme({
