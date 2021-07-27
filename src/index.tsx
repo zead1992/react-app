@@ -8,7 +8,6 @@ import {store} from "./store/store";
 import {createMuiTheme, Theme, ThemeProvider} from '@material-ui/core';
 import './index.css';
 import "./plugins/i18next/i18n"
-import i18n from "i18next";
 
 const theme: Theme = createMuiTheme({
     palette: {
