@@ -26,7 +26,7 @@ mockGenre.forEach((g, index) => {
         genre: g,
         title: `Movie ${index}`,
         isFavorite: false,
-        publishDate: moment().subtract(index + 1, 'days').format('DD/MM/YYYY'),
+        publishDate: moment().subtract(index + 1, 'days').toISOString(),
         dailyRentalRate: 10 + 5,
         numberInStock: index + 2
     }
