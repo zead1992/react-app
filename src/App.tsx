@@ -11,6 +11,7 @@ import './App.css';
 import {isValidUuid} from "./common/common";
 import GenresList from "./components/GenresList";
 import {useTranslation} from "react-i18next";
+import {ConfigProvider} from "antd";
 
 type IProp = RouteChildrenProps;
 const App: FC<IProp> = (props) => {
@@ -19,58 +20,62 @@ const App: FC<IProp> = (props) => {
     const match = useRouteMatch<{lang:string}>();
 
     useEffect(() => {
+        //on first page load set lang and doc dir
         i18n.changeLanguage(match.params.lang);
+        document.dir = i18n.dir();
     }, []);
 
     return (
-        <main className="container py-3">
-            <ToastContainer/>
-            <Navbar/>
+        <ConfigProvider direction={i18n.dir()}>
+            <main className="container py-3">
+                <ToastContainer/>
+                <Navbar/>
 
-            <Switch>
-                <Redirect exact from={"/:lang"} to={'/:lang/movies'}/>
-                <Route
-                    path={`${props.match.url}/movies/edit/:id`}
-                    exact
-                    component={MovieForm}
-                >
-                    {(props: RouteChildrenProps<{ id: string }>) => {
-                        const validId = isValidUuid({id: props.match.params.id});
-                        return validId ? <MovieForm {...props}/> : <Redirect to={'/movies'}/>
-                    }}
-                </Route>
-                <Route
-                    path={`${props.match.url}/movies/new`}
-                    exact
-                    component={MovieForm}
-                />
-                <Route
-                    path={`${props.match.url}/movies/:id`}
-                    exact
-                >
-                    {(props: RouteChildrenProps<{ id: string }>) => {
-                        const validId = isValidUuid({id: props.match.params.id});
-                        return validId ? <MovieDetail {...props}/> : <Redirect to={'/movies'}/>
-                    }}
-                </Route>
-                <Route
-                    path={`${props.match.url}/movies`}
-                    exact
-                    component={Movies}
-                />
-                <Route path={`${props.match.url}/genres`}
-                       exact
-                       component={GenresList}/>
-                <Route
-                    path={`${props.match.url}/formik`}
-                    exact
-                    component={YoutubeFormikForm}
-                />
-                <Route path={"*"}>
-                    <Redirect to={'/en/movies'}/>
-                </Route>
-            </Switch>
-        </main>
+                <Switch>
+                    <Redirect exact from={"/:lang"} to={'/:lang/movies'}/>
+                    <Route
+                        path={`${props.match.url}/movies/edit/:id`}
+                        exact
+                        component={MovieForm}
+                    >
+                        {(props: RouteChildrenProps<{ id: string }>) => {
+                            const validId = isValidUuid({id: props.match.params.id});
+                            return validId ? <MovieForm {...props}/> : <Redirect to={'/movies'}/>
+                        }}
+                    </Route>
+                    <Route
+                        path={`${props.match.url}/movies/new`}
+                        exact
+                        component={MovieForm}
+                    />
+                    <Route
+                        path={`${props.match.url}/movies/:id`}
+                        exact
+                    >
+                        {(props: RouteChildrenProps<{ id: string }>) => {
+                            const validId = isValidUuid({id: props.match.params.id});
+                            return validId ? <MovieDetail {...props}/> : <Redirect to={'/movies'}/>
+                        }}
+                    </Route>
+                    <Route
+                        path={`${props.match.url}/movies`}
+                        exact
+                        component={Movies}
+                    />
+                    <Route path={`${props.match.url}/genres`}
+                           exact
+                           component={GenresList}/>
+                    <Route
+                        path={`${props.match.url}/formik`}
+                        exact
+                        component={YoutubeFormikForm}
+                    />
+                    <Route path={"*"}>
+                        <Redirect to={'/en/movies'}/>
+                    </Route>
+                </Switch>
+            </main>
+        </ConfigProvider>
     );
 }
 

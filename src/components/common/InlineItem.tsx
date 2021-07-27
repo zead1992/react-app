@@ -11,7 +11,7 @@ const InlineItem : FC<IProp> = (props)=>{
     return(
         <div style={{display: "flex"}}>
             <Text strong
-                  style={{marginRight: '10px'}}>{props.label}:</Text><Text>{props.val}</Text>
+                  style={{marginInlineEnd: '10px'}}>{props.label}:</Text><Text>{props.val}</Text>
         </div>
     )
 }
