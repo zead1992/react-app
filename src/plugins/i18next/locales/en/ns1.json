@@ -3,18 +3,30 @@
     "movies": {
       "title": "Movies",
       "movie": "movie",
-      "add": "Add $t(movies.movie)"
+      "add": "Add $t(web:movies.movie)",
+      "edit": "Edit $t(web:movies.movie)",
+      "movieName": "Movie name"
     },
     "genres": {
       "title": "Genres",
       "genre": "genre",
-      "add": "Add $t(genres.genre)"
+      "add": "Add $t(web:genres.genre)",
+      "edit": "Edit $t(web:genres.genre)",
+      "selectGenre": "Select genre"
     }
   },
   "common": {
-    "save": "save",
+    "save": "Save",
     "delete": "delete",
     "detail": "detail",
-    "edit": "edit"
+    "edit": "edit",
+    "refresh": "Refresh",
+    "publishDate": "Publish date",
+    "dailyRental": "Daily rental",
+    "stock": "Stock",
+    "addFav": "Add to favorite",
+    "removeFav": "Remove from favorite",
+    "deleteItem": "Delete item",
+    "favorite": "Favorite"
   }
 }

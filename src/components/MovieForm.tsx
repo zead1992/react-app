@@ -9,11 +9,14 @@ import {RootState} from "../store/store";
 import {addMovieAsync, editMovieAsync, selectMovieById} from "../features/movies/moviesSlice";
 import {CreateMovie} from "../features/movies/movieTypes";
 import {fetchGenresAsync} from "../features/genres/genresSlice";
+import {useTranslation} from "react-i18next";
 
 
 type IProps = RouteComponentProps<{ id: string }>;
 
 const MovieForm: FC<IProps> = (props) => {
+
+    const {t,i18n} = useTranslation(['common','web']);
 
     const location = useLocation();
     const test = new URLSearchParams(location.search).get('test');
@@ -25,18 +28,18 @@ const MovieForm: FC<IProps> = (props) => {
     const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
     const [uiText, setUiText] = useState<{ formTitle: string, submit: string }>({
-        formTitle: 'Add Movie',
-        submit: 'Add Movie'
+        formTitle: t('web:movies.add'),
+        submit: t('common:save')
     });
     const movieDetail = useSelector((state: RootState) => selectMovieById(state, props.match.params.id));
 
     //form scheme
     const formSchema: Yup.SchemaOf<CreateMovie> = Yup.object().shape({
-        title: Yup.string().required().min(3).label('username'),
-        dailyRentalRate: Yup.number().required().positive().max(50).label('Rental Rate'),
-        numberInStock: Yup.number().integer().required().positive().min(1).integer().label('stock'),
-        genreId: Yup.string().required().label('genre'),
-        isFavorite:Yup.boolean().label('Favorite')
+        title: Yup.string().required().min(3).label(t('web:movies.title')),
+        dailyRentalRate: Yup.number().required().positive().max(50).label(t('common:dailyRental')),
+        numberInStock: Yup.number().integer().required().positive().min(1).integer().label(t('common:stock')),
+        genreId: Yup.string().required().label(t('web:genres.genre')),
+        isFavorite:Yup.boolean().label(t('common:favorite'))
     });
 
     //state
@@ -54,19 +57,19 @@ const MovieForm: FC<IProps> = (props) => {
     const initAdd = () => {
         setIsEdit(false);
         setUiText({
-            formTitle: "Add Movie",
-            submit: 'Add Movie'
+            formTitle: t('web:movies.add'),
+            submit: t('common:save')
         });
         setFormValues(formInitValues);
     }
     const initEdit = () => {
         if(!movieDetail){
-           return  props.history.push('/movies');
+           return  props.history.push(`/${i18n.language}/movies`);
         }
         setIsEdit(true);
-        setUiText({
-            formTitle: "edit movie",
-            submit: 'save'
+        setUiText( {
+            formTitle: t('web:movies.edit'),
+            submit: t('common:save')
         });
         setFormValues({
             title: movieDetail.title,
@@ -90,7 +93,7 @@ const MovieForm: FC<IProps> = (props) => {
             initAdd();
         }
 
-    }, [location]);
+    }, [location,i18n.language]);
 
 
     const formKeys = (key: keyof CreateMovie) => {
@@ -105,7 +108,7 @@ const MovieForm: FC<IProps> = (props) => {
             }else{
                 await dispatch(addMovieAsync({newMovie: values}));
             }
-            props.history.push('/movies');
+            props.history.push(`/${i18n.language}/movies`);
         } catch (e) {
             console.log(e);
             formikHelpers.setSubmitting(false);
@@ -127,26 +130,26 @@ const MovieForm: FC<IProps> = (props) => {
                     {(props) => {
                         return <Form layout={"vertical"}>
                             <div className="col-4">
-                                <Form.Item label={"Title"}
+                                <Form.Item label={t('web:movies.movieName')}
                                            name={formKeys('title')}>
                                     <Input name={formKeys('title')}/>
                                 </Form.Item>
                             </div>
                             <div className="col-4">
-                                <Form.Item label={"Stock"}
+                                <Form.Item label={t('common:stock')}
                                            name={formKeys('numberInStock')}>
                                     <InputNumber name={formKeys('numberInStock')}/>
                                 </Form.Item>
                             </div>
                             <div className="col-4">
-                                <Form.Item label={"Rental Rate"}
+                                <Form.Item label={t('common:dailyRental')}
                                            name={formKeys('dailyRentalRate')}>
                                     <InputNumber name={formKeys('dailyRentalRate')}/>
                                 </Form.Item>
                             </div>
                             <div className="col-4">
                                 <Select name={formKeys("genreId")}
-                                        placeholder={"Select Genre"}
+                                        placeholder={t('web:genres.selectGenre')}
                                         style={{width: 120}}>
                                     {
                                         genres.map((g) =>
@@ -158,7 +161,7 @@ const MovieForm: FC<IProps> = (props) => {
                             </div>
                             <div className="col-4 my-3">
                                 <Checkbox name={formKeys('isFavorite')}>
-                                    Favorite
+                                    {t('common:favorite')}
                                 </Checkbox>
                             </div>
                             <div className="col-12 my-3">

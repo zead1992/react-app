@@ -3,11 +3,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button, Card, Typography} from "antd";
 import MovieCard from "./common/MovieCard";
 import {fetchMoviesAsync, selectAllMovies} from "../features/movies/moviesSlice";
+import {useTranslation} from "react-i18next";
 
 const {Title, Text} = Typography;
 
 function Movies(props: any) {
 
+    const {i18n,t} = useTranslation(['web','common']);
 
     const dispatch = useDispatch();
     const {list: movies} = useSelector(selectAllMovies);
@@ -23,9 +25,7 @@ function Movies(props: any) {
                 <Button disabled={movies.status === 'loading'}
                         type="primary"
                         onClick={() => setRefreshMovie(!refreshMovie)}
-                >
-                    Refresh Movies
-                </Button>
+                >{t('common:refresh')}</Button>
             </div>
             <div className="col-12">
                 <div className="row align-items-start justify-content-start">

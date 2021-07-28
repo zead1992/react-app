@@ -21,8 +21,11 @@ const App: FC<IProp> = (props) => {
 
     useEffect(() => {
         //on first page load set lang and doc dir
-        i18n.changeLanguage(match.params.lang);
-        document.dir = i18n.dir();
+        const init = async ()=>{
+            await i18n.changeLanguage(match.params.lang);
+            document.dir = i18n.dir();
+        }
+        init();
     }, []);
 
     return (

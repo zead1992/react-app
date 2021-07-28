@@ -7,6 +7,7 @@ import moment from "moment";
 import {deleteMovie, toggleMovieFav} from "../../features/movies/moviesSlice";
 import {IMovie} from "../../features/movies/movieTypes";
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
 
 const Wrapper = styled(Card)`
   .extra-wrapper{
@@ -19,29 +20,30 @@ const Wrapper = styled(Card)`
 export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
     ({movie, hideDetailButton, children}) => {
         const dispatch = useDispatch();
+        const {t,i18n} = useTranslation(['web','common']);
         return (
                 <Wrapper size="small"
                       title={<span>{movie.title}</span>}
                       extra={
                       <div className="extra-wrapper">
                           {!hideDetailButton &&
-                          <Link to={`/movies/${movie._id}`}>
-                              Detail
+                          <Link to={`/${i18n.language}/movies/${movie._id}`}>
+                              {t('common:detail')}
                           </Link>
                           }
-                          <Link to={`/movies/edit/${movie._id}`}>
-                              Edit
+                          <Link to={`/${i18n.language}/movies/edit/${movie._id}`}>
+                              {t('common:edit')}
                           </Link>
                       </div>
                       }>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <InlineItem label={"Genre"}
+                        <InlineItem label={t('web:genres.genre')}
                                     val={movie.genre.name}/>
-                        <InlineItem label={"Publish date"}
+                        <InlineItem label={t('common:publishDate')}
                                     val={moment(movie.publishDate).format('DD/MM/YYYY')}/>
-                        <InlineItem label={"Daily rental"}
+                        <InlineItem label={t('common:dailyRental')}
                                     val={movie.dailyRentalRate}/>
-                        <InlineItem label={"Stock"}
+                        <InlineItem label={t('common:stock')}
                                     val={movie.numberInStock}/>
                         <div className="d-flex justify-content-between">
                             <Button
@@ -50,9 +52,9 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
                                 type="primary"
                                 onClick={() => dispatch(toggleMovieFav({movieId: movie._id}))}
                             >
-                                {movie.isFavorite ? "Remove from fav" : 'Add to fav'}
+                                {movie.isFavorite ? t('common:removeFav') : t('common:addFav')}
                             </Button>
-                            <Popconfirm title={"Delete Movie?"}
+                            <Popconfirm title={t('common:deleteItem')}
                                         placement="bottom"
                                         onConfirm={() => dispatch(deleteMovie({movieId: movie._id}))}
                             >
@@ -62,7 +64,7 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
                                     type="primary"
                                     danger
                                 >
-                                    Delete
+                                    {t('common:delete')}
                                 </Button>
                             </Popconfirm>
                         </div>

@@ -3,18 +3,30 @@
     "movies": {
       "title": "الأفلام",
       "movie": "فلم",
-      "add": "اضافة $t(movies.movie)"
+      "add": "اضافة $t(web:movies.movie)",
+      "edit": "تعديل $t(web:movies.movie)",
+      "movieName": "اسم الفيلم"
     },
     "genres": {
       "title": "الأصناف",
       "genre": "صنف",
-      "add": "اضافة $t(genres.genre)"
+      "add": "اضافة $t(web:genres.genre)",
+      "edit": "تعديل $t(web:genres.genre)",
+      "selectGenre": "اختر الصنف"
     }
   },
   "common": {
     "save": "حفظ",
     "delete": "حذف",
     "detail": "تفاصيل",
-    "edit": "تعديل"
+    "edit": "تعديل",
+    "refresh": "تحديث",
+    "publishDate": "تاريخ النشر",
+    "dailyRental": "التكلفة باليوم",
+    "stock": "الكمية المتاحة",
+    "addFav": "اضافة الى المفضلة",
+    "removeFav": "حذف من المفضلة",
+    "deleteItem": "حذف العنصر",
+    "favorite": "مفضل"
   }
 }
