@@ -8,11 +8,12 @@
       "movieName": "اسم الفيلم"
     },
     "genres": {
-      "title": "الأصناف",
-      "genre": "صنف",
+      "title": "الأنواع",
+      "genre": "النوع",
       "add": "اضافة $t(web:genres.genre)",
       "edit": "تعديل $t(web:genres.genre)",
-      "selectGenre": "اختر الصنف"
+      "selectGenre": "اختر النوع",
+      "name": "اسم $t(web:genres.genre)"
     }
   },
   "common": {
@@ -27,6 +28,8 @@
     "addFav": "اضافة الى المفضلة",
     "removeFav": "حذف من المفضلة",
     "deleteItem": "حذف العنصر",
-    "favorite": "مفضل"
+    "favorite": "مفضل",
+    "ok": "موافق",
+    "cancel": "الغاء"
   }
 }

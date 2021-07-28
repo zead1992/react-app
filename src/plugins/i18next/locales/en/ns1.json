@@ -12,7 +12,8 @@
       "genre": "genre",
       "add": "Add $t(web:genres.genre)",
       "edit": "Edit $t(web:genres.genre)",
-      "selectGenre": "Select genre"
+      "selectGenre": "Select genre",
+      "name": "$t(web:genres.genre) name"
     }
   },
   "common": {
@@ -27,6 +28,8 @@
     "addFav": "Add to favorite",
     "removeFav": "Remove from favorite",
     "deleteItem": "Delete item",
-    "favorite": "Favorite"
+    "favorite": "Favorite",
+    "ok": "ok",
+    "cancel": "cancel"
   }
 }

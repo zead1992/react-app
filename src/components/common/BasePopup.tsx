@@ -1,17 +1,11 @@
 import React, {FC} from "react";
 import {Button, Popconfirm} from "antd";
+import {PopconfirmProps} from "antd/lib/popconfirm";
 
-type IProp = {
-    title:string;
-    onConfirm:()=>void
-    confirmTitle:string;
-}
+type IProp = PopconfirmProps;
 const BasePopup : FC<IProp> = (props)=>{
     return(
-        <Popconfirm title={props.confirmTitle}
-                    placement="bottom"
-                    onConfirm={props.onConfirm}
-        >
+        <Popconfirm {...props}>
             <Button
                 className="col-auto"
                 style={{marginTop: "10px"}}

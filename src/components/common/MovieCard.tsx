@@ -56,6 +56,8 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
                             </Button>
                             <Popconfirm title={t('common:deleteItem')}
                                         placement="bottom"
+                                        okText={t('common:ok')}
+                                        cancelText={t('common:cancel')}
                                         onConfirm={() => dispatch(deleteMovie({movieId: movie._id}))}
                             >
                                 <Button

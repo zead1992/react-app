@@ -10,6 +10,7 @@ import {Form, Input, SubmitButton} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import BasePopup from "./common/BasePopup";
 import {RootState} from "../store/store";
+import {useTranslation} from "react-i18next";
 
 const Wrapper = styled.div`
   display: grid;
@@ -20,12 +21,13 @@ const Wrapper = styled.div`
 type IProp = RouteChildrenProps
 const GenresList: FC<IProp> = (props) => {
 
+    const {t,i18n} = useTranslation(['web','common']);
     const dispatch = useDispatch();
     const genres: IGenre[] = useSelector(selectAllGenres);
     const {genreList: listLoading} = useSelector((state: RootState) => state.loading);
 
     const formSchema: Yup.SchemaOf<CreateGenre> = Yup.object().shape({
-        name: Yup.string().required().min(3).label('genre name'),
+        name: Yup.string().required().min(3).label(t('web:genres.name')),
     });
 
     const [formValues, setFormValues] = useState<CreateGenre>(
@@ -71,9 +73,12 @@ const GenresList: FC<IProp> = (props) => {
                             bordered
                             renderItem={item => (
                                 <List.Item actions={[
-                                    <BasePopup title={"Delete"}
+                                    <BasePopup title={t('common:delete')}
                                                onConfirm={() => deleteGenre({id: item._id})}
-                                               confirmTitle={"Delete Genre?"}/>
+                                               okText={t('common:ok')}
+                                               cancelText={t('common:cancel')}
+                                               placement={"bottom"}
+                                               />
                                 ]}>
                                     <Typography.Text>{item.name}</Typography.Text>
                                 </List.Item>
@@ -81,7 +86,7 @@ const GenresList: FC<IProp> = (props) => {
                         />
                     </div>
                     <div className="p-end">
-                        <Typography.Title level={4}>Add Genre</Typography.Title>
+                        <Typography.Title level={4}>{t('web:genres.add')}</Typography.Title>
                         <div className="row">
                             <div className="col-12">
                                 <Formik<CreateGenre>
@@ -94,14 +99,14 @@ const GenresList: FC<IProp> = (props) => {
                                     {(props) => {
                                         return <Form layout={"vertical"}>
                                             <div className="col-12">
-                                                <Form.Item label={"genre name"}
+                                                <Form.Item label={t('web:genres.name')}
                                                            name={"name"}>
                                                     <Input name={"name"}/>
                                                 </Form.Item>
                                             </div>
 
                                             <div className="col-12 my-3">
-                                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>Submit</SubmitButton>
+                                                <SubmitButton disabled={!props.isValid || props.isSubmitting}>{t('common:save')}</SubmitButton>
                                             </div>
                                         </Form>
                                     }}
