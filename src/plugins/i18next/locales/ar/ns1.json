@@ -30,6 +30,11 @@
     "deleteItem": "حذف العنصر",
     "favorite": "مفضل",
     "ok": "موافق",
-    "cancel": "الغاء"
+    "cancel": "الغاء",
+    "search": "البحث",
+    "quality": "الجودة",
+    "language": "اللغة",
+    "rating": "التقييم",
+    "year": "السنة"
   }
 }

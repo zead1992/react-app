@@ -4,6 +4,7 @@ import {Button, Card, Typography} from "antd";
 import MovieCard from "./common/MovieCard";
 import {fetchMoviesAsync, selectAllMovies} from "../features/movies/moviesSlice";
 import {useTranslation} from "react-i18next";
+import MoviesFilter from "./common/MoviesFilter";
 
 const {Title, Text} = Typography;
 
@@ -27,6 +28,10 @@ function Movies(props: any) {
                         onClick={() => setRefreshMovie(!refreshMovie)}
                 >{t('common:refresh')}</Button>
             </div>
+            {
+                movies.status == 'idle' &&
+                <MoviesFilter/>
+            }
             <div className="col-12">
                 <div className="row align-items-start justify-content-start">
                     {

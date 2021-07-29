@@ -30,6 +30,11 @@
     "deleteItem": "Delete item",
     "favorite": "Favorite",
     "ok": "ok",
-    "cancel": "cancel"
+    "cancel": "cancel",
+    "search": "Search",
+    "quality": "quality",
+    "language": "language",
+    "rating": "rating",
+    "year": "year"
   }
 }
