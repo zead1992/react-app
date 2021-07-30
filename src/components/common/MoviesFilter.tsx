@@ -3,7 +3,7 @@ import {Card} from "antd"
 import {Form, Input, Select, SubmitButton} from 'formik-antd'
 import {Formik, FormikHelpers} from 'formik'
 import {useTranslation} from "react-i18next";
-import {MoviesFilterType} from "../../types/common-types";
+import {CommonOption, MoviesFilterType} from "../../types/common-types";
 import styled from "styled-components"
 import {LangListFilter, QualityListFilter, RatingListFilter, YearListFilter} from "../../common/static";
 import {selectAllGenres} from "../../features/genres/genresSlice";
@@ -48,6 +48,9 @@ const MoviesFilter: FC = (props) => {
     const {t, i18n} = useTranslation(['web', 'common']);
 
     const genres = useSelector(selectAllGenres);
+    const genresFilter : CommonOption[] = [{name:'all',val:'all'},...genres.map(g=>{
+        return{name:g.name,val:g._id}
+    })]
 
     const formKeys = (key: keyof MoviesFilterType) => {
         return key;
@@ -123,9 +126,9 @@ const MoviesFilter: FC = (props) => {
                                             name={formKeys("genre")}
                                     >
                                         {
-                                            genres.map((item) =>
-                                                <Option key={item._id}
-                                                        value={item._id}>{item.name}</Option>
+                                            genresFilter.map((item) =>
+                                                <Option key={item.val}
+                                                        value={item.val}>{item.name}</Option>
                                             )
                                         }
                                     </Select>
