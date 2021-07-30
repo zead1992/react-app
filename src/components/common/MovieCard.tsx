@@ -45,6 +45,12 @@ export const MovieCard: FC<{ movie: IMovie; hideDetailButton?: boolean }> =
                                     val={movie.dailyRentalRate}/>
                         <InlineItem label={t('common:stock')}
                                     val={movie.numberInStock}/>
+                        <InlineItem label={t('common:quality')}
+                                    val={movie.quality.name}/>
+                        <InlineItem label={t('common:rating')}
+                                    val={movie.rating.name}/>
+                        <InlineItem label={t('common:language')}
+                                    val={movie.lang.name}/>
                         <div className="d-flex justify-content-between">
                             <Button
                                 className="col-auto"
