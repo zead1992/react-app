@@ -7,7 +7,9 @@ import {CommonOption, MoviesFilterType} from "../../types/common-types";
 import styled from "styled-components"
 import {LangListFilter, QualityListFilter, RatingListFilter, YearListFilter} from "../../common/static";
 import {selectAllGenres} from "../../features/genres/genresSlice";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useQuery} from "../../hooks/custom-hooks";
+import {useHistory, useLocation} from "react-router-dom";
 
 const {Option} = Select;
 
@@ -46,6 +48,10 @@ const FlexWrapper = styled.div`
 const MoviesFilter: FC = (props) => {
 
     const {t, i18n} = useTranslation(['web', 'common']);
+    const dispatch = useDispatch();
+    const query = useQuery();
+    const history = useHistory();
+    const location = useLocation();
 
     const genres = useSelector(selectAllGenres);
     const genresFilter : CommonOption[] = [{name:'all',val:'all'},...genres.map(g=>{
@@ -73,16 +79,25 @@ const MoviesFilter: FC = (props) => {
     }
     const [filters, setFilters] = useState<MoviesFilterType>(filtersInitial);
     const onSubmit = (values: MoviesFilterType, formikHelper: FormikHelpers<MoviesFilterType>) => {
-        console.log(values);
+        const searchQuery = JSON.stringify(values);
+        history.push(`${location.pathname}?searchQuery=${searchQuery}`);
         formikHelper.setSubmitting(false);
     }
 
     const onInputChange = (e : ChangeEvent<HTMLInputElement>)=>{
-        console.log(e.target.value);
+        const str = e.target.value;
+        if(!str){
+
+        }
     }
 
     useEffect(() => {
-    }, []);
+        const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
+        if(searchQuery){
+            console.log(searchQuery);
+            setFilters({...searchQuery});
+        }
+    }, [location.search]);
 
 
     return (

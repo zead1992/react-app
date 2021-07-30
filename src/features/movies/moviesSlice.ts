@@ -4,13 +4,16 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../store/store";
 import {CreateMovie, EditMovie, IMovie, MovieState} from "./movieTypes";
 import {updateLoadingState} from "../loading/loadingSlice";
-import {IGenre} from "../genres/genreTypes";
 import {LangList, QualityList, RatingList} from "../../common/static";
 
 
 //selectors
 export const selectAllMovies = (state: RootState) => state.movies;
 export const selectMovieById = (state: RootState, id: string) => state.movies.list.data[id];
+export const selectMoviesByName = (state:RootState,search:string) => {
+    const list = Object.values(state.movies.list.data);
+    return list.filter(m=>m.title.toLowerCase() == search.toLowerCase());
+}
 
 //redux/toolkit
 export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',
