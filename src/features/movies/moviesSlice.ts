@@ -90,7 +90,7 @@ const moviesSlice = createSlice({
                     numberInStock: newMovie.numberInStock,
                     dailyRentalRate: newMovie.dailyRentalRate,
                     publishDate: new Date().toString(),
-                    isFavorite: false,
+                    isFavorite: newMovie.isFavorite,
                     title: newMovie.title,
                     rating:RatingList.find(x=>x.val == newMovie.rating),
                     quality:QualityList.find(x=>x.val == newMovie.quality),
