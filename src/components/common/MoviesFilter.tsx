@@ -1,13 +1,11 @@
-import React, {ChangeEvent, ChangeEventHandler, FC, useEffect, useState} from "react"
+import React, {ChangeEvent, FC, useEffect, useState} from "react"
 import {Card} from "antd"
-import {Checkbox, Form, Input, InputNumber, Select, SubmitButton} from 'formik-antd'
-import {Formik, FormikHelpers, useFormikContext} from 'formik'
-import {CreateMovie} from "../../features/movies/movieTypes";
+import {Form, Input, Select, SubmitButton} from 'formik-antd'
+import {Formik, FormikHelpers} from 'formik'
 import {useTranslation} from "react-i18next";
 import {MoviesFilterType} from "../../types/common-types";
-import Yup from "../../plugins/yup-plugin";
 import styled from "styled-components"
-import {LanguageFilterList, QualityList, RatingList, YearList} from "../../common/static";
+import {LangListFilter, QualityListFilter, RatingListFilter, YearListFilter} from "../../common/static";
 import {selectAllGenres} from "../../features/genres/genresSlice";
 import {useSelector} from "react-redux";
 
@@ -73,6 +71,7 @@ const MoviesFilter: FC = (props) => {
     const [filters, setFilters] = useState<MoviesFilterType>(filtersInitial);
     const onSubmit = (values: MoviesFilterType, formikHelper: FormikHelpers<MoviesFilterType>) => {
         console.log(values);
+        formikHelper.setSubmitting(false);
     }
 
     const onInputChange = (e : ChangeEvent<HTMLInputElement>)=>{
@@ -111,7 +110,7 @@ const MoviesFilter: FC = (props) => {
                                             name={formKeys("quality")}
                                     >
                                         {
-                                            QualityList.map((item) =>
+                                            QualityListFilter.map((item) =>
                                                 <Option key={item.val}
                                                         value={item.val}>{item.name}</Option>
                                             )
@@ -137,7 +136,7 @@ const MoviesFilter: FC = (props) => {
                                             name={formKeys("rating")}
                                     >
                                         {
-                                            RatingList.map((item) =>
+                                            RatingListFilter.map((item) =>
                                                 <Option key={item.val}
                                                         value={item.val}>{item.name}</Option>
                                             )
@@ -150,7 +149,7 @@ const MoviesFilter: FC = (props) => {
                                             name={formKeys("year")}
                                     >
                                         {
-                                            YearList.map((item) =>
+                                            YearListFilter.map((item) =>
                                                 <Option key={item.val}
                                                         value={item.val}>{item.name}</Option>
                                             )
@@ -163,7 +162,7 @@ const MoviesFilter: FC = (props) => {
                                             name={formKeys("language")}
                                     >
                                         {
-                                            LanguageFilterList.map((item) =>
+                                            LangListFilter.map((item) =>
                                                 <Option key={item.val}
                                                         value={item.val}>{item.name}</Option>
                                             )

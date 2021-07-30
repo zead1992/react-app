@@ -3,6 +3,7 @@ import moment from "moment";
 import {MovieState} from "./features/movies/movieTypes";
 import {RootState} from "./store/store";
 import {IGenre} from "./features/genres/genreTypes";
+import {LangList, QualityList, RatingList} from "./common/static";
 
 const mockGenre: IGenre[] = [];
 for (let i = 1; i < 5; i++) {
@@ -21,14 +22,17 @@ const movieState: MovieState = {
 }
 mockGenre.forEach((g, index) => {
     const id = uuidv4();
-    movieState.list.data[id] = {
+    movieState.list.data[id]  = {
         _id: id,
         genre: g,
         title: `Movie ${index}`,
         isFavorite: false,
         publishDate: moment().subtract(index + 1, 'days').toISOString(),
         dailyRentalRate: 10 + 5,
-        numberInStock: index + 2
+        numberInStock: index + 2,
+        quality:QualityList[0],
+        rating:RatingList[0],
+        lang:LangList[0]
     }
 })
 

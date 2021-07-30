@@ -10,6 +10,14 @@ import {addMovieAsync, editMovieAsync, selectMovieById} from "../features/movies
 import {CreateMovie} from "../features/movies/movieTypes";
 import {fetchGenresAsync} from "../features/genres/genresSlice";
 import {useTranslation} from "react-i18next";
+import {LangList, QualityList, RatingList} from "../common/static";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  [class^="col-"]{
+  margin-bottom: 24px;
+}
+`
 
 
 type IProps = RouteComponentProps<{ id: string }>;
@@ -39,7 +47,10 @@ const MovieForm: FC<IProps> = (props) => {
         dailyRentalRate: Yup.number().required().positive().max(50).label(t('common:dailyRental')),
         numberInStock: Yup.number().integer().required().positive().min(1).integer().label(t('common:stock')),
         genreId: Yup.string().required().label(t('web:genres.genre')),
-        isFavorite:Yup.boolean().label(t('common:favorite'))
+        isFavorite:Yup.boolean().label(t('common:favorite')),
+        rating:Yup.string().required().label(t('common:rating')),
+        quality:Yup.string().required().label(t('common:quality')),
+        lang:Yup.string().required().label(t('common:language')),
     });
 
     //state
@@ -48,7 +59,10 @@ const MovieForm: FC<IProps> = (props) => {
         genreId: null,
         numberInStock: null,
         dailyRentalRate: null,
-        isFavorite:false
+        isFavorite:false,
+        rating:null,
+        quality:null,
+        lang:null
     }
     const [formValues, setFormValues] = useState<CreateMovie>(
         formInitValues
@@ -76,7 +90,10 @@ const MovieForm: FC<IProps> = (props) => {
             genreId: movieDetail.genre._id,
             numberInStock: movieDetail.numberInStock,
             dailyRentalRate: movieDetail.dailyRentalRate,
-            isFavorite:movieDetail.isFavorite
+            isFavorite:movieDetail.isFavorite,
+            rating:movieDetail.rating.val,
+            quality:movieDetail.quality.val,
+            lang:movieDetail.lang.val
         })
     }
 
@@ -117,7 +134,7 @@ const MovieForm: FC<IProps> = (props) => {
 
 
     return (
-        <div className="row align-items-center justify-content-center">
+        <Wrapper className="row align-items-center justify-content-center">
             <div className="col-12 my-3">
                 <Title level={1}>{uiText.formTitle}</Title>
                 <Formik<CreateMovie>
@@ -159,6 +176,46 @@ const MovieForm: FC<IProps> = (props) => {
                                     }
                                 </Select>
                             </div>
+
+                            <div className="col-4">
+                                <Select name={formKeys("quality")}
+                                        placeholder={t('common:quality')}
+                                        style={{width: 120}}>
+                                    {
+                                        QualityList.map((item) =>
+                                            <Option key={item.val}
+                                                    value={item.val}>{item.name}</Option>
+                                        )
+                                    }
+                                </Select>
+                            </div>
+
+                            <div className="col-4">
+                                <Select name={formKeys("rating")}
+                                        placeholder={t('common:rating')}
+                                        style={{width: 120}}>
+                                    {
+                                        RatingList.map((item) =>
+                                            <Option key={item.val}
+                                                    value={item.val}>{item.name}</Option>
+                                        )
+                                    }
+                                </Select>
+                            </div>
+
+                            <div className="col-4">
+                                <Select name={formKeys("lang")}
+                                        placeholder={t('common:language')}
+                                        style={{width: 120}}>
+                                    {
+                                        LangList.map((item) =>
+                                            <Option key={item.val}
+                                                    value={item.val}>{item.name}</Option>
+                                        )
+                                    }
+                                </Select>
+                            </div>
+
                             <div className="col-4 my-3">
                                 <Checkbox name={formKeys('isFavorite')}>
                                     {t('common:favorite')}
@@ -171,7 +228,7 @@ const MovieForm: FC<IProps> = (props) => {
                     }}
                 </Formik>
             </div>
-        </div>
+        </Wrapper>
     );
 };
 

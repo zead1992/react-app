@@ -2,9 +2,10 @@ import {getMovies} from "../../services/movieService";
 import {v4 as uuidv4} from 'uuid';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../store/store";
-import {CreateMovie, EditMovie, MovieState} from "./movieTypes";
+import {CreateMovie, EditMovie, IMovie, MovieState} from "./movieTypes";
 import {updateLoadingState} from "../loading/loadingSlice";
 import {IGenre} from "../genres/genreTypes";
+import {LangList, QualityList, RatingList} from "../../common/static";
 
 
 //selectors
@@ -57,29 +58,6 @@ const moviesSlice = createSlice({
     name: 'movies',
     initialState: null as MovieState,
     reducers: {
-        addMovie: {
-            reducer(state, action: PayloadAction<{ movie: CreateMovie, genres: IGenre[] }>) {
-                const {movie, genres} = action.payload;
-                const newItem = {
-                    _id: uuidv4(),
-                    genre: {
-                        _id: movie.genreId,
-                        name: genres.find(g => g._id == movie.genreId).name
-                    },
-                    numberInStock: movie.numberInStock,
-                    dailyRentalRate: movie.dailyRentalRate,
-                    publishDate: new Date().toString(),
-                    isFavorite: false,
-                    title: movie.title
-                };
-                state.list.data[newItem._id] = newItem;
-            },
-            prepare(movie: CreateMovie, genres: IGenre[]) {
-                return {
-                    payload: {movie, genres}
-                }
-            }
-        },
         toggleMovieFav(state, action: PayloadAction<{ movieId: string }>) {
             const movie = state.list.data[action.payload.movieId];
             movie.isFavorite = !movie.isFavorite;
@@ -103,7 +81,7 @@ const moviesSlice = createSlice({
             })
             .addCase(addMovieAsync.fulfilled, (state, action) => {
                 const {newMovie, genres} = action.payload;
-                const newItem = {
+                const newItem : IMovie= {
                     _id: uuidv4(),
                     genre: {
                         _id: newMovie.genreId,
@@ -113,7 +91,10 @@ const moviesSlice = createSlice({
                     dailyRentalRate: newMovie.dailyRentalRate,
                     publishDate: new Date().toString(),
                     isFavorite: false,
-                    title: newMovie.title
+                    title: newMovie.title,
+                    rating:RatingList.find(x=>x.val == newMovie.rating),
+                    quality:QualityList.find(x=>x.val == newMovie.quality),
+                    lang:LangList.find(x=>x.val == newMovie.lang)
                 };
                 state.list.data[newItem._id] = newItem;
             })
@@ -139,7 +120,6 @@ const moviesSlice = createSlice({
 
 
 export const {
-    addMovie,
     toggleMovieFav,
     deleteMovie,
 } = moviesSlice.actions;

@@ -1,3 +1,5 @@
+import {CommonOption} from "../../types/common-types";
+
 export type IMovie = {
     _id: string,
     title: string,
@@ -5,7 +7,10 @@ export type IMovie = {
     numberInStock: number,
     dailyRentalRate: number,
     publishDate?: string,
-    isFavorite: boolean
+    isFavorite: boolean,
+    rating:CommonOption;
+    quality:CommonOption;
+    lang:CommonOption
 }
 
 export type CreateMovie = {
@@ -14,6 +19,9 @@ export type CreateMovie = {
     dailyRentalRate: number;
     genreId: string;
     isFavorite:boolean;
+    rating:string;
+    quality:string;
+    lang:string;
 }
 
 export type EditMovie = CreateMovie & {id:string}

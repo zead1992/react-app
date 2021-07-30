@@ -24,6 +24,7 @@ const App: FC<IProp> = (props) => {
         const init = async ()=>{
             await i18n.changeLanguage(match.params.lang);
             document.dir = i18n.dir();
+            document.documentElement.lang = i18n.language;
         }
         init();
     }, []);

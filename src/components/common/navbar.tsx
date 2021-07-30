@@ -27,6 +27,7 @@ const Navbar: FC = (props) => {
         await i18n.changeLanguage(langSwitch());
         const url = location.pathname.replace(`/${langSwitch()}/`, `/${i18n.language}/`);
         document.dir = i18n.dir();
+        document.documentElement.lang = i18n.language;
         history.push(url);
     };
 
