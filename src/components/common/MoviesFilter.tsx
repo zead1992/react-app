@@ -10,6 +10,7 @@ import {selectAllGenres} from "../../features/genres/genresSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useQuery} from "../../hooks/custom-hooks";
 import {useHistory, useLocation} from "react-router-dom";
+import {filterMoviesAsync} from "../../features/movies/moviesSlice";
 
 const {Option} = Select;
 
@@ -46,8 +47,10 @@ const FlexWrapper = styled.div`
 `
 
 const FilterContext = ()=>{
-    const {values,setValues,submitForm} = useFormikContext();
+    const dispatch = useDispatch();
+    const {values,setValues,submitForm} = useFormikContext<MoviesFilterType>();
     const query = useQuery();
+    const location = useLocation();
 
     useEffect(()=>{
         //watch > manually trigger action on specific form state
@@ -57,8 +60,9 @@ const FilterContext = ()=>{
         const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
         if(searchQuery){
             setValues(searchQuery);
+            dispatch(filterMoviesAsync({filter:searchQuery}))
         }
-    },[]);
+    },[location.search]);
     return null;
 }
 
@@ -87,7 +91,7 @@ const MoviesFilter: FC = (props) => {
         rating: "all",
         language: "all"
     }
-    const [filters, setFilters] = useState<MoviesFilterType>(filtersInitial);
+    const [filters] = useState<MoviesFilterType>(filtersInitial);
     const onSubmit = (values: MoviesFilterType, formikHelper: FormikHelpers<MoviesFilterType>) => {
         const searchQuery = JSON.stringify(values);
         history.push(`${location.pathname}?searchQuery=${encodeURIComponent(searchQuery)}`);
@@ -102,7 +106,7 @@ const MoviesFilter: FC = (props) => {
     }
 
     useEffect(() => {
-    }, [location]);
+    }, []);
 
 
     return (

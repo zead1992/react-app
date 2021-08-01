@@ -1,19 +1,16 @@
-import {getMovies} from "../../services/movieService";
+import {filterMovies, getMovies} from "../../services/movieService";
 import {v4 as uuidv4} from 'uuid';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../store/store";
 import {CreateMovie, EditMovie, IMovie, MovieState} from "./movieTypes";
 import {updateLoadingState} from "../loading/loadingSlice";
 import {LangList, QualityList, RatingList} from "../../common/static";
+import {MoviesFilterType} from "../../types/common-types";
 
 
 //selectors
 export const selectAllMovies = (state: RootState) => state.movies;
 export const selectMovieById = (state: RootState, id: string) => state.movies.list.data[id];
-export const selectMoviesByName = (state:RootState,search:string) => {
-    const list = Object.values(state.movies.list.data);
-    return list.filter(m=>m.title.toLowerCase() == search.toLowerCase());
-}
 
 //redux/toolkit
 export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',
@@ -22,6 +19,13 @@ export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',
         const result = await getMovies();
         return result;
     });
+
+export const filterMoviesAsync = createAsyncThunk("movies/filterMovies",
+    async (args:{filter:MoviesFilterType}) => {
+        const result = await filterMovies(args.filter);
+        console.log(result);
+    }
+);
 
 export const addMovieAsync = createAsyncThunk("movies/addMovie",
     async (args: { newMovie: CreateMovie }, {getState, dispatch}) => {
@@ -84,7 +88,7 @@ const moviesSlice = createSlice({
             })
             .addCase(addMovieAsync.fulfilled, (state, action) => {
                 const {newMovie, genres} = action.payload;
-                const newItem : IMovie= {
+                const newItem: IMovie = {
                     _id: uuidv4(),
                     genre: {
                         _id: newMovie.genreId,
@@ -95,9 +99,9 @@ const moviesSlice = createSlice({
                     publishDate: new Date().toString(),
                     isFavorite: newMovie.isFavorite,
                     title: newMovie.title,
-                    rating:RatingList.find(x=>x.val == newMovie.rating),
-                    quality:QualityList.find(x=>x.val == newMovie.quality),
-                    lang:LangList.find(x=>x.val == newMovie.lang)
+                    rating: RatingList.find(x => x.val == newMovie.rating),
+                    quality: QualityList.find(x => x.val == newMovie.quality),
+                    lang: LangList.find(x => x.val == newMovie.lang)
                 };
                 state.list.data[newItem._id] = newItem;
             })
@@ -114,8 +118,8 @@ const moviesSlice = createSlice({
                 const {genreId} = action.payload;
                 const listMovies = Object.values(state.list.data);
                 const relatedMovies = listMovies.filter(m => m.genre._id == genreId);
-                relatedMovies.forEach(m=>{
-                   delete state.list.data[m._id]
+                relatedMovies.forEach(m => {
+                    delete state.list.data[m._id]
                 });
             });
     }
