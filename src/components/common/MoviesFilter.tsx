@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, Ref, useEffect, useRef, useState} from "react"
 import {Card} from "antd"
 import {Form, Input, Select, SubmitButton} from 'formik-antd'
-import {Formik, FormikHelpers, FormikProps} from 'formik'
+import {Formik, FormikHelpers, FormikProps, useFormikContext} from 'formik'
 import {useTranslation} from "react-i18next";
 import {CommonOption, MoviesFilterType} from "../../types/common-types";
 import styled from "styled-components"
@@ -44,6 +44,15 @@ const FlexWrapper = styled.div`
     margin-bottom: 5px;
   }
 `
+
+const FilterContext = ()=>{
+    const {values,setValues,submitForm} = useFormikContext();
+
+    useEffect(()=>{
+        //watch > manually trigger action on specific form state
+    },[values])
+    return null;
+}
 
 const MoviesFilter: FC = (props) => {
 
@@ -95,7 +104,7 @@ const MoviesFilter: FC = (props) => {
     useEffect(() => {
         const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
         if(searchQuery){
-            formRef.current.setValues(searchQuery);
+            // formRef.current.setValues(searchQuery);
         }
     }, [location.search]);
 
@@ -111,6 +120,7 @@ const MoviesFilter: FC = (props) => {
                 >
                     {(props) => {
                         return <Form layout={"vertical"}>
+                            <FilterContext/>
                             <Wrapper>
                                 <div className="search-wrapper">
                                     <Form.Item className="search-input"
