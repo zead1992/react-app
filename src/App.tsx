@@ -6,7 +6,6 @@ import MovieDetail from "./components/MovieDetail";
 import MovieForm from "./components/MovieForm";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import YoutubeFormikForm from "./components/YoutubeFormikForm";
 import './App.css';
 import {isValidUuid} from "./common/common";
 import GenresList from "./components/GenresList";
@@ -69,11 +68,6 @@ const App: FC<IProp> = (props) => {
                     <Route path={`${props.match.url}/genres`}
                            exact
                            component={GenresList}/>
-                    <Route
-                        path={`${props.match.url}/formik`}
-                        exact
-                        component={YoutubeFormikForm}
-                    />
                     <Route path={"*"}>
                         <Redirect to={'/en/movies'}/>
                     </Route>
