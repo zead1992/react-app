@@ -8,10 +8,13 @@ export  function getMovies() : {[key:string]:IMovie} {
      return {...state.movies.list.data};
 }
 
-export function filterMovies(filters: MoviesFilterType) : IMovie[]{
+export async function filterMovies(filters: MoviesFilterType) : Promise<{[key:string] : IMovie}>{
     const state = loadStorageState();
     const listMovies = Object.values(state.movies.list.data);
     let filtered : IMovie[] = listMovies;
+    if(!filters){
+        return {...state.movies.list.data};
+    }
     if(filters.search){
         filtered = listMovies.filter(m=>m.title.toLowerCase().includes(filters.search.toLowerCase()));
     }
@@ -33,7 +36,11 @@ export function filterMovies(filters: MoviesFilterType) : IMovie[]{
         }
         return true
     })
-    return filtered;
+    const movies = {};
+    filtered.forEach((m)=>{
+        movies[m._id] = m;
+    });
+    return movies;
 }
 
  export  function getMovie(id: string) : IMovie {

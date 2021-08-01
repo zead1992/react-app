@@ -1,7 +1,7 @@
-import React, {ChangeEvent, FC, Ref, useEffect, useRef, useState} from "react"
+import React, {ChangeEvent, FC, useEffect, useState} from "react"
 import {Card} from "antd"
 import {Form, Input, Select, SubmitButton} from 'formik-antd'
-import {Formik, FormikHelpers, FormikProps, useFormikContext} from 'formik'
+import {Formik, FormikHelpers, useFormikContext} from 'formik'
 import {useTranslation} from "react-i18next";
 import {CommonOption, MoviesFilterType} from "../../types/common-types";
 import styled from "styled-components"
@@ -10,7 +10,6 @@ import {selectAllGenres} from "../../features/genres/genresSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useQuery} from "../../hooks/custom-hooks";
 import {useHistory, useLocation} from "react-router-dom";
-import {filterMoviesAsync} from "../../features/movies/moviesSlice";
 
 const {Option} = Select;
 
@@ -48,7 +47,7 @@ const FlexWrapper = styled.div`
 
 const FilterContext = ()=>{
     const dispatch = useDispatch();
-    const {values,setValues,submitForm} = useFormikContext<MoviesFilterType>();
+    const {values,setValues,submitForm,resetForm} = useFormikContext<MoviesFilterType>();
     const query = useQuery();
     const location = useLocation();
 
@@ -60,7 +59,8 @@ const FilterContext = ()=>{
         const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
         if(searchQuery){
             setValues(searchQuery);
-            dispatch(filterMoviesAsync({filter:searchQuery}))
+        }else{
+            resetForm();
         }
     },[location.search]);
     return null;
@@ -69,10 +69,9 @@ const FilterContext = ()=>{
 const MoviesFilter: FC = (props) => {
 
     const {t, i18n} = useTranslation(['web', 'common']);
-    const dispatch = useDispatch();
-    const query = useQuery();
     const history = useHistory();
     const location = useLocation();
+
 
     const genres = useSelector(selectAllGenres);
     const genresFilter : CommonOption[] = [{name:'all',val:'all'},...genres.map(g=>{
@@ -94,6 +93,7 @@ const MoviesFilter: FC = (props) => {
     const [filters] = useState<MoviesFilterType>(filtersInitial);
     const onSubmit = (values: MoviesFilterType, formikHelper: FormikHelpers<MoviesFilterType>) => {
         const searchQuery = JSON.stringify(values);
+        formikHelper.setSubmitting(true);
         history.push(`${location.pathname}?searchQuery=${encodeURIComponent(searchQuery)}`);
         formikHelper.setSubmitting(false);
     }
@@ -128,7 +128,7 @@ const MoviesFilter: FC = (props) => {
                                         <Input onChange={onInputChange} name={formKeys('search')}/>
                                     </Form.Item>
                                     <SubmitButton className="submit"
-                                                  disabled={!props.isValid || props.isSubmitting}>{t('common:search')}</SubmitButton>
+                                                  disabled={!props.isValid || props.isSubmitting }>{t('common:search')}</SubmitButton>
                                 </div>
                             </Wrapper>
                             <DropsWrapper>

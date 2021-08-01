@@ -32,7 +32,7 @@ export interface MovieState {
         data: {[key:string]:IMovie};
         status:'idle'|'loading'|'finished'|'error';
         error: string;
-    },
+    }
 
 }
 

@@ -10,6 +10,7 @@ import {MoviesFilterType} from "../../types/common-types";
 
 //selectors
 export const selectAllMovies = (state: RootState) => state.movies;
+// export const selectFilteredMovies = (state: RootState) => state.movies.listFiltered;
 export const selectMovieById = (state: RootState, id: string) => state.movies.list.data[id];
 
 //redux/toolkit
@@ -22,8 +23,9 @@ export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',
 
 export const filterMoviesAsync = createAsyncThunk("movies/filterMovies",
     async (args:{filter:MoviesFilterType}) => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const result = await filterMovies(args.filter);
-        console.log(result);
+        return result;
     }
 );
 
@@ -107,12 +109,15 @@ const moviesSlice = createSlice({
             })
             .addCase(editMovieAsync.fulfilled, (state, action) => {
                 const {values, genres} = action.payload;
-                const movie = state.list.data[values.id];
+                const movie : IMovie = state.list.data[values.id];
                 movie.title = values.title;
                 movie.dailyRentalRate = values.dailyRentalRate;
                 movie.numberInStock = values.numberInStock;
                 movie.genre = genres.find(g => g._id == values.genreId);
                 movie.isFavorite = values.isFavorite;
+                movie.rating = RatingList.find(x=>x.val == values.rating);
+                movie.quality = QualityList.find(x=>x.val == values.quality);
+                movie.lang = LangList.find(x=>x.val == values.lang);
             })
             .addCase(deleteGenreMoviesAsync.fulfilled, (state, action) => {
                 const {genreId} = action.payload;
