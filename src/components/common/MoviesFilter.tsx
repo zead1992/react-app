@@ -47,10 +47,18 @@ const FlexWrapper = styled.div`
 
 const FilterContext = ()=>{
     const {values,setValues,submitForm} = useFormikContext();
+    const query = useQuery();
 
     useEffect(()=>{
         //watch > manually trigger action on specific form state
-    },[values])
+    },[values]);
+
+    useEffect(()=>{
+        const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
+        if(searchQuery){
+            setValues(searchQuery);
+        }
+    },[]);
     return null;
 }
 
@@ -61,7 +69,6 @@ const MoviesFilter: FC = (props) => {
     const query = useQuery();
     const history = useHistory();
     const location = useLocation();
-    const formRef : Ref<FormikProps<MoviesFilterType>> = useRef();
 
     const genres = useSelector(selectAllGenres);
     const genresFilter : CommonOption[] = [{name:'all',val:'all'},...genres.map(g=>{
@@ -71,14 +78,7 @@ const MoviesFilter: FC = (props) => {
     const formKeys = (key: keyof MoviesFilterType) => {
         return key;
     }
-    // const formSchema: Yup.SchemaOf<MoviesFilterType> = Yup.object().shape({
-    //     search: Yup.string().label(t('common:search')),
-    //     quality: Yup.string().label(t('common:quality')),
-    //     genre: Yup.string().label(t('web:genres.genre')),
-    //     language: Yup.string().label(t('common:language')),
-    //     rating: Yup.string().label(t('common:rating')),
-    //     year: Yup.string().label(t('common:year')),
-    // });
+
     const filtersInitial: MoviesFilterType = {
         search: null,
         genre: "all",
@@ -102,18 +102,13 @@ const MoviesFilter: FC = (props) => {
     }
 
     useEffect(() => {
-        const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
-        if(searchQuery){
-            // formRef.current.setValues(searchQuery);
-        }
-    }, [location.search]);
+    }, [location]);
 
 
     return (
         <div className="col-12 my-3">
             <Card>
                 <Formik<MoviesFilterType>
-                    innerRef={formRef}
                     initialValues={filters}
                     enableReinitialize={false}
                     onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
