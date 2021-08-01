@@ -10,7 +10,6 @@ import {MoviesFilterType} from "../../types/common-types";
 
 //selectors
 export const selectAllMovies = (state: RootState) => state.movies;
-// export const selectFilteredMovies = (state: RootState) => state.movies.listFiltered;
 export const selectMovieById = (state: RootState, id: string) => state.movies.list.data[id];
 
 //redux/toolkit
@@ -21,13 +20,6 @@ export const fetchMoviesAsync = createAsyncThunk('movies/fetchMovies',
         return result;
     });
 
-export const filterMoviesAsync = createAsyncThunk("movies/filterMovies",
-    async (args:{filter:MoviesFilterType}) => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const result = await filterMovies(args.filter);
-        return result;
-    }
-);
 
 export const addMovieAsync = createAsyncThunk("movies/addMovie",
     async (args: { newMovie: CreateMovie }, {getState, dispatch}) => {
