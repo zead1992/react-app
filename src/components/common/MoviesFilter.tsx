@@ -1,7 +1,7 @@
-import React, {ChangeEvent, FC, useEffect, useState} from "react"
+import React, {ChangeEvent, FC, Ref, useEffect, useRef, useState} from "react"
 import {Card} from "antd"
 import {Form, Input, Select, SubmitButton} from 'formik-antd'
-import {Formik, FormikHelpers} from 'formik'
+import {Formik, FormikHelpers, FormikProps} from 'formik'
 import {useTranslation} from "react-i18next";
 import {CommonOption, MoviesFilterType} from "../../types/common-types";
 import styled from "styled-components"
@@ -52,6 +52,7 @@ const MoviesFilter: FC = (props) => {
     const query = useQuery();
     const history = useHistory();
     const location = useLocation();
+    const formRef : Ref<FormikProps<MoviesFilterType>> = useRef();
 
     const genres = useSelector(selectAllGenres);
     const genresFilter : CommonOption[] = [{name:'all',val:'all'},...genres.map(g=>{
@@ -80,7 +81,7 @@ const MoviesFilter: FC = (props) => {
     const [filters, setFilters] = useState<MoviesFilterType>(filtersInitial);
     const onSubmit = (values: MoviesFilterType, formikHelper: FormikHelpers<MoviesFilterType>) => {
         const searchQuery = JSON.stringify(values);
-        history.push(`${location.pathname}?searchQuery=${searchQuery}`);
+        history.push(`${location.pathname}?searchQuery=${encodeURIComponent(searchQuery)}`);
         formikHelper.setSubmitting(false);
     }
 
@@ -94,8 +95,7 @@ const MoviesFilter: FC = (props) => {
     useEffect(() => {
         const searchQuery : MoviesFilterType = JSON.parse(query.get('searchQuery'));
         if(searchQuery){
-            console.log(searchQuery);
-            setFilters({...searchQuery});
+            formRef.current.setValues(searchQuery);
         }
     }, [location.search]);
 
@@ -104,6 +104,7 @@ const MoviesFilter: FC = (props) => {
         <div className="col-12 my-3">
             <Card>
                 <Formik<MoviesFilterType>
+                    innerRef={formRef}
                     initialValues={filters}
                     enableReinitialize={false}
                     onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
