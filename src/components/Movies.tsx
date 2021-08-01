@@ -55,7 +55,9 @@ const Movies: FC = (props: any) => {
                         onClick={refreshMovies}
                 >{t('common:refresh')}</Button>
             </div>
-            <MoviesFilter/>
+            {
+                moviesState.status === "idle" && <MoviesFilter/>
+            }
             <div className="col-12">
                 <div className="row align-items-start justify-content-start">
                     {
