@@ -23,17 +23,12 @@ const Movies: FC = (props: any) => {
     const [filtered,setFiltered] = useState<{[key:string] : IMovie}>({});
 
     const refreshMovies =async ()=>{
-        const searchQuery : MoviesFilterType = JSON.parse(query.get("searchQuery"));
-        const list = await filterMovies(searchQuery);
-        setFiltered(list);
+        dispatch(fetchMoviesAsync())
     }
 
     useEffect(()=>{
         const init = async ()=>{
             await dispatch(fetchMoviesAsync());
-            const searchQuery : MoviesFilterType = JSON.parse(query.get("searchQuery"));
-            const list = await filterMovies(searchQuery);
-            setFiltered(list);
         }
         init()
     },[location.search])
